@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,23 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
 
     @Override
     public List<T> findAll() {
-        return null;
+        List<T> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(tableName)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                if (getEntityFromResultSet(resultSet).isPresent()) {
+                    result.add(getEntityFromResultSet(resultSet).get());
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
     }
 
     @Override
