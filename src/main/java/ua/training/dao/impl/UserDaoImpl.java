@@ -60,7 +60,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         String lastName = resultSet.getString(LAST_NAME);
         String phoneNumber = resultSet.getString(PHONE_NUMBER);
         return Optional.of(
-                new User.Builder()
+                new User.UserBuilder()
                         .setId(id)
                         .setEmail(email)
                         .setPassword(password)

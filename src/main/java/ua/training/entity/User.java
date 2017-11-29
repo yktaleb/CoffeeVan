@@ -12,18 +12,10 @@ public class User {
     private Set<Role> roles;
     private Set<Order> orders;
 
-    private User(Builder builder) {
-        id = builder.id;
-        email = builder.email;
-        password = builder.password;
-        firstName = builder.firstName;
-        lastName = builder.lastName;
-        phoneNumber = builder.phoneNumber;
-        roles = builder.roles;
-        orders = builder.orders;
+    private User() {
     }
 
-    public static final class Builder {
+    public static final class UserBuilder {
         private Long id;
         private String email;
         private String password;
@@ -33,48 +25,57 @@ public class User {
         private Set<Role> roles;
         private Set<Order> orders;
 
-        public Builder setId(Long id) {
+        public UserBuilder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setEmail(String email) {
+        public UserBuilder setEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public Builder setPassword(String password) {
+        public UserBuilder setPassword(String password) {
             this.password = password;
             return this;
         }
 
-        public Builder setFirstName(String firstName) {
+        public UserBuilder setFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public Builder setLastName(String lastName) {
+        public UserBuilder setLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public Builder setPhoneNumber(String phoneNumber) {
+        public UserBuilder setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }
 
-        public Builder setRoles(Set<Role> roles) {
+        public UserBuilder setRoles(Set<Role> roles) {
             this.roles = roles;
             return this;
         }
 
-        public Builder setOrders(Set<Order> orders) {
+        public UserBuilder setOrders(Set<Order> orders) {
             this.orders = orders;
             return this;
         }
 
         public User build() {
-            return new User(this);
+            User user = new User();
+            user.setId(id);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setPhoneNumber(phoneNumber);
+            user.setRoles(roles);
+            user.setOrders(orders);
+            return user;
         }
     }
 

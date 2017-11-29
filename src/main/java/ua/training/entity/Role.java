@@ -6,4 +6,58 @@ public class Role {
     private Long id;
     private String name;
     private Set<User> users;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+
+    public static final class RoleBuilder {
+        private Long id;
+        private String name;
+        private Set<User> users;
+
+        public RoleBuilder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public RoleBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public RoleBuilder setUsers(Set<User> users) {
+            this.users = users;
+            return this;
+        }
+
+        public Role build() {
+            Role role = new Role();
+            role.setId(id);
+            role.setName(name);
+            role.setUsers(users);
+            return role;
+        }
+    }
 }

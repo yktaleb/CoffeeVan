@@ -62,7 +62,7 @@ public class MainController extends HttpServlet {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
-//            User user = new User.Builder()
+//            User user = new User.UserBuilder()
 //                    .setId(1L)
 //                    .setEmail("talebqq@gai.com")
 //                    .setPassword("1348")
