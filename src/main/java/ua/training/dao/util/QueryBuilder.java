@@ -114,6 +114,13 @@ public class QueryBuilder {
         return this;
     }
 
+    public QueryBuilder delete() {
+        query
+                .append("DELETE")
+                .append(" ");
+        return this;
+    }
+
     public String built() {
         return query.toString();
     }

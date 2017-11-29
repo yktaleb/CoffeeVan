@@ -70,7 +70,7 @@ public class MainController extends HttpServlet {
 //                    .setLastName("Taleb")
 //                    .setPhoneNumber("1921212")
 //                    .build();
-            List<User> users = userDao.findAll();
+            userDao.delete(2L);
             connection.commit();
         } catch (SQLException e) {
 //            throw new DaoException(e.getMessage());

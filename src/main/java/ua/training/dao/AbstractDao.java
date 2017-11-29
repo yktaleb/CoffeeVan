@@ -102,7 +102,20 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
     }
 
     @Override
-    public void delete(Long aLong) {
+    public void delete(Long id) {
+        String query = new QueryBuilder()
+                .delete()
+                .from()
+                .table(tableName)
+                .where()
+                .condition(tableName, "id")
+                .built();
+        try(PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     protected abstract String[] getParameterNames();
