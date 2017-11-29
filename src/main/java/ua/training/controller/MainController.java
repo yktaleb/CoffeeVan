@@ -62,13 +62,14 @@ public class MainController extends HttpServlet {
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
             User user = new User.Builder()
-                    .setEmail("taleb@gai.com")
+                    .setId(1L)
+                    .setEmail("talebqq@gai.com")
                     .setPassword("1348")
                     .setFirstName("Yarik")
                     .setLastName("Taleb")
                     .setPhoneNumber("1921212")
                     .build();
-            userDao.save(user);
+            userDao.update(user);
             connection.commit();
         } catch (SQLException e) {
 //            throw new DaoException(e.getMessage());

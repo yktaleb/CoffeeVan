@@ -37,6 +37,21 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
 
     @Override
     public T update(T entity) {
+        String query = new QueryBuilder()
+                .update()
+                .table(tableName)
+                .set()
+                .updateValues(getParameterNames())
+                .where()
+                .condition(tableName, "id")
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            setEntityParameters(entity, statement);
+            statement.executeUpdate();
+            return entity;
+        } catch (SQLException e) {
+
+        }
         return null;
     }
 
