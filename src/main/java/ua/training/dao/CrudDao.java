@@ -1,6 +1,7 @@
 package ua.training.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CrudDao<T, ID> {
 
@@ -8,7 +9,7 @@ public interface CrudDao<T, ID> {
 
     T update(T entity);
 
-    T findOne(ID id);
+    Optional<T> findOne(ID id);
 
     List<T> findAll();
 

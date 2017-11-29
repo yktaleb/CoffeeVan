@@ -6,16 +6,20 @@ import ua.training.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     private static final String TABLE_NAME = "user";
+    private static final String ID = "id";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
     private static final String PHONE_NUMBER = "phone_number";
     private static final int NUMBER_OF_FIELDS_WITHOUT_ID = 5;
+
     private UserDaoImpl(Connection connection) {
         super(TABLE_NAME, connection);
     }
@@ -42,9 +46,29 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         statement.setString(3, user.getFirstName());
         statement.setString(4, user.getLastName());
         statement.setString(5, user.getPhoneNumber());
-        if (statement.getParameterMetaData().getParameterCount() == NUMBER_OF_FIELDS_WITHOUT_ID + 1 ) {
+        if (statement.getParameterMetaData().getParameterCount() == NUMBER_OF_FIELDS_WITHOUT_ID + 1) {
             statement.setLong(6, user.getId());
         }
+    }
+
+    @Override
+    protected Optional<User> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        Long id = Long.valueOf(resultSet.getString(ID));
+        String email = resultSet.getString(EMAIL);
+        String password = resultSet.getString(PASSWORD);
+        String firstName = resultSet.getString(FIRST_NAME);
+        String lastName = resultSet.getString(LAST_NAME);
+        String phoneNumber = resultSet.getString(PHONE_NUMBER);
+        return Optional.of(
+                new User.Builder()
+                        .setId(id)
+                        .setEmail(email)
+                        .setPassword(password)
+                        .setFirstName(firstName)
+                        .setLastName(lastName)
+                        .setPhoneNumber(phoneNumber)
+                        .build()
+        );
     }
 
 }

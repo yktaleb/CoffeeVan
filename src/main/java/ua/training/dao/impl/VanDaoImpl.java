@@ -8,6 +8,9 @@ import ua.training.entity.Van;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 
 public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
     public VanDaoImpl(String tableName, Connection connection) {
@@ -21,5 +24,10 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
 
     @Override
     protected void setEntityParameters(Van entity, PreparedStatement statement) {
+    }
+
+    @Override
+    protected Optional<Van> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        return null;
     }
 }

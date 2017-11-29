@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet("/hello")
 public class MainController extends HttpServlet {
@@ -61,16 +62,16 @@ public class MainController extends HttpServlet {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
-            User user = new User.Builder()
-                    .setId(1L)
-                    .setEmail("talebqq@gai.com")
-                    .setPassword("1348")
-                    .setFirstName("Yarik")
-                    .setLastName("Taleb")
-                    .setPhoneNumber("1921212")
-                    .build();
-            userDao.update(user);
-            connection.commit();
+//            User user = new User.Builder()
+//                    .setId(1L)
+//                    .setEmail("talebqq@gai.com")
+//                    .setPassword("1348")
+//                    .setFirstName("Yarik")
+//                    .setLastName("Taleb")
+//                    .setPhoneNumber("1921212")
+//                    .build();
+            Optional<User> one = userDao.findOne(1L);
+//            connection.commit();
         } catch (SQLException e) {
 //            throw new DaoException(e.getMessage());
             e.printStackTrace();

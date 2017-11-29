@@ -8,6 +8,9 @@ import ua.training.entity.BeverageType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 
 public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> implements BeverageQualityDao {
     public BeverageQualityDaoImpl(String tableName, Connection connection) {
@@ -21,5 +24,10 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
 
     @Override
     protected void setEntityParameters(BeverageQuality entity, PreparedStatement statement) {
+    }
+
+    @Override
+    protected Optional<BeverageQuality> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        return null;
     }
 }

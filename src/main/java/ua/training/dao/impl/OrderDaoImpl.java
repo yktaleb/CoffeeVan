@@ -8,6 +8,9 @@ import ua.training.entity.OrderStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     public OrderDaoImpl(String tableName, Connection connection) {
@@ -21,5 +24,10 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     protected void setEntityParameters(Order entity, PreparedStatement statement) {
+    }
+
+    @Override
+    protected Optional<Order> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        return null;
     }
 }

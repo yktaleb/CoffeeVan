@@ -4,8 +4,10 @@ import ua.training.dao.util.QueryBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractDao<T> implements CrudDao<T, Long> {
 
@@ -56,8 +58,25 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
     }
 
     @Override
-    public T findOne(Long aLong) {
-        return null;
+    public Optional<T> findOne(Long id) {
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(tableName)
+                .where()
+                .condition(tableName, "id")
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return getEntityFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -72,4 +91,7 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
     protected abstract String[] getParameterNames();
 
     protected abstract void setEntityParameters(T entity, PreparedStatement statement) throws SQLException;
+
+    protected abstract Optional<T> getEntityFromResultSet(ResultSet resultSet) throws SQLException;
+
 }

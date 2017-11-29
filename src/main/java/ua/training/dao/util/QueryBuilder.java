@@ -98,16 +98,19 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder selectAll() {
+    public QueryBuilder select() {
         query
                 .append("SELECT")
+                .append(" ")
                 .append("*")
                 .append(" ");
         return this;
     }
 
     public QueryBuilder from() {
-        query.append("FROM");
+        query
+                .append("FROM")
+                .append(" ");
         return this;
     }
 

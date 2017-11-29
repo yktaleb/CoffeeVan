@@ -8,7 +8,10 @@ import ua.training.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
     public RoleDaoImpl(String tableName, Connection connection) {
@@ -22,5 +25,10 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
 
     @Override
     protected void setEntityParameters(Role entity, PreparedStatement statement) {
+    }
+
+    @Override
+    protected Optional<Role> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        return null;
     }
 }
