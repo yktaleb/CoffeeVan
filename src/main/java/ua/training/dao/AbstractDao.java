@@ -19,21 +19,14 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
 
     @Override
     public T save(T entity) {
-//        String query = "INSERT INTO ? VALUES(?)";
-//        String query = "insert into user(email, password, first_name, last_name, phone_number) values('email12', 'password', 'firtst', 'last', 'phone');";
         String query = new QueryBuilder()
                 .insert()
                 .into()
                 .table(tableName)
-                .values(new String[]{"email", "password", "first_name", "last_name", "phone_number"})
+                .insertValues(getParameterNames())
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-//            setEntityToParameters(entity, statement);
-            statement.setString(1, "yktaleb");
-            statement.setString(2, "sas");
-            statement.setString(3, "sas");
-            statement.setString(4, "sas");
-            statement.setString(5, "sas");
+            setEntityParameters(entity, statement);
             statement.executeUpdate();
             return entity;
         } catch (SQLException e) {
@@ -59,7 +52,6 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
 
     @Override
     public void delete(Long aLong) {
-
     }
 
     protected abstract String[] getParameterNames();

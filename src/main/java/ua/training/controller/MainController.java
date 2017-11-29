@@ -21,6 +21,7 @@ import java.util.List;
 
 @WebServlet("/hello")
 public class MainController extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -60,7 +61,14 @@ public class MainController extends HttpServlet {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
-            userDao.save(new User());
+            User user = new User.Builder()
+                    .setEmail("taleb@gai.com")
+                    .setPassword("1348")
+                    .setFirstName("Yarik")
+                    .setLastName("Taleb")
+                    .setPhoneNumber("1921212")
+                    .build();
+            userDao.save(user);
             connection.commit();
         } catch (SQLException e) {
 //            throw new DaoException(e.getMessage());

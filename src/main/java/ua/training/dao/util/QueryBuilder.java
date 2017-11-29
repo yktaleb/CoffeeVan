@@ -28,7 +28,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder values(String[] names) {
+    public QueryBuilder insertValues(String[] names) {
         query.append("(");
         int length = names.length;
         for (int i = 0; i < length; i++) {
@@ -49,6 +49,52 @@ public class QueryBuilder {
             }
         }
         query.append(")");
+        return this;
+    }
+
+    public QueryBuilder update() {
+        query
+                .append("UPDATE")
+                .append(" ");
+        return this;
+    }
+
+    public QueryBuilder set() {
+        query
+                .append("SET")
+                .append(" ");
+        return this;
+    }
+
+    public QueryBuilder updateValues(String[] names) {
+        int length = names.length;
+        for (int i = 0; i < length; i++) {
+            query
+                    .append(names[i])
+                    .append("=")
+                    .append("?");
+            if (i != length - 1) {
+                query.append(",");
+            }
+        }
+        query.append(" ");
+        return this;
+    }
+
+    public QueryBuilder where() {
+        query
+                .append("WHERE")
+                .append(" ");
+        return this;
+    }
+
+    public QueryBuilder condition(String tableName, String field) {
+        query
+                .append(tableName)
+                .append(".")
+                .append(field)
+                .append("=")
+                .append("?");
         return this;
     }
 
