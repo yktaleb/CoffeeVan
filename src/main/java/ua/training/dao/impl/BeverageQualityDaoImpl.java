@@ -4,6 +4,7 @@ import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageQualityDao;
 import ua.training.dao.BeverageTypeDao;
 import ua.training.entity.BeverageQuality;
+import ua.training.entity.BeverageState;
 import ua.training.entity.BeverageType;
 
 import java.sql.Connection;
@@ -13,21 +14,43 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> implements BeverageQualityDao {
-    public BeverageQualityDaoImpl(String tableName, Connection connection) {
-        super(tableName, connection);
+    private static final String TABLE_NAME = "beverage_quality";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+
+    private BeverageQualityDaoImpl(Connection connection) {
+        super(TABLE_NAME, connection);
+    }
+
+    private static class BeverageQualityDaoImplHolder {
+        public static BeverageQualityDaoImpl instance(Connection connection) {
+            return new BeverageQualityDaoImpl(connection);
+        }
+    }
+
+    public static BeverageQualityDaoImpl getInstance(Connection connection) {
+        return BeverageQualityDaoImplHolder.instance(connection);
     }
 
     @Override
     protected String[] getParameterNames() {
-        return new String[0];
+        return new String[]{NAME};
     }
 
     @Override
-    protected void setEntityParameters(BeverageQuality entity, PreparedStatement statement) {
+    protected void setEntityParameters(BeverageQuality beverageQuality, PreparedStatement statement) throws SQLException {
+        statement.setString(1, beverageQuality.getName());
     }
 
     @Override
     protected Optional<BeverageQuality> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return null;
+        long id = resultSet.getLong(ID);
+        String name = resultSet.getString(NAME);
+        return Optional.of(
+                new BeverageQuality.BeverageQualityBuilder()
+                        .setId(id)
+                        .setName(name)
+                        .build()
+        );
     }
 }

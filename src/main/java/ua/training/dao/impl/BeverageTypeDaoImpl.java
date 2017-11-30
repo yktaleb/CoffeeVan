@@ -13,21 +13,43 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class BeverageTypeDaoImpl extends AbstractDao<BeverageType> implements BeverageTypeDao {
-    public BeverageTypeDaoImpl(String tableName, Connection connection) {
-        super(tableName, connection);
+    private static final String TABLE_NAME = "beverage_type";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+
+    private BeverageTypeDaoImpl(Connection connection) {
+        super(TABLE_NAME, connection);
+    }
+
+    private static class BeverageTypeDaoImplHolder {
+        public static BeverageTypeDaoImpl instance(Connection connection) {
+            return new BeverageTypeDaoImpl(connection);
+        }
+    }
+
+    public static BeverageTypeDaoImpl getInstance(Connection connection) {
+        return BeverageTypeDaoImplHolder.instance(connection);
     }
 
     @Override
     protected String[] getParameterNames() {
-        return new String[0];
+        return new String[]{NAME};
     }
 
     @Override
-    protected void setEntityParameters(BeverageType entity, PreparedStatement statement) {
+    protected void setEntityParameters(BeverageType beverageType, PreparedStatement statement) throws SQLException {
+        statement.setString(1, beverageType.getName());
     }
 
     @Override
     protected Optional<BeverageType> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return null;
+        long id = resultSet.getLong(ID);
+        String name = resultSet.getString(NAME);
+        return Optional.of(
+                new BeverageType.BeverageTypeBuilder()
+                        .setId(id)
+                        .setName(name)
+                        .build()
+        );
     }
 }
