@@ -1,11 +1,13 @@
 package ua.training.controller;
 
+import ua.training.controller.command.CommandCreator;
 import ua.training.dao.UserDao;
 import ua.training.dao.datasource.ConnectionPool;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.*;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,39 +25,31 @@ import java.util.Optional;
 @WebServlet("/hello")
 public class MainController extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private static CommandCreator commandCreator = CommandCreator.getInstance();
 
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-//            UserDao userDao = daoFactory.createUserDao();
-//            User user = new User.UserBuilder()
-//                    .setId(1L)
-//                    .setEmail("talebqq@gai.com")
-//                    .setPassword("1348")
-//                    .setFirstName("Yarik")
-//                    .setLastName("Taleb")
-//                    .setPhoneNumber("1921212")
-//                    .build();
-//            userDao.delete(2L);
-//            daoFactory.createBeverageTypeDao().save(new BeverageType.BeverageTypeBuilder().setName("coffee").build());
-            Optional<BeverageType> coffee = daoFactory.createBeverageTypeDao().findByName("coffee");
-            BeverageType beverageType = coffee.get();
-//            daoFactory.createBeverageStateDao().save(new BeverageState.BeverageStateBuilder().setName("grains").build());
-            BeverageState grains = daoFactory.createBeverageStateDao().findByName("grains").get();
-            grains.getId();
-//            daoFactory.createBeverageQualityDao().save(new BeverageQuality.BeverageQualityBuilder().setName("VIP").build());
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
-            connection.commit();
-        } catch (SQLException e) {
-//            throw new DaoException(e.getMessage());
-            e.printStackTrace();
+    private void processRequest(HttpServletRequest request,
+                                HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("command", "index");
+        String page;
+        try {
+            page = commandCreator.action(request, response);
+            request.getSession().setAttribute("page", page);
+        } catch (RuntimeException e) {
+            page = "error";
         }
+        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+        dispatcher.forward(request, response);
     }
 }

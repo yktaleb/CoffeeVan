@@ -5,14 +5,14 @@ public class ServiceFactory {
     }
 
     private static class ServiceFactoryHolder {
-        public static ServiceFactory instance = new ServiceFactory();
+        private static ServiceFactory instance = new ServiceFactory();
     }
 
     public static ServiceFactory getInstance() {
         return ServiceFactoryHolder.instance;
     }
 
-    public static BeverageService createBeverageService() {
-        return BeverageService.getInstance();
+    public BeverageService createBeverageService() {
+        return BeverageServiceImpl.getInstance();
     }
 }

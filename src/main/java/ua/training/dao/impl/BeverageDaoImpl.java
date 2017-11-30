@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDao {
-    private static final String TABLE_NAME = "beverage_order";
+    private static final String TABLE_NAME = "beverage";
     private static final String ID = "id";
     private static final String BEVERAGE_TYPE = "beverage_type";
     private static final String BEVERAGE_STATE = "beverage_state";
