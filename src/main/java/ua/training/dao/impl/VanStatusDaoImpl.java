@@ -13,21 +13,43 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatusDao {
-    public VanStatusDaoImpl(String tableName, Connection connection) {
-        super(tableName, connection);
+    private static final String TABLE_NAME = "van_status";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+
+    private VanStatusDaoImpl(Connection connection) {
+        super(TABLE_NAME, connection);
+    }
+
+    private static class VanStatusDaoImplHolder {
+        public static VanStatusDaoImpl instance(Connection connection) {
+            return new VanStatusDaoImpl(connection);
+        }
+    }
+
+    public static VanStatusDaoImpl getInstance(Connection connection) {
+        return VanStatusDaoImplHolder.instance(connection);
     }
 
     @Override
     protected String[] getParameterNames() {
-        return new String[0];
+        return new String[]{NAME};
     }
 
     @Override
-    protected void setEntityParameters(VanStatus entity, PreparedStatement statement) {
+    protected void setEntityParameters(VanStatus vanStatus, PreparedStatement statement) throws SQLException {
+        statement.setString(1, vanStatus.getName());
     }
 
     @Override
     protected Optional<VanStatus> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return null;
+        long id = resultSet.getLong(ID);
+        String name = resultSet.getString(NAME);
+        return Optional.of(
+                new VanStatus.VanStatusBuilder()
+                        .setId(id)
+                        .setName(name)
+                        .build()
+        );
     }
 }

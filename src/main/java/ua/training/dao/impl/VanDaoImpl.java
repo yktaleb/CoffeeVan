@@ -2,6 +2,7 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.VanDao;
+import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.entity.User;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
@@ -37,13 +38,13 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
 
     @Override
     protected String[] getParameterNames() {
-        return new String[]{NAME, CARRYING_CAPACITY, MAX_VOLUME};
+        return new String[]{VAN_STATUS, NAME, CARRYING_CAPACITY, MAX_VOLUME};
     }
 
     @Override
     protected void setEntityParameters(Van van, PreparedStatement statement) throws SQLException {
-        statement.setString(1, van.getName());
-        statement.setObject(1, van.getVanStatus());
+        statement.setLong(1, van.getVanStatus().getId());
+        statement.setString(2, van.getName());
         statement.setDouble(3, van.getCarryingCapacity());
         statement.setDouble(4, van.getMaxVolume());
         if (statement.getParameterMetaData().getParameterCount() == NUMBER_OF_FIELDS_WITHOUT_ID + 1) {
@@ -57,7 +58,8 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
         String name = resultSet.getString(NAME);
         Double carryingCapacity = resultSet.getDouble(CARRYING_CAPACITY);
         Double maxVolume = resultSet.getDouble(MAX_VOLUME);
-        VanStatus vanStatus = (VanStatus) resultSet.getObject(VAN_STATUS);
+        Long vanStatusId = resultSet.getLong(VAN_STATUS);
+        VanStatus vanStatus = MySqlDaoFactory.getInstance(connection).createVanStatusDao().findOne(vanStatusId).get();
         return Optional.of(
                 new Van.VanBuilder()
                     .setId(id)

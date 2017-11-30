@@ -13,21 +13,43 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements OrderStatusDao {
-    public OrderStatusDaoImpl(String tableName, Connection connection) {
-        super(tableName, connection);
+    private static final String TABLE_NAME = "order_status";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+
+    private OrderStatusDaoImpl(Connection connection) {
+        super(TABLE_NAME, connection);
+    }
+
+    private static final class OrderStatusDaoImplHolder {
+        private static OrderStatusDaoImpl instance(Connection connection) {
+            return new OrderStatusDaoImpl(connection);
+        }
+    }
+
+    public static OrderStatusDaoImpl getInstance(Connection connection) {
+        return OrderStatusDaoImplHolder.instance(connection);
     }
 
     @Override
     protected String[] getParameterNames() {
-        return new String[0];
+        return new String[]{NAME};
     }
 
     @Override
-    protected void setEntityParameters(OrderStatus entity, PreparedStatement statement) {
+    protected void setEntityParameters(OrderStatus entity, PreparedStatement statement) throws SQLException {
+        statement.setString(1, entity.getName());
     }
 
     @Override
     protected Optional<OrderStatus> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return null;
+        long id = resultSet.getLong(ID);
+        String name = resultSet.getString(NAME);
+        return Optional.of(
+                new OrderStatus.OrderStatusBuilder()
+                        .setId(id)
+                        .setName(name)
+                        .build()
+        );
     }
 }
