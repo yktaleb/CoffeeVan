@@ -3,6 +3,7 @@ package ua.training.dao.impl;
 import ua.training.dao.AbstractDao;
 import ua.training.dao.OrderStatusDao;
 import ua.training.dao.VanDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.OrderStatus;
 import ua.training.entity.Van;
 
@@ -19,6 +20,11 @@ public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements Orde
 
     private OrderStatusDaoImpl(Connection connection) {
         super(TABLE_NAME, connection);
+    }
+
+    @Override
+    public Optional<OrderStatus> findByName(String value) {
+        return findOneByName(value);
     }
 
     private static final class OrderStatusDaoImplHolder {

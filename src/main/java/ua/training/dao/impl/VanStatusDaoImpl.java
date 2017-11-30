@@ -21,6 +21,11 @@ public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatu
         super(TABLE_NAME, connection);
     }
 
+    @Override
+    public Optional<VanStatus> findByName(String value) {
+        return findOneByName(value);
+    }
+
     private static class VanStatusDaoImplHolder {
         public static VanStatusDaoImpl instance(Connection connection) {
             return new VanStatusDaoImpl(connection);

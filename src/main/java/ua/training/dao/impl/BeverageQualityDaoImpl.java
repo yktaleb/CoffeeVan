@@ -3,6 +3,7 @@ package ua.training.dao.impl;
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageQualityDao;
 import ua.training.dao.BeverageTypeDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.BeverageQuality;
 import ua.training.entity.BeverageState;
 import ua.training.entity.BeverageType;
@@ -20,6 +21,11 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
 
     private BeverageQualityDaoImpl(Connection connection) {
         super(TABLE_NAME, connection);
+    }
+
+    @Override
+    public Optional<BeverageQuality> findByName(String value) {
+        return findOneByName(value);
     }
 
     private static class BeverageQualityDaoImplHolder {

@@ -22,6 +22,11 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
         super(TABLE_NAME, connection);
     }
 
+    @Override
+    public Optional<Role> findByName(String value) {
+        return findOneByName(value);
+    }
+
     private static final class RoleDaoImplHolder {
         private static RoleDaoImpl instance(Connection connection) {
             return new RoleDaoImpl(connection);

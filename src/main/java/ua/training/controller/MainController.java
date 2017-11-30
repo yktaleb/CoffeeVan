@@ -44,9 +44,13 @@ public class MainController extends HttpServlet {
 //                    .setPhoneNumber("1921212")
 //                    .build();
 //            userDao.delete(2L);
-            daoFactory.createBeverageTypeDao().save(new BeverageType.BeverageTypeBuilder().setName("coffee").build());
-            daoFactory.createBeverageStateDao().save(new BeverageState.BeverageStateBuilder().setName("grains").build());
-            daoFactory.createBeverageQualityDao().save(new BeverageQuality.BeverageQualityBuilder().setName("VIP").build());
+//            daoFactory.createBeverageTypeDao().save(new BeverageType.BeverageTypeBuilder().setName("coffee").build());
+            Optional<BeverageType> coffee = daoFactory.createBeverageTypeDao().findByName("coffee");
+            BeverageType beverageType = coffee.get();
+//            daoFactory.createBeverageStateDao().save(new BeverageState.BeverageStateBuilder().setName("grains").build());
+            BeverageState grains = daoFactory.createBeverageStateDao().findByName("grains").get();
+            grains.getId();
+//            daoFactory.createBeverageQualityDao().save(new BeverageQuality.BeverageQualityBuilder().setName("VIP").build());
 
             connection.commit();
         } catch (SQLException e) {

@@ -118,6 +118,27 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
         }
     }
 
+    public Optional<T> findOneByName(String value) {
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(tableName)
+                .where()
+                .condition(tableName, "name")
+                .built();
+        try(PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, value);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return getEntityFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     protected abstract String[] getParameterNames();
 
     protected abstract void setEntityParameters(T entity, PreparedStatement statement) throws SQLException;
