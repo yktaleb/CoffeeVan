@@ -10,12 +10,15 @@ import java.util.Map;
 
 public class CommandCreator {
     public static final String INDEX_COMMAND = "index";
+    public static final String LOGIN_COMMAND = "login";
+    public static final String COMMAND = "command";
 
     private Map<String, Command> commandMap = new HashMap<>();
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private CommandCreator() {
         commandMap.put(INDEX_COMMAND, new DefaultCommand(serviceFactory.createBeverageService()));
+        commandMap.put(LOGIN_COMMAND, new LoginCommand(serviceFactory.createUserService()));
     }
 
     private static class CommandFactoryHolder {
@@ -27,8 +30,14 @@ public class CommandCreator {
     }
 
     public String action(HttpServletRequest request, HttpServletResponse response) throws RuntimeException {
-        String commandName = request.getParameter("command");
-        Command command = commandMap.get("index");
+        Long authToken = (Long) request.getSession().getAttribute("X-Auth-Token");
+        String commandName = request.getParameter(COMMAND);
+        Command command = commandMap.get(commandName);
+        if (authToken == null) {
+            command = commandMap.get(LOGIN_COMMAND);
+        } else if (command == null) {
+            command = commandMap.get(INDEX_COMMAND);
+        }
         return command.execute(request, response);
     }
 }

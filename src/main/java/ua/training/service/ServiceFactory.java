@@ -1,5 +1,8 @@
 package ua.training.service;
 
+import ua.training.service.impl.BeverageServiceImpl;
+import ua.training.service.impl.UserServiceImpl;
+
 public class ServiceFactory {
     private ServiceFactory() {
     }
@@ -14,5 +17,9 @@ public class ServiceFactory {
 
     public BeverageService createBeverageService() {
         return BeverageServiceImpl.getInstance();
+    }
+
+    public UserService createUserService() {
+        return UserServiceImpl.getInstance();
     }
 }

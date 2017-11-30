@@ -2,6 +2,7 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.UserDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.User;
 
 import java.sql.Connection;
@@ -22,6 +23,28 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     private UserDaoImpl(Connection connection) {
         super(TABLE_NAME, connection);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(tableName)
+                .where()
+                .condition(tableName, "email")
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return getEntityFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return Optional.empty();
     }
 
     private static class UserDaoImplHolder {

@@ -1,9 +1,10 @@
-package ua.training.service;
+package ua.training.service.impl;
 
 import ua.training.dao.BeverageDao;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.Beverage;
+import ua.training.service.BeverageService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -23,7 +24,7 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     @Override
-    public List<Beverage> getAllBeverage() {
+    public List<Beverage> findAllBeverage() {
         List<Beverage> beverages = null;
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {

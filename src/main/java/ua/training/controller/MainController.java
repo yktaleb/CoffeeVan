@@ -22,8 +22,10 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet("/hello")
+@WebServlet("/")
 public class MainController extends HttpServlet {
+
+    private static final String LOGIN = "WEB-INF/view/login.jsp";
 
     private static CommandCreator commandCreator = CommandCreator.getInstance();
 
@@ -41,14 +43,15 @@ public class MainController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("command", "index");
         String page;
+
         try {
             page = commandCreator.action(request, response);
             request.getSession().setAttribute("page", page);
         } catch (RuntimeException e) {
             page = "error";
         }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }

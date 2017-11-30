@@ -1,9 +1,9 @@
-package ua.training.dao;
+package ua.training.service;
 
 import ua.training.entity.User;
 
 import java.util.Optional;
 
-public interface UserDao extends CrudDao<User, Long> {
+public interface UserService {
     Optional<User> findByEmail(String email);
 }
