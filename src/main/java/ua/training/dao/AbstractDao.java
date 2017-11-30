@@ -1,11 +1,10 @@
 package ua.training.dao;
 
 import ua.training.dao.util.QueryBuilder;
+import ua.training.exception.LoginAlreadyExistsException;
+import ua.training.exception.UniqueException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +20,7 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
     }
 
     @Override
-    public T save(T entity) {
+    public T save(T entity) throws UniqueException {
         String query = new QueryBuilder()
                 .insert()
                 .into()
@@ -32,6 +31,8 @@ public abstract class AbstractDao<T> implements CrudDao<T, Long> {
             setEntityParameters(entity, statement);
             statement.executeUpdate();
             return entity;
+        }catch (SQLIntegrityConstraintViolationException e) {
+            throw new UniqueException(e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
         }

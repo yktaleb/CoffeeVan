@@ -6,6 +6,8 @@ import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.Beverage;
 import ua.training.entity.User;
+import ua.training.exception.LoginAlreadyExistsException;
+import ua.training.exception.UniqueException;
 import ua.training.service.UserService;
 
 import javax.sql.DataSource;
@@ -40,5 +42,23 @@ public class UserServiceImpl implements UserService {
 
         }
         return user;
+    }
+
+    @Override
+    public User register(User user) throws LoginAlreadyExistsException {
+        User savedUser = null;
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            UserDao userDao = daoFactory.createUserDao();
+            savedUser = userDao.save(user);
+            connection.commit();
+        } catch (SQLException e) {
+
+        } catch (UniqueException e) {
+            throw new LoginAlreadyExistsException(e.getMessage());
+        }
+        return savedUser;
     }
 }

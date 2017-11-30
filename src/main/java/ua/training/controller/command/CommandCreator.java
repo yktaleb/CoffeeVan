@@ -10,7 +10,10 @@ import java.util.Map;
 
 public class CommandCreator {
     public static final String INDEX_COMMAND = "index";
+    public static final String LOGIN_PAGE_COMMAND = "loginPage";
+    public static final String REGISTRATION_PAGE_COMMAND = "registrationPage";
     public static final String LOGIN_COMMAND = "login";
+    public static final String REGISTRATION_COMMAND = "registration";
     public static final String COMMAND = "command";
 
     private Map<String, Command> commandMap = new HashMap<>();
@@ -19,6 +22,9 @@ public class CommandCreator {
     private CommandCreator() {
         commandMap.put(INDEX_COMMAND, new DefaultCommand(serviceFactory.createBeverageService()));
         commandMap.put(LOGIN_COMMAND, new LoginCommand(serviceFactory.createUserService()));
+        commandMap.put(LOGIN_PAGE_COMMAND, new LoginPageCommand());
+        commandMap.put(REGISTRATION_COMMAND, new RegistrationCommand(serviceFactory.createUserService()));
+        commandMap.put(REGISTRATION_PAGE_COMMAND, new RegistrationPageCommand());
     }
 
     private static class CommandFactoryHolder {
@@ -33,8 +39,11 @@ public class CommandCreator {
         Long authToken = (Long) request.getSession().getAttribute("X-Auth-Token");
         String commandName = request.getParameter(COMMAND);
         Command command = commandMap.get(commandName);
-        if (authToken == null) {
-            command = commandMap.get(LOGIN_COMMAND);
+        if (authToken == null
+                && !LOGIN_COMMAND.equals(commandName)
+                && !REGISTRATION_PAGE_COMMAND.equals(commandName)
+                && !REGISTRATION_COMMAND.equals(commandName)) {
+            command = commandMap.get(LOGIN_PAGE_COMMAND);
         } else if (command == null) {
             command = commandMap.get(INDEX_COMMAND);
         }

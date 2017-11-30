@@ -1,11 +1,13 @@
 package ua.training.dao;
 
+import ua.training.exception.UniqueException;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface CrudDao<T, ID> {
 
-    T save(T entity);
+    T save(T entity) throws UniqueException;
 
     T update(T entity);
 

@@ -30,6 +30,7 @@ public class LoginCommand implements Command {
         } else if (!user.get().getPassword().equals(password)) {
             return LOGIN_PAGE;
         }
+        request.getSession().setAttribute("X-Auth-Token", user.get().getId());
         return INDEX_PAGE;
     }
 }

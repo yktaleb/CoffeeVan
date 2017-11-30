@@ -32,5 +32,7 @@
         </div>
     </form>
 </form>
+<li><a href="/?command=registrationPage">Sign up</a></li>
+
 </body>
 </html>
