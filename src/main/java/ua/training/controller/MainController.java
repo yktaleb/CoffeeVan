@@ -4,7 +4,7 @@ import ua.training.dao.UserDao;
 import ua.training.dao.datasource.ConnectionPool;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
-import ua.training.entity.User;
+import ua.training.entity.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,38 +30,11 @@ public class MainController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        DataSource dataSource = ConnectionPool.getDataSource();
-//        Connection conn = null;
-//        try {
-//            conn = dataSource.getConnection();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        StringBuilder msg = new StringBuilder();
-//        try (Statement stm = conn.createStatement()) {
-//            String query = "show tables;";
-//            ResultSet rs = stm.executeQuery(query);
-//            int i = 0;
-//            while (rs.next()) {
-//                i++;
-//            }
-//        } catch (SQLException e) {
-//            System.err.println(e.getMessage());
-//        } finally {
-//            if (conn != null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            conn = null; // prevent any future access
-//        }
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            UserDao userDao = daoFactory.createUserDao();
+//            UserDao userDao = daoFactory.createUserDao();
 //            User user = new User.UserBuilder()
 //                    .setId(1L)
 //                    .setEmail("talebqq@gai.com")
@@ -70,7 +43,11 @@ public class MainController extends HttpServlet {
 //                    .setLastName("Taleb")
 //                    .setPhoneNumber("1921212")
 //                    .build();
-            userDao.delete(2L);
+//            userDao.delete(2L);
+            daoFactory.createBeverageTypeDao().save(new BeverageType.BeverageTypeBuilder().setName("coffee").build());
+            daoFactory.createBeverageStateDao().save(new BeverageState.BeverageStateBuilder().setName("grains").build());
+            daoFactory.createBeverageQualityDao().save(new BeverageQuality.BeverageQualityBuilder().setName("VIP").build());
+
             connection.commit();
         } catch (SQLException e) {
 //            throw new DaoException(e.getMessage());

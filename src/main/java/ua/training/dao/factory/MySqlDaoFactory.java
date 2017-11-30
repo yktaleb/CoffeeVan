@@ -1,7 +1,7 @@
 package ua.training.dao.factory;
 
 import ua.training.dao.*;
-import ua.training.dao.impl.UserDaoImpl;
+import ua.training.dao.impl.*;
 
 import java.sql.Connection;
 
@@ -14,42 +14,42 @@ public class MySqlDaoFactory extends DaoFactory {
 
     @Override
     public BeverageDao createBeverageDao() {
-        return null;
+        return BeverageDaoImpl.getInstance(connection);
     }
 
     @Override
     public BeverageOrderDao createBeverageOrderDao() {
-        return null;
+        return BeverageOrderDaoImpl.getInstance(connection);
     }
 
     @Override
     public BeverageQualityDao createBeverageQualityDao() {
-        return null;
+        return BeverageQualityDaoImpl.getInstance(connection);
     }
 
     @Override
     public BeverageStateDao createBeverageStateDao() {
-        return null;
+        return BeverageStateDaoImpl.getInstance(connection);
     }
 
     @Override
     public BeverageTypeDao createBeverageTypeDao() {
-        return null;
+        return BeverageTypeDaoImpl.getInstance(connection);
     }
 
     @Override
     public OrderDao createOrderDao() {
-        return null;
+        return OrderDaoImpl.getInstance(connection);
     }
 
     @Override
     public OrderStatusDao createOrderStatusDao() {
-        return null;
+        return OrderStatusDaoImpl.getInstance(connection);
     }
 
     @Override
     public RoleDao createRoleDao() {
-        return null;
+        return RoleDaoImpl.getInstance(connection);
     }
 
     @Override
@@ -59,12 +59,12 @@ public class MySqlDaoFactory extends DaoFactory {
 
     @Override
     public VanDao createVanDao() {
-        return null;
+        return VanDaoImpl.getInstance(connection);
     }
 
     @Override
     public VanStatusDao createVanStatusDao() {
-        return null;
+        return VanStatusDaoImpl.getInstance(connection);
     }
 
     private static class MySqlDaoFactoryHolder {
