@@ -2,7 +2,7 @@ package ua.training.entity;
 
 import java.util.Set;
 
-public class OrderStatus {
+public class OrderStatus implements Entity<Long> {
     private Long id;
     private String name;
     private Set<Order> orders;

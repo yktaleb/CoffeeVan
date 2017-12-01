@@ -2,7 +2,7 @@ package ua.training.entity;
 
 import java.util.Set;
 
-public class BeverageState {
+public class BeverageState implements Entity<Long> {
     private Long id;
     private String name;
     private Set<Beverage> beverages;

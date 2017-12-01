@@ -2,7 +2,7 @@ package ua.training.entity;
 
 import java.util.Set;
 
-public class Van {
+public class Van implements Entity<Long> {
     private Long id;
     private String name;
     private Double carryingCapacity;

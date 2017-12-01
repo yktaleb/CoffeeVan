@@ -10,13 +10,17 @@ import ua.training.exception.LoginAlreadyExistsException;
 import ua.training.exception.UniqueException;
 import ua.training.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
+
+    private final static String X_AUTH_TOKEN = "X-Auth-Token";
 
     private UserServiceImpl() {
     }
@@ -54,11 +58,27 @@ public class UserServiceImpl implements UserService {
             UserDao userDao = daoFactory.createUserDao();
             savedUser = userDao.save(user);
             connection.commit();
-        } catch (SQLException e) {
-
-        } catch (UniqueException e) {
+        }  catch (SQLIntegrityConstraintViolationException e) {
             throw new LoginAlreadyExistsException(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return savedUser;
+    }
+
+    @Override
+    public Optional<User> getCurrentUser(HttpServletRequest request) {
+        Long id = (Long) request.getSession().getAttribute(X_AUTH_TOKEN);
+        Optional<User> user = Optional.empty();
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            UserDao userDao = daoFactory.createUserDao();
+            user = userDao.findOne(id);
+        } catch (SQLException e) {
+
+        }
+        return user;
     }
 }

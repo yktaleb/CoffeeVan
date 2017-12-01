@@ -2,7 +2,7 @@ package ua.training.entity;
 
 import java.util.Set;
 
-public class Role {
+public class Role implements Entity<Long> {
     private Long id;
     private String name;
     private Set<User> users;

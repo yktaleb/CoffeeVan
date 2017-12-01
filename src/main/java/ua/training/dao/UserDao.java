@@ -1,6 +1,7 @@
 package ua.training.dao;
 
 import ua.training.entity.User;
+import ua.training.exception.UniqueException;
 
 import java.util.Optional;
 

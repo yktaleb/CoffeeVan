@@ -1,6 +1,6 @@
 package ua.training.entity;
 
-public class BeverageOrder {
+public class BeverageOrder implements Entity<Long> {
     private Long id;
     private Integer amount;
     private Beverage beverage;

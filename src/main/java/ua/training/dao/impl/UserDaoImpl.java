@@ -4,11 +4,9 @@ import ua.training.dao.AbstractDao;
 import ua.training.dao.UserDao;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.User;
+import ua.training.exception.UniqueException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Optional;
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
@@ -93,5 +91,4 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                         .build()
         );
     }
-
 }

@@ -2,7 +2,7 @@ package ua.training.entity;
 
 import java.util.Set;
 
-public class User {
+public class User implements Entity<Long> {
     private Long id;
     private String email;
     private String password;

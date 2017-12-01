@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CrudDao<T, ID> {
 
-    T save(T entity) throws UniqueException;
+    T save(T entity);
 
     T update(T entity);
 
