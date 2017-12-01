@@ -15,6 +15,8 @@ public class CommandCreator {
     public static final String LOGIN_COMMAND = "login";
     public static final String REGISTRATION_COMMAND = "registration";
     public static final String COMMAND = "command";
+    public static final String ADD_TO_BASKET_COMMAND = "addToBasket";
+    public static final String SHOW_BASKET_COMMAND = "showBasket";
 
     private Map<String, Command> commandMap = new HashMap<>();
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -25,6 +27,8 @@ public class CommandCreator {
         commandMap.put(LOGIN_PAGE_COMMAND, new LoginPageCommand());
         commandMap.put(REGISTRATION_COMMAND, new RegistrationCommand(serviceFactory.createUserService()));
         commandMap.put(REGISTRATION_PAGE_COMMAND, new RegistrationPageCommand());
+        commandMap.put(ADD_TO_BASKET_COMMAND, new AddToBasketCommand());
+        commandMap.put(SHOW_BASKET_COMMAND, new ShowBasketCommand(serviceFactory.createBeverageService()));
     }
 
     private static class CommandFactoryHolder {
@@ -44,7 +48,7 @@ public class CommandCreator {
                 && !REGISTRATION_PAGE_COMMAND.equals(commandName)
                 && !REGISTRATION_COMMAND.equals(commandName)) {
             command = commandMap.get(LOGIN_PAGE_COMMAND);
-        } else if (command == null) {
+        } else if (authToken != null && commandName == null) {
             command = commandMap.get(INDEX_COMMAND);
         }
         return command.execute(request, response);

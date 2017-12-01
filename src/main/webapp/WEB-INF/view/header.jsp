@@ -4,5 +4,6 @@
 <head>
 </head>
 <body>
+    <li><a href="/?command=showBasket">Basket</a></li>
 
 </body>

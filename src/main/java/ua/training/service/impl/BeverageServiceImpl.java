@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class BeverageServiceImpl implements BeverageService {
     private BeverageServiceImpl() {
@@ -36,5 +37,20 @@ public class BeverageServiceImpl implements BeverageService {
 
         }
         return beverages;
+    }
+
+    @Override
+    public Optional<Beverage> findById(Long id) {
+        Optional<Beverage> beverage = Optional.empty();
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            BeverageDao beverageDao = daoFactory.createBeverageDao();
+            beverage = beverageDao.findOne(id);
+        } catch (SQLException e) {
+
+        }
+        return beverage;
     }
 }
