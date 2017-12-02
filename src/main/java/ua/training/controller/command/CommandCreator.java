@@ -1,6 +1,5 @@
 package ua.training.controller.command;
 
-import org.apache.log4j.Logger;
 import ua.training.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +17,7 @@ public class CommandCreator {
     public static final String ADD_TO_BASKET_COMMAND = "addToBasket";
     public static final String SHOW_BASKET_COMMAND = "showBasket";
     public static final String CREATE_ORDER_COMMAND = "createOrder";
+    public static final String GET_FREE_VANS_COMMAND = "getFreeVans";
 
     private Map<String, Command> commandMap = new HashMap<>();
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -30,7 +30,8 @@ public class CommandCreator {
         commandMap.put(REGISTRATION_PAGE_COMMAND, new RegistrationPageCommand());
         commandMap.put(ADD_TO_BASKET_COMMAND, new AddToBasketCommand());
         commandMap.put(SHOW_BASKET_COMMAND, new ShowBasketCommand(serviceFactory.createBeverageService()));
-        commandMap.put(CREATE_ORDER_COMMAND, new CreateOrderCommand());
+        commandMap.put(CREATE_ORDER_COMMAND, new CreateOrderCommand(serviceFactory.createOrderService()));
+        commandMap.put(GET_FREE_VANS_COMMAND, new GetFreeVans());
     }
 
     private static class CommandFactoryHolder {

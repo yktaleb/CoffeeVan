@@ -28,11 +28,13 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .table(tableName)
                 .insertValues(getParameterNames())
                 .built();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             setEntityParameters(entity, statement);
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
-            entity.setId(generatedKeys.getLong(1));
+            if (generatedKeys.next()) {
+                entity.setId((long) generatedKeys.getInt(1));
+            }
             return entity;
         }catch (SQLException e) {
             e.printStackTrace();

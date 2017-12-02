@@ -8,14 +8,11 @@ import ua.training.entity.OrderStatus;
 import ua.training.entity.User;
 import ua.training.entity.Van;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Optional;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
-    private static final String TABLE_NAME = "order_status";
+    private static final String TABLE_NAME = "order";
     private static final String ID = "id";
     private static final String ORDER_STATUS = "order_status";
     private static final String USER = "user";
@@ -38,15 +35,19 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     protected String[] getParameterNames() {
-        return new String[]{ORDER_STATUS, USER, VAN, ADDRESS};
+        return new String[]{ORDER_STATUS, USER, ADDRESS};
     }
 
     @Override
     protected void setEntityParameters(Order order, PreparedStatement statement) throws SQLException {
         statement.setLong(1, order.getStatus().getId());
         statement.setLong(2, order.getUser().getId());
-        statement.setLong(3, order.getVan().getId());
-        statement.setString(4, order.getAddress());
+//        if (order.getVan() != null) {
+//            statement.setLong(3, order.getVan().getId());
+//        } else {
+//            statement.setNull(3, Types.INTEGER);
+//        }
+        statement.setString(3, order.getAddress());
     }
 
     @Override

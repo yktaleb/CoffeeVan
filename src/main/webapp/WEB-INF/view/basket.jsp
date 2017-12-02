@@ -15,5 +15,26 @@
     </tr>
 </c:forEach>
 Total price: ${totalPrice}
+<form>
+
+    <form class="section" action = "/" method="POST">
+        <div><input name="command" value="createOrder" type="hidden"/></div>
+        <div class="input-container">
+            <div class="input-block input-from">
+                <input type="text" id="address" name="address" required />
+            </div>
+            </br>
+        </div>
+        <div class="input-search">
+            <div class="input-block">
+                <label for="">
+                    <button class="button" type="submit">
+                        Create Order
+                    </button>
+                </label>
+            </div>
+        </div>
+    </form>
+</form>
 </body>
 </html>
