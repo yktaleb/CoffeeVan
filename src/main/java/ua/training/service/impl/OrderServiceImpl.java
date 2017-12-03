@@ -13,8 +13,10 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class OrderServiceImpl implements OrderService {
     private static final String X_AUTH_TOKEN = "X-Auth-Token";
@@ -104,5 +106,19 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
         }
         return savedOrder;
+    }
+
+    @Override
+    public List<Order> getAll() {
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try(Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            OrderDao orderDao = daoFactory.createOrderDao();
+            return orderDao.findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

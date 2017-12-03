@@ -73,7 +73,7 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
     }
 
     @Override
-    public Set<Van> findAllByStatus(String status) {
+    public Set<Van> findAllByStatus(Long statusId) {
         Set<Van> result = new HashSet<>();
         String query = new QueryBuilder()
                 .select()
@@ -83,7 +83,7 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
                 .condition(TABLE_NAME, VAN_STATUS)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, status);
+            statement.setLong(1, statusId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     if (getEntityFromResultSet(resultSet).isPresent()) {

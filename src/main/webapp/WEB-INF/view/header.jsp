@@ -5,5 +5,6 @@
 </head>
 <body>
     <li><a href="/?command=showBasket">Basket</a></li>
+    <li><a href="/?command=admin">Admin page</a></li>
 
 </body>

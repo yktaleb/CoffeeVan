@@ -60,7 +60,10 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
         OrderStatus orderStatus = MySqlDaoFactory.getInstance(connection).createOrderStatusDao().findOne(orderStatusId).get();
         User user = MySqlDaoFactory.getInstance(connection).createUserDao().findOne(userId).get();
-        Van van = MySqlDaoFactory.getInstance(connection).createVanDao().findOne(vanId).get();
+        Van van = null;
+        if (vanId != 0) {
+            van = MySqlDaoFactory.getInstance(connection).createVanDao().findOne(vanId).get();
+        }
         return Optional.of(
                 new Order.OrderBuilder()
                         .setId(id)
