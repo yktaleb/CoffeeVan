@@ -3,6 +3,7 @@ package ua.training.service;
 import ua.training.service.impl.BeverageServiceImpl;
 import ua.training.service.impl.OrderServiceImpl;
 import ua.training.service.impl.UserServiceImpl;
+import ua.training.service.impl.VanServiceImpl;
 
 public class ServiceFactory {
     private ServiceFactory() {
@@ -26,5 +27,9 @@ public class ServiceFactory {
 
     public UserService createUserService() {
         return UserServiceImpl.getInstance();
+    }
+
+    public VanService createVanService() {
+        return VanServiceImpl.getInstance();
     }
 }

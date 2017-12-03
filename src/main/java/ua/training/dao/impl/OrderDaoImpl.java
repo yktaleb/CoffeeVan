@@ -42,11 +42,11 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     protected void setEntityParameters(Order order, PreparedStatement statement) throws SQLException {
         statement.setLong(1, order.getStatus().getId());
         statement.setLong(2, order.getUser().getId());
-//        if (order.getVan() != null) {
-//            statement.setLong(3, order.getVan().getId());
-//        } else {
-//            statement.setNull(3, Types.INTEGER);
-//        }
+        if (order.getVan() != null) {
+            statement.setLong(3, order.getVan().getId());
+        } else {
+            statement.setNull(3, Types.INTEGER);
+        }
         statement.setString(3, order.getAddress());
     }
 

@@ -28,9 +28,9 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         String query = new QueryBuilder()
                 .select()
                 .from()
-                .table(tableName)
+                .table(TABLE_NAME)
                 .where()
-                .condition(tableName, "email")
+                .condition(TABLE_NAME, "email")
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);

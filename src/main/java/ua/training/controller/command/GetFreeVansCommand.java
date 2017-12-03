@@ -15,10 +15,7 @@ public class GetFreeVansCommand implements Command {
     private static final String BASKET_PAGE = "WEB-INF/view/basket.jsp";
     private static final String BASKET = "basket";
 
-    private final BeverageService beverageService;
-
-    public GetFreeVansCommand(BeverageService beverageService) {
-        this.beverageService = beverageService;
+    public GetFreeVansCommand() {
     }
 
     @Override

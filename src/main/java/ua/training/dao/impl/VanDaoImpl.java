@@ -3,6 +3,7 @@ package ua.training.dao.impl;
 import ua.training.dao.AbstractDao;
 import ua.training.dao.VanDao;
 import ua.training.dao.factory.MySqlDaoFactory;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.User;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
@@ -11,7 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.*;
 
 public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
     private static final String TABLE_NAME = "van";
@@ -69,5 +70,30 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
                     .setVanStatus(vanStatus)
                     .build()
         );
+    }
+
+    @Override
+    public Set<Van> findAllByStatus(String status) {
+        Set<Van> result = new HashSet<>();
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(TABLE_NAME)
+                .where()
+                .condition(TABLE_NAME, VAN_STATUS)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, status);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    if (getEntityFromResultSet(resultSet).isPresent()) {
+                        result.add(getEntityFromResultSet(resultSet).get());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
     }
 }
