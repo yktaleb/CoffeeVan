@@ -93,11 +93,11 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder condition(String tableName, String field) {
+    public QueryBuilder condition(String tableName, String column) {
         query
                 .append(tableName)
                 .append(".")
-                .append(field)
+                .append(column)
                 .append("=")
                 .append("?");
         return this;
@@ -123,6 +123,14 @@ public class QueryBuilder {
         query
                 .append("DELETE")
                 .append(" ");
+        return this;
+    }
+
+    public QueryBuilder orderBy(String column) {
+        query
+                .append("ORDER BY")
+                .append(" ")
+                .append(column);
         return this;
     }
 

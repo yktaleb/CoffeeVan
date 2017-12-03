@@ -4,6 +4,7 @@ import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageDao;
 import ua.training.dao.BeverageQualityDao;
 import ua.training.dao.factory.MySqlDaoFactory;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Beverage;
 import ua.training.entity.BeverageQuality;
 import ua.training.entity.BeverageState;
@@ -13,6 +14,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDao {
@@ -28,6 +31,28 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
 
     private BeverageDaoImpl(Connection connection) {
         super(TABLE_NAME, connection);
+    }
+
+    @Override
+    public List<Beverage> getSortedByPrice() {
+        List<Beverage> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(tableName)
+                .orderBy(PRICE)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                if (getEntityFromResultSet(resultSet).isPresent()) {
+                    result.add(getEntityFromResultSet(resultSet).get());
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
     }
 
     private static final class BeverageDaoImplHolder {

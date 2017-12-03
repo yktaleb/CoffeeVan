@@ -107,4 +107,16 @@ public class Van implements Entity<Long> {
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public String toString() {
+        return "Van{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", carryingCapacity=" + carryingCapacity +
+                ", maxVolume=" + maxVolume +
+                ", vanStatus=" + vanStatus +
+                ", orders=" + orders +
+                '}';
+    }
 }

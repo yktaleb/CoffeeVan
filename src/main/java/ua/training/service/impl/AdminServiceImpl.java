@@ -6,10 +6,8 @@ import ua.training.dao.VanDao;
 import ua.training.dao.VanStatusDao;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
-import ua.training.entity.Order;
-import ua.training.entity.OrderStatus;
-import ua.training.entity.Van;
-import ua.training.entity.VanStatus;
+import ua.training.entity.*;
+import ua.training.exception.VanCapacityException;
 import ua.training.service.AdminService;
 import ua.training.service.OrderService;
 
@@ -26,10 +24,12 @@ public class AdminServiceImpl implements AdminService {
     private static final String BUSY_STATUS = "BUSY";
     private static final String IN_PROCESSING_STATUS = "IN_PROCESSING";
     private static final String ON_THE_ROAD_STATUS = "ON_THE_ROAD";
+    private static final String NOT_ENOUGH_CARRYING_CAPACITY = "Isn`t enough carryingCapacity";
+    private static final String NOT_ENOUGH_VOLUME = "Isn`t enough volume";
 
     private final OrderService orderService;
 
-    private AdminServiceImpl(OrderService orderService){
+    private AdminServiceImpl(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -70,9 +70,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void setOrderVan(Long orderId, Long vanId) {
+    public void setOrderVan(Long orderId, Long vanId) throws VanCapacityException {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             OrderDao orderDao = daoFactory.createOrderDao();
@@ -83,6 +83,19 @@ public class AdminServiceImpl implements AdminService {
             VanStatus busyStatus = vanStatusDao.findByName(BUSY_STATUS).get();
             Order order = orderDao.findOne(orderId).get();
             Van van = vanDao.findOne(vanId).get();
+            double totalVolume = 0;
+            double totalWeight = 0;
+            double totalPrice = 0;
+            for (BeverageOrder beverageOrder : order.getBeverageOrders()) {
+                Integer amount = beverageOrder.getAmount();
+                totalVolume += amount * beverageOrder.getBeverage().getVolume();
+                totalWeight += amount * beverageOrder.getBeverage().getWeight();
+            }
+            if (van.getMaxVolume() <= totalVolume) {
+                throw new VanCapacityException(van, NOT_ENOUGH_VOLUME);
+            } else if (van.getCarryingCapacity() <= totalWeight ) {
+                throw new VanCapacityException(van, NOT_ENOUGH_CARRYING_CAPACITY);
+            }
             order.setVan(van);
             order.setStatus(onTheRoadStatus);
             orderDao.update(order);

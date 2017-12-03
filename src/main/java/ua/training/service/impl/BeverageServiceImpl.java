@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class BeverageServiceImpl implements BeverageService {
+
+    public static final String PREMIUM_QUALITY = "PREMIUM";
+    public static final String MIDDLE_QUALITY = "MIDDLE";
+    public static final String ECONOMY_QUALITY = "ECONOMY";
+
     private BeverageServiceImpl() {
     }
 
@@ -52,5 +57,20 @@ public class BeverageServiceImpl implements BeverageService {
 
         }
         return beverage;
+    }
+
+    @Override
+    public List<Beverage> getSortedByPrice() {
+        List<Beverage> beverages = null;
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            BeverageDao beverageDao = daoFactory.createBeverageDao();
+            beverages = beverageDao.getSortedByPrice();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beverages;
     }
 }

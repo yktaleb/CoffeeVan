@@ -16,6 +16,7 @@ public class AdminCommand implements Command {
     private static final String FREE_VANS = "freeVans";
     private static final String BUSY_VANS = "busyVans";
     private static final String ALL_ORDERS = "allOrders";
+    private static final String EXCEPTION = "exception";
 
     private final AdminService adminService;
 
@@ -25,6 +26,7 @@ public class AdminCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().removeAttribute(EXCEPTION);
         request.getSession().setAttribute(FREE_VANS, adminService.getFreeVans());
         request.getSession().setAttribute(BUSY_VANS, adminService.getBusyVans());
         List<FrontOrder> frontOrders = new ArrayList<>();

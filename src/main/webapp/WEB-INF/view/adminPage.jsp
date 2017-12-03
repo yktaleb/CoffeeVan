@@ -9,6 +9,8 @@
 <div><input name="freeVans" value="${freeVans}" type="hidden"/></div>
 <div><input name="freeVans" value="${busyVans}" type="hidden"/></div>
 <div><input name="allOrders" value="${allOrders}" type="hidden"/></div>
+<div><input name="exception" value="${exception}" type="hidden"/></div>
+<h1 style="color: red">${exception}</h1>
 Free vans:
 <c:forEach items="${freeVans}" var="van">
     <tr>
