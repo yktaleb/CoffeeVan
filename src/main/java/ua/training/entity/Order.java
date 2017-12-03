@@ -1,5 +1,6 @@
 package ua.training.entity;
 
+import java.util.List;
 import java.util.Set;
 
 public class Order implements Entity<Long> {
@@ -8,7 +9,19 @@ public class Order implements Entity<Long> {
     private User user;
     private Van van;
     private OrderStatus status;
-    private Set<BeverageOrder> beverageOrders;
+    private List<BeverageOrder> beverageOrders;
+
+    public Order() {
+    }
+
+    public Order(Order order) {
+        this.id = order.getId();
+        this.address = order.getAddress();
+        this.user = order.getUser();
+        this.van = order.getVan();
+        this.status = order.getStatus();
+        this.beverageOrders = order.getBeverageOrders();
+    }
 
     public Long getId() {
         return id;
@@ -50,11 +63,11 @@ public class Order implements Entity<Long> {
         this.status = status;
     }
 
-    public Set<BeverageOrder> getBeverageOrders() {
+    public List<BeverageOrder> getBeverageOrders() {
         return beverageOrders;
     }
 
-    public void setBeverageOrders(Set<BeverageOrder> beverageOrders) {
+    public void setBeverageOrders(List<BeverageOrder> beverageOrders) {
         this.beverageOrders = beverageOrders;
     }
 
@@ -64,7 +77,7 @@ public class Order implements Entity<Long> {
         private User user;
         private Van van;
         private OrderStatus status;
-        private Set<BeverageOrder> beverageOrders;
+        private List<BeverageOrder> beverageOrders;
 
         public OrderBuilder setId(Long id) {
             this.id = id;
@@ -91,7 +104,7 @@ public class Order implements Entity<Long> {
             return this;
         }
 
-        public OrderBuilder setBeverageOrders(Set<BeverageOrder> beverageOrders) {
+        public OrderBuilder setBeverageOrders(List<BeverageOrder> beverageOrders) {
             this.beverageOrders = beverageOrders;
             return this;
         }

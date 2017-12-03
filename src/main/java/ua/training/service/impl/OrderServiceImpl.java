@@ -4,9 +4,9 @@ import ua.training.dao.*;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.*;
+import ua.training.entity.proxy.OrderProxy;
 import ua.training.exception.LoginAlreadyExistsException;
 import ua.training.service.OrderService;
-import ua.training.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -16,7 +16,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 public class OrderServiceImpl implements OrderService {
     private static final String X_AUTH_TOKEN = "X-Auth-Token";

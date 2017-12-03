@@ -4,16 +4,14 @@ import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageOrderDao;
 import ua.training.dao.BeverageQualityDao;
 import ua.training.dao.factory.MySqlDaoFactory;
-import ua.training.entity.Beverage;
-import ua.training.entity.BeverageOrder;
-import ua.training.entity.BeverageQuality;
-import ua.training.entity.Order;
+import ua.training.dao.util.QueryBuilder;
+import ua.training.entity.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.*;
 
 public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements BeverageOrderDao {
     private static final String TABLE_NAME = "beverage_order";
@@ -37,6 +35,29 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
     }
 
     @Override
+    public List<BeverageOrder> findByOrder(Long orderId) {
+        List<BeverageOrder> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(TABLE_NAME)
+                .where()
+                .condition(TABLE_NAME, ORDER)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, orderId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(getEntityFromResultSet(resultSet).get());
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
+    }
+
+    @Override
     protected String[] getParameterNames() {
         return new String[]{ORDER, BEVERAGE, AMOUNT};
     }
@@ -50,6 +71,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
 
     @Override
     protected Optional<BeverageOrder> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+
         long id = resultSet.getLong(ID);
         long orderId = resultSet.getLong(ORDER);
         long beverageId = resultSet.getLong(BEVERAGE);

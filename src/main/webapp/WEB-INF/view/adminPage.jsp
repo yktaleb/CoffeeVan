@@ -17,7 +17,7 @@
 
 <c:forEach items="${allOrders}" var="order">
     <tr>
-        <td>Address:${order.address}; User: : ${order.user.id}</td>
+        <td>Address:${order.address}; User: : ${order.getBeverageOrders().amount}</td>
         </br>
     </tr>
 </c:forEach>

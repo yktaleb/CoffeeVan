@@ -1,11 +1,10 @@
 package ua.training.service;
 
 import ua.training.entity.Order;
+import ua.training.entity.proxy.OrderProxy;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public interface OrderService {
     void createOrder(HttpServletRequest request);

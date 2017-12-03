@@ -1,10 +1,13 @@
 package ua.training.controller.command;
 
+import ua.training.entity.BeverageOrder;
+import ua.training.entity.Order;
 import ua.training.service.AdminService;
 import ua.training.service.OrderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class AdminCommand implements Command {
     private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
@@ -21,7 +24,12 @@ public class AdminCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().setAttribute(FREE_VANS, vanService.getFreeVans());
-        request.getSession().setAttribute(ALL_ORDERS_VANS, vanService.getAllOrders());
+
+        for (Order order : vanService.getAllOrders()) {
+            List<BeverageOrder> beverageOrders = order.getBeverageOrders();
+//            beverageOrders.
+        }
+//        request.getSession().setAttribute(ALL_ORDERS_VANS, vanService.getAllOrders());
         return ADMIN_PAGE;
     }
 

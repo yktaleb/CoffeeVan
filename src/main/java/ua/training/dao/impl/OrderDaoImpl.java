@@ -1,14 +1,18 @@
 package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
+import ua.training.dao.BeverageOrderDao;
 import ua.training.dao.OrderDao;
+import ua.training.dao.factory.DaoFactory;
+import ua.training.dao.factory.DataSourceFactory;
 import ua.training.dao.factory.MySqlDaoFactory;
-import ua.training.entity.Order;
-import ua.training.entity.OrderStatus;
-import ua.training.entity.User;
-import ua.training.entity.Van;
+import ua.training.entity.*;
+import ua.training.entity.proxy.OrderProxy;
+import ua.training.entity.proxy.ProxyFactory;
 
+import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
@@ -31,6 +35,20 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     public static OrderDaoImpl getInstance(Connection connection) {
         return OrderDaoImplHolder.instance(connection);
+    }
+
+    @Override
+    public List<BeverageOrder> getBeverageOrdersByOrderId(Long id) {
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            BeverageOrderDao beverageOrderDao = daoFactory.createBeverageOrderDao();
+            return beverageOrderDao.findByOrder(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -64,14 +82,14 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         if (vanId != 0) {
             van = MySqlDaoFactory.getInstance(connection).createVanDao().findOne(vanId).get();
         }
+        OrderProxy orderProxy = ProxyFactory.getInstance().createOrderProxy();
+        orderProxy.setId(id);
+        orderProxy.setStatus(orderStatus);
+        orderProxy.setUser(user);
+        orderProxy.setVan(van);
+        orderProxy.setAddress(address);
         return Optional.of(
-                new Order.OrderBuilder()
-                        .setId(id)
-                        .setStatus(orderStatus)
-                        .setUser(user)
-                        .setVan(van)
-                        .setAddress(address)
-                        .build()
+                orderProxy
         );
     }
 }
