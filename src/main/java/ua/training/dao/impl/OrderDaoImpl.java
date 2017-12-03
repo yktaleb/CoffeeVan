@@ -53,7 +53,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     protected String[] getParameterNames() {
-        return new String[]{ORDER_STATUS, USER, ADDRESS};
+        return new String[]{ORDER_STATUS, USER, VAN, ADDRESS};
     }
 
     @Override
@@ -65,7 +65,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         } else {
             statement.setNull(3, Types.INTEGER);
         }
-        statement.setString(3, order.getAddress());
+        statement.setString(4, order.getAddress());
     }
 
     @Override

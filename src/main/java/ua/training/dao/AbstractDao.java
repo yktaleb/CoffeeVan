@@ -54,10 +54,11 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             setEntityParameters(entity, statement);
+            statement.setLong(getParameterNames().length + 1, entity.getId());
             statement.executeUpdate();
             return entity;
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return null;
     }

@@ -18,6 +18,7 @@ public class CommandCreator {
     public static final String SHOW_BASKET_COMMAND = "showBasket";
     public static final String CREATE_ORDER_COMMAND = "createOrder";
     public static final String ADMIN_COMMAND = "admin";
+    public static final String SET_ORDER_VAN_COMMAND = "setOrderVan";
 
     private Map<String, Command> commandMap = new HashMap<>();
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -32,6 +33,7 @@ public class CommandCreator {
         commandMap.put(SHOW_BASKET_COMMAND, new ShowBasketCommand(serviceFactory.createBeverageService()));
         commandMap.put(CREATE_ORDER_COMMAND, new CreateOrderCommand(serviceFactory.createOrderService()));
         commandMap.put(ADMIN_COMMAND, new AdminCommand(serviceFactory.createAdminService()));
+        commandMap.put(SET_ORDER_VAN_COMMAND, new SetOrderVanCommand(serviceFactory.createAdminService()));
     }
 
     private static class CommandFactoryHolder {

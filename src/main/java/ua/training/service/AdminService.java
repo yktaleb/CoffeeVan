@@ -9,4 +9,6 @@ import java.util.Set;
 public interface AdminService {
     List<Order> getAllOrders();
     Set<Van> getFreeVans();
+    Set<Van> getBusyVans();
+    void setOrderVan(Long orderId, Long vanId);
 }

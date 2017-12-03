@@ -4,7 +4,6 @@ import ua.training.dao.*;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.*;
-import ua.training.entity.proxy.OrderProxy;
 import ua.training.exception.LoginAlreadyExistsException;
 import ua.training.service.OrderService;
 
@@ -21,7 +20,8 @@ public class OrderServiceImpl implements OrderService {
     private static final String X_AUTH_TOKEN = "X-Auth-Token";
     private static final String BASKET = "basket";
     private static final String ADDRESS = "address";
-    private static final String ON_PROCESSING_STATUS = "ON_PROCESSING";
+    private static final String IN_PROCESSING_STATUS = "IN_PROCESSING";
+    private static final String ON_THE_ROAD_STATUS = "ON_THE_ROAD";
 
 //    private UserService userService;
 //
@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
             BeverageDao beverageDao = daoFactory.createBeverageDao();
             UserDao userDao = daoFactory.createUserDao();
             Optional<User> user = userDao.findOne(userId);
-            Optional<OrderStatus> status = orderStatusDao.findByName(ON_PROCESSING_STATUS);
+            Optional<OrderStatus> status = orderStatusDao.findByName(IN_PROCESSING_STATUS);
             Order savedOrder = save(
                     new Order.OrderBuilder()
                             .setUser(user.get())
