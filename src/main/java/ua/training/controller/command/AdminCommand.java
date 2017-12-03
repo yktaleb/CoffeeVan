@@ -14,6 +14,7 @@ public class AdminCommand implements Command {
     private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
     private static final String ADMIN_PAGE = "WEB-INF/view/adminPage.jsp";
     private static final String FREE_VANS = "freeVans";
+    private static final String BUSY_VANS = "busyVans";
     private static final String ALL_ORDERS = "allOrders";
 
     private final AdminService adminService;
@@ -25,6 +26,7 @@ public class AdminCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().setAttribute(FREE_VANS, adminService.getFreeVans());
+        request.getSession().setAttribute(BUSY_VANS, adminService.getBusyVans());
         List<FrontOrder> frontOrders = new ArrayList<>();
         List<Order> allOrders = adminService.getAllOrders();
         for (Order order : allOrders) {

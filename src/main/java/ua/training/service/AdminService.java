@@ -11,4 +11,5 @@ public interface AdminService {
     Set<Van> getFreeVans();
     Set<Van> getBusyVans();
     void setOrderVan(Long orderId, Long vanId);
+    void makeVanFree(Long vanId);
 }

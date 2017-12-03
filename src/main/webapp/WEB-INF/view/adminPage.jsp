@@ -7,6 +7,7 @@
 <%@include file="/WEB-INF/view/header.jsp" %>
 
 <div><input name="freeVans" value="${freeVans}" type="hidden"/></div>
+<div><input name="freeVans" value="${busyVans}" type="hidden"/></div>
 <div><input name="allOrders" value="${allOrders}" type="hidden"/></div>
 Free vans:
 <c:forEach items="${freeVans}" var="van">
@@ -17,7 +18,32 @@ Free vans:
 </c:forEach>
 __________________________________________________________
 </br>
+
+</br>
+</br>
+Busy vans:
+<c:forEach items="${busyVans}" var="van">
+    <tr>
+        <td>Id:${van.id}; Name:${van.name}(Carrying Capacity : ${van.carryingCapacity}, Max volume : ${van.maxVolume} )</td>
+        </br>
+        <form class="section" action="/" method="POST">
+            <div><input name="command" value="makeVanFree" type="hidden"/></div>
+            <div><input name="vanId" value="${van.id}" type="hidden"/></div>
+            <div class="input-search">
+                <div class="input-block">
+                    <label for="">
+                        <button class="button" type="submit">
+                            To free
+                        </button>
+                    </label>
+                </div>
+            </div>
+        </form>
+        </br>
+    </tr>
+</c:forEach>
 __________________________________________________________
+</br>
 
 <c:forEach items="${allOrders}" var="frontOrder">
     </br>

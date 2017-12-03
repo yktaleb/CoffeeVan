@@ -45,23 +45,27 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Set<Van> getFreeVans() {
+        return getVansByStatus(FREE_STATUS);
+    }
+
+    @Override
+    public Set<Van> getBusyVans() {
+        return getVansByStatus(BUSY_STATUS);
+    }
+
+    private Set<Van> getVansByStatus(String status) {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             VanDao vanDao = daoFactory.createVanDao();
             VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
-            VanStatus vanStatus = vanStatusDao.findByName(FREE_STATUS).get();
+            VanStatus vanStatus = vanStatusDao.findByName(status).get();
 //            Optional<VanStatus> freeStatus = daoFactory.createVanStatusDao().findByName(FREE_STATUS);
             return vanDao.findAllByStatus(vanStatus.getId());
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
-        return null;
-    }
-
-    @Override
-    public Set<Van> getBusyVans() {
         return null;
     }
 
@@ -83,6 +87,24 @@ public class AdminServiceImpl implements AdminService {
             order.setStatus(onTheRoadStatus);
             orderDao.update(order);
             van.setVanStatus(busyStatus);
+            vanDao.update(van);
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void makeVanFree(Long vanId) {
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            VanDao vanDao = daoFactory.createVanDao();
+            VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
+            VanStatus vanStatus = vanStatusDao.findByName(FREE_STATUS).get();
+            Van van = vanDao.findOne(vanId).get();
+            van.setVanStatus(vanStatus);
             vanDao.update(van);
             connection.commit();
         } catch (SQLException e) {
