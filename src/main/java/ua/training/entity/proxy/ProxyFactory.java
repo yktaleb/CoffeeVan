@@ -14,6 +14,6 @@ public class ProxyFactory {
     }
 
     public OrderProxy createOrderProxy() {
-        return OrderProxy.getInstance();
+        return new OrderProxy();
     }
 }

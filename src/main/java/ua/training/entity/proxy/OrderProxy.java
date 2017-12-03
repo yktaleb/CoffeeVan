@@ -14,28 +14,6 @@ import java.util.List;
 
 public class OrderProxy extends Order {
 
-    private OrderProxy() {
-    }
-
-    private OrderProxy(Order order) {
-        super(order);
-    }
-
-    private static final class OrderProxyHolder {
-        private static final OrderProxy INSTANCE = new OrderProxy();
-        private static final OrderProxy instance(Order order) {
-            return new OrderProxy(order);
-        }
-    }
-
-    public static OrderProxy getInstance() {
-        return OrderProxyHolder.INSTANCE;
-    }
-
-    public static OrderProxy getInstance(Order order) {
-        return OrderProxyHolder.instance(order);
-    }
-
     @Override
     public List<BeverageOrder> getBeverageOrders() {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
@@ -49,7 +27,5 @@ public class OrderProxy extends Order {
         }
         return null;
     }
-
-
 
 }
