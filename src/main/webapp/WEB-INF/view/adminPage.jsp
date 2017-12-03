@@ -15,9 +15,19 @@
     </tr>
 </c:forEach>
 
-<c:forEach items="${allOrders}" var="order">
+<c:forEach items="${allOrders}" var="frontOrder">
     <tr>
-        <td>Address:${order.address}; User: : ${order.getBeverageOrders().amount}</td>
+        <td>Address:${frontOrder.order.address};
+            User:${frontOrder.order.user.lastName} ${frontOrder.order.user.firstName}</td>
+            <c:forEach items="${frontOrder.beverageOrders}" var="beverageOrder">
+                <tr>
+                    <td>Beverage name: ${beverageOrder.beverage.name}; Amount: ${beverageOrder.amount}; <%--Price:${beverageOrder.beverage.price}; Weight:${beverageOrder.beverage.weight}; Volume:${beverageOrder.beverage.volume}--%></td>
+                    </br>
+                 </tr>
+            </c:forEach>
+            Total price : ${frontOrder.totalPrice}
+            Total weight : ${frontOrder.totalWeight}
+            Total volume : ${frontOrder.totalVolume}
         </br>
     </tr>
 </c:forEach>
