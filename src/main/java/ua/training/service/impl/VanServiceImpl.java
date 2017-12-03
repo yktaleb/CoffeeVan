@@ -1,6 +1,5 @@
 package ua.training.service.impl;
 
-import ua.training.dao.UserDao;
 import ua.training.dao.VanDao;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
@@ -13,6 +12,8 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public class VanServiceImpl implements VanService {
+
+    private static final String FREE_STATUS = "FREE";
 
     private VanServiceImpl(){}
 
@@ -31,10 +32,11 @@ public class VanServiceImpl implements VanService {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             VanDao vanDao = daoFactory.createVanDao();
-            user = vanDao.fina(id);
+//            Optional<VanStatus> freeStatus = daoFactory.createVanStatusDao().findByName(FREE_STATUS);
+            return vanDao.findAllByStatus(FREE_STATUS);
         } catch (SQLException e) {
 
         }
-        return user;
+        return null;
     }
 }
