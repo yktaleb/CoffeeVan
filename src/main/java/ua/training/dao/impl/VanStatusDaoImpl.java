@@ -1,16 +1,14 @@
 package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
-import ua.training.dao.VanDao;
 import ua.training.dao.VanStatusDao;
-import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
+import ua.training.entity.proxy.VanStatusProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatusDao {
     private static final String TABLE_NAME = "van_status";
@@ -50,9 +48,9 @@ public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatu
     protected VanStatus getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return new VanStatus.VanStatusBuilder()
+        return new VanStatusProxy.VanStatusBuilder()
                         .setId(id)
                         .setName(name)
-                        .build();
+                        .buildVanStatusProxy();
     }
 }

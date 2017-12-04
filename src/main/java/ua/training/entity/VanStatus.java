@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.VanStatusProxy;
+
 import java.util.List;
 
 public class VanStatus implements Entity<Long> {
@@ -51,8 +53,16 @@ public class VanStatus implements Entity<Long> {
             return this;
         }
 
-        public VanStatus build() {
+        public VanStatus buildVanStatus() {
             VanStatus vanStatus = new VanStatus();
+            vanStatus.setId(id);
+            vanStatus.setName(name);
+            vanStatus.setVans(vans);
+            return vanStatus;
+        }
+
+        public VanStatus buildVanStatusProxy() {
+            VanStatusProxy vanStatus = new VanStatusProxy();
             vanStatus.setId(id);
             vanStatus.setName(name);
             vanStatus.setVans(vans);

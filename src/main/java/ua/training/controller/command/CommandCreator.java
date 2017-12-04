@@ -66,10 +66,9 @@ public class CommandCreator {
         try {
             connection = dataSource.getConnection();
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            VanDao vanDao = daoFactory.createVanDao();
-            Van one = vanDao.findOne(2L);
-            List<Order> orders = one.getOrders();
-            VanStatus vanStatus = one.getVanStatus();
+            VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
+            VanStatus one = vanStatusDao.findOne(1L);
+            List<Van> vans = one.getVans();
             String name = one.getName();
         } catch (SQLException e) {
             e.printStackTrace();
