@@ -17,6 +17,9 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
     private static final String PHONE_NUMBER = "phone_number";
+    private static final String USER_ROLE_TABLE = "user_role";
+    private static final String USER_COLUMN = "user";
+    private static final String ROLE_COLUMN = "role";
     private static final int NUMBER_OF_FIELDS_WITHOUT_ID = 5;
 
     private UserDaoImpl(Connection connection) {
@@ -43,6 +46,23 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void setUserRole(Long userId, Long roleId) {
+        String query = new QueryBuilder()
+                .insert()
+                .into()
+                .table(USER_ROLE_TABLE)
+                .insertValues(new String[]{USER_COLUMN, ROLE_COLUMN})
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setLong(1, userId);
+            statement.setLong(2, roleId);
+            statement.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static class UserDaoImplHolder {

@@ -1,11 +1,11 @@
 package ua.training.controller.command;
 
+import ua.training.entity.Role;
 import ua.training.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CommandCreator {
     public static final String INDEX_COMMAND = "index";
@@ -17,9 +17,14 @@ public class CommandCreator {
     public static final String ADD_TO_BASKET_COMMAND = "addToBasket";
     public static final String SHOW_BASKET_COMMAND = "showBasket";
     public static final String CREATE_ORDER_COMMAND = "createOrder";
-    public static final String ADMIN_COMMAND = "admin";
+    public static final String ADMIN_PAGE_COMMAND = "adminPage";
+    public static final String ADMIN = "admin";
     public static final String SET_ORDER_VAN_COMMAND = "setOrderVan";
     public static final String MAKE_VAN_FREE_COMMAND = "makeVanFree";
+    public static final String ADMIN_ROLE = "ADMIN_ROLE";
+    public static final String LOGOUT_COMMAND = "logout";
+    private static final String ERROR = "WEB-INF/view/error.jsp";
+    private static final String X_AUTH_TOKEN = "X-Auth-Token";
 
     private Map<String, Command> commandMap = new HashMap<>();
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -33,9 +38,10 @@ public class CommandCreator {
         commandMap.put(ADD_TO_BASKET_COMMAND, new AddToBasketCommand());
         commandMap.put(SHOW_BASKET_COMMAND, new ShowBasketCommand(serviceFactory.createBeverageService()));
         commandMap.put(CREATE_ORDER_COMMAND, new CreateOrderCommand(serviceFactory.createOrderService()));
-        commandMap.put(ADMIN_COMMAND, new AdminCommand(serviceFactory.createAdminService()));
+        commandMap.put(ADMIN_PAGE_COMMAND, new AdminCommand(serviceFactory.createAdminService()));
         commandMap.put(SET_ORDER_VAN_COMMAND, new SetOrderVanCommand(serviceFactory.createAdminService()));
         commandMap.put(MAKE_VAN_FREE_COMMAND, new MakeVanFreeCommand(serviceFactory.createAdminService()));
+        commandMap.put(LOGOUT_COMMAND, new LogoutCommand());
     }
 
     private static class CommandFactoryHolder {
@@ -47,8 +53,23 @@ public class CommandCreator {
     }
 
     public String action(HttpServletRequest request, HttpServletResponse response) throws RuntimeException {
-        Long authToken = (Long) request.getSession().getAttribute("X-Auth-Token");
+        Long authToken = (Long) request.getSession().getAttribute(X_AUTH_TOKEN);
         String commandName = request.getParameter(COMMAND);
+        if (commandName != null
+                && ADMIN.equals(commandName.split("/")[0])) {
+            Set<Role> roles = serviceFactory.createUserService().getCurrentUser(request).getRoles();
+            boolean isAdmin = false;
+            for (Role role : roles) {
+                if (ADMIN_ROLE.equals(role.getName())) {
+                    isAdmin = true;
+                    break;
+                }
+            }
+            if (!isAdmin) {
+                return ERROR;
+            }
+            commandName = commandName.split("/")[1];
+        }
         Command command = commandMap.get(commandName);
         if (authToken == null
                 && !LOGIN_COMMAND.equals(commandName)

@@ -26,6 +26,7 @@ import java.util.Optional;
 public class MainController extends HttpServlet {
 
     private static final String LOGIN = "WEB-INF/view/login.jsp";
+    private static final String ERROR = "WEB-INF/view/error.jsp";
 
     private static CommandCreator commandCreator = CommandCreator.getInstance();
 
@@ -49,7 +50,7 @@ public class MainController extends HttpServlet {
             page = commandCreator.action(request, response);
             request.getSession().setAttribute("page", page);
         } catch (RuntimeException e) {
-            page = "error";
+            page = ERROR;
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);

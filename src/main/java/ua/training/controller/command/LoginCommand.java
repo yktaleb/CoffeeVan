@@ -13,6 +13,7 @@ import java.util.Optional;
 public class LoginCommand implements Command {
     private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
     private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
+    private static final String X_AUTH_TOKEN = "X-Auth-Token";
 
     private UserService userService;
 
@@ -30,7 +31,7 @@ public class LoginCommand implements Command {
         } else if (!user.get().getPassword().equals(password)) {
             return LOGIN_PAGE;
         }
-        request.getSession().setAttribute("X-Auth-Token", user.get().getId());
+        request.getSession().setAttribute(X_AUTH_TOKEN, user.get().getId());
         return INDEX_PAGE;
     }
 }

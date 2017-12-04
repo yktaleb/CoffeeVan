@@ -73,4 +73,19 @@ public class BeverageServiceImpl implements BeverageService {
         }
         return beverages;
     }
+
+    @Override
+    public List<Beverage> getSortedByQuality() {
+        List<Beverage> beverages = null;
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            BeverageDao beverageDao = daoFactory.createBeverageDao();
+            beverages = beverageDao.getSortedByQuality();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beverages;
+    }
 }

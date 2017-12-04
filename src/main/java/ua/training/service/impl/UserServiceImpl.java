@@ -1,13 +1,12 @@
 package ua.training.service.impl;
 
-import ua.training.dao.BeverageDao;
+import ua.training.dao.RoleDao;
 import ua.training.dao.UserDao;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
-import ua.training.entity.Beverage;
+import ua.training.entity.Role;
 import ua.training.entity.User;
 import ua.training.exception.LoginAlreadyExistsException;
-import ua.training.exception.UniqueException;
 import ua.training.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +14,13 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserServiceImpl implements UserService {
 
     private final static String X_AUTH_TOKEN = "X-Auth-Token";
+    private final static String USER_ROLE = "USER_ROLE";
 
     private UserServiceImpl() {
     }
@@ -56,7 +56,10 @@ public class UserServiceImpl implements UserService {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
+            RoleDao roleDao = daoFactory.createRoleDao();
+            Role role = roleDao.findByName(USER_ROLE).get();
             savedUser = userDao.save(user);
+            userDao.setUserRole(savedUser.getId(), role.getId());
             connection.commit();
         }  catch (SQLIntegrityConstraintViolationException e) {
             throw new LoginAlreadyExistsException(e.getMessage());
@@ -67,18 +70,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getCurrentUser(HttpServletRequest request) {
+    public User getCurrentUser(HttpServletRequest request) {
         Long id = (Long) request.getSession().getAttribute(X_AUTH_TOKEN);
-        Optional<User> user = Optional.empty();
+        User user = null;
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
-            user = userDao.findOne(id);
+            RoleDao roleDao = daoFactory.createRoleDao();
+            Set<Role> roles = roleDao.findByUser(id);
+            user = userDao.findOne(id).get();
+            user.setRoles(roles);
         } catch (SQLException e) {
 
         }
         return user;
     }
+
+    @Override
+    public Optional<User> findById(Long authToken) {
+        return null;
+    }
+
 }

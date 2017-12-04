@@ -55,6 +55,28 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         return result;
     }
 
+    @Override
+    public List<Beverage> getSortedByQuality() {
+        List<Beverage> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .select()
+                .from()
+                .table(tableName)
+                .orderBy(BEVERAGE_QUALITY)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                if (getEntityFromResultSet(resultSet).isPresent()) {
+                    result.add(getEntityFromResultSet(resultSet).get());
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
+    }
+
     private static final class BeverageDaoImplHolder {
         private static BeverageDaoImpl instance(Connection connection) {
             return new BeverageDaoImpl(connection);

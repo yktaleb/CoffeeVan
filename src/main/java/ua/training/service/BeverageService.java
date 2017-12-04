@@ -9,4 +9,5 @@ public interface BeverageService {
     List<Beverage> findAllBeverage();
     Optional<Beverage> findById(Long id);
     List<Beverage> getSortedByPrice();
+    List<Beverage> getSortedByQuality();
 }

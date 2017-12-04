@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BeverageDao extends CrudDao<Beverage, Long> {
     List<Beverage> getSortedByPrice();
+
+    List<Beverage> getSortedByQuality();
 }

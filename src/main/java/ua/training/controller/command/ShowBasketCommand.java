@@ -24,6 +24,9 @@ public class ShowBasketCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Map<Long, Integer> basket = (Map<Long, Integer>) request.getSession().getAttribute(BASKET);
+        if (basket == null) {
+            return INDEX_PAGE;
+        }
         List<FieldBasketFront> basketFields = new ArrayList<>();
         double totalPrice = 0.0;
         for (Long id : basket.keySet()) {

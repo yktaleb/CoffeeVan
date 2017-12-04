@@ -10,6 +10,8 @@ import java.util.List;
 public class DefaultCommand implements Command {
     private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
     private static final String ALL_BEVERAGE = "allBeverage";
+    public static final String QUALITY = "quality";
+    public static final String PRICE = "price";
 
     private BeverageService beverageService;
 
@@ -19,7 +21,15 @@ public class DefaultCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        List<Beverage> allBeverage = beverageService.findAllBeverage();
+        String sortType = request.getParameter("sort");
+        List<Beverage> allBeverage = null;
+        if (QUALITY.equals(sortType)) {
+
+        } else if (PRICE.equals(sortType)) {
+            allBeverage = beverageService.getSortedByPrice();
+        } else {
+            allBeverage = beverageService.findAllBeverage();
+        }
         request.getSession().setAttribute(ALL_BEVERAGE, allBeverage);
         return INDEX_PAGE;
     }

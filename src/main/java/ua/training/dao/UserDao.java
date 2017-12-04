@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface UserDao extends CrudDao<User, Long> {
     Optional<User> findByEmail(String email);
+    void setUserRole(Long userId, Long roleId);
 }
