@@ -2,16 +2,13 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.OrderStatusDao;
-import ua.training.dao.VanDao;
-import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.OrderStatus;
-import ua.training.entity.Van;
+import ua.training.entity.proxy.OrderStatusProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements OrderStatusDao {
     private static final String TABLE_NAME = "order_status";
@@ -51,9 +48,9 @@ public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements Orde
     protected OrderStatus getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return new OrderStatus.OrderStatusBuilder()
+        return new OrderStatusProxy.OrderStatusBuilder()
                         .setId(id)
                         .setName(name)
-                        .build();
+                        .buildOrderStatusProxy();
     }
 }

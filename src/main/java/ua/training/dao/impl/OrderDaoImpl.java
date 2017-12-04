@@ -6,12 +6,14 @@ import ua.training.dao.OrderDao;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.dao.factory.MySqlDaoFactory;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.*;
 import ua.training.entity.proxy.OrderProxy;
 import ua.training.entity.proxy.ProxyFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +51,30 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Order> findByStatus(Long statusId) {
+        List<Order> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE_NAME)
+                .where()
+                .condition(TABLE_NAME, ORDER_STATUS)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, statusId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (getEntityFromResultSet(resultSet) != null) {
+                    result.add(getEntityFromResultSet(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.OrderStatusProxy;
+
 import java.util.List;
 import java.util.Set;
 
@@ -52,8 +54,16 @@ public class OrderStatus implements Entity<Long> {
             return this;
         }
 
-        public OrderStatus build() {
+        public OrderStatus buildOrderStatus() {
             OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setId(id);
+            orderStatus.setName(name);
+            orderStatus.setOrders(orders);
+            return orderStatus;
+        }
+
+        public OrderStatus buildOrderStatusProxy() {
+            OrderStatusProxy orderStatus = new OrderStatusProxy();
             orderStatus.setId(id);
             orderStatus.setName(name);
             orderStatus.setOrders(orders);
