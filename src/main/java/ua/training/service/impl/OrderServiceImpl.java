@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
                                 .setOrder(savedOrder)
                                 .setAmount(basket.get(beverageId))
                                 .setBeverage(beverage)
-                        .build()
+                        .buildBeverageOrder()
                 );
             }
             connection.commit();

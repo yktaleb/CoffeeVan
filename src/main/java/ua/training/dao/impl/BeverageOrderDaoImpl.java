@@ -5,6 +5,7 @@ import ua.training.dao.BeverageOrderDao;
 import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.*;
+import ua.training.entity.proxy.BeverageOrderProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -86,18 +87,11 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
 
     @Override
     protected BeverageOrder getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-
         long id = resultSet.getLong(ID);
-        long orderId = resultSet.getLong(ORDER);
-        long beverageId = resultSet.getLong(BEVERAGE);
         int amount = resultSet.getInt(AMOUNT);
-        Order order = MySqlDaoFactory.getInstance(connection).createOrderDao().findOne(orderId);
-        Beverage beverage = MySqlDaoFactory.getInstance(connection).createBeverageDao().findOne(beverageId);
-        return new BeverageOrder.BeverageOrderBuilder()
+        return new BeverageOrderProxy.BeverageOrderBuilder()
                         .setId(id)
-                        .setOrder(order)
-                        .setBeverage(beverage)
                         .setAmount(amount)
-                        .build();
+                        .buildBeverageOrderProxy();
     }
 }

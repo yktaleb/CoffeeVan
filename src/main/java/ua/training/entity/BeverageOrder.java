@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.BeverageOrderProxy;
+
 public class BeverageOrder implements Entity<Long> {
     private Long id;
     private Integer amount;
@@ -65,8 +67,17 @@ public class BeverageOrder implements Entity<Long> {
             return this;
         }
 
-        public BeverageOrder build() {
+        public BeverageOrder buildBeverageOrder() {
             BeverageOrder beverageOrder = new BeverageOrder();
+            beverageOrder.setId(id);
+            beverageOrder.setAmount(amount);
+            beverageOrder.setBeverage(beverage);
+            beverageOrder.setOrder(order);
+            return beverageOrder;
+        }
+
+        public BeverageOrder buildBeverageOrderProxy() {
+            BeverageOrderProxy beverageOrder = new BeverageOrderProxy();
             beverageOrder.setId(id);
             beverageOrder.setAmount(amount);
             beverageOrder.setBeverage(beverage);

@@ -130,7 +130,9 @@ public class QueryBuilder {
         query
                 .append("SELECT")
                 .append(" ")
+                .append("`")
                 .append(column)
+                .append("`")
                 .append(" ");
         return this;
     }
