@@ -5,28 +5,21 @@ import ua.training.dao.BeverageOrderDao;
 import ua.training.dao.OrderDao;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
-import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.*;
 import ua.training.entity.proxy.OrderProxy;
-import ua.training.entity.proxy.ProxyFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+import static ua.training.util.constant.table.OrderConstants.*;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
-    private static final String TABLE_NAME = "order";
-    private static final String ID = "id";
-    private static final String ORDER_STATUS = "order_status";
-    private static final String USER = "user";
-    private static final String VAN = "van";
-    private static final String ADDRESS = "address";
 
     private OrderDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     private static final class OrderDaoImplHolder {
@@ -59,9 +52,9 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(TABLE_NAME)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, ORDER_STATUS)
+                .condition(TABLE, ORDER_STATUS)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, statusId);
@@ -83,9 +76,9 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(TABLE_NAME)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, USER)
+                .condition(TABLE, USER)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, userId);
@@ -107,9 +100,9 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(TABLE_NAME)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, VAN)
+                .condition(TABLE, VAN)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, vanId);

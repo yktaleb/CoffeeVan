@@ -10,21 +10,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ua.training.util.constant.table.UserConstants.*;
+
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
-    private static final String TABLE_NAME = "user";
-    private static final String ID = "id";
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
-    private static final String FIRST_NAME = "first_name";
-    private static final String LAST_NAME = "last_name";
-    private static final String PHONE_NUMBER = "phone_number";
-    private static final String USER_ROLE_TABLE = "user_role";
-    private static final String USER_COLUMN = "user";
-    private static final String ROLE_COLUMN = "role";
-    private static final int NUMBER_OF_FIELDS_WITHOUT_ID = 5;
+    String USER_ROLE_TABLE = "user_role";
+    String USER_COLUMN = "user";
+    String ROLE_COLUMN = "role";
 
     private UserDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     @Override
@@ -32,9 +26,9 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(TABLE_NAME)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, "email")
+                .condition(TABLE, EMAIL)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);

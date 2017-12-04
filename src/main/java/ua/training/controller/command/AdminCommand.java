@@ -4,6 +4,7 @@ import ua.training.controller.FrontOrder;
 import ua.training.entity.BeverageOrder;
 import ua.training.entity.Order;
 import ua.training.service.AdminService;
+import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminCommand implements Command {
-    private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
-    private static final String ADMIN_PAGE = "WEB-INF/view/adminPage.jsp";
     private static final String FREE_VANS = "freeVans";
     private static final String BUSY_VANS = "busyVans";
     private static final String ALL_ORDERS = "allOrders";
@@ -52,7 +51,7 @@ public class AdminCommand implements Command {
             );
         }
         request.getSession().setAttribute(ALL_ORDERS, frontOrders);
-        return ADMIN_PAGE;
+        return Pages.ADMIN;
     }
 
 

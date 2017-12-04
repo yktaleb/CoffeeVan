@@ -3,14 +3,12 @@ package ua.training.controller.command;
 import ua.training.entity.User;
 import ua.training.exception.LoginAlreadyExistsException;
 import ua.training.service.UserService;
+import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegistrationCommand implements Command {
-    private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
-    private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
-    private static final String REGISTRATION_PAGE = "WEB-INF/view/registration.jsp";
 
     private UserService userService;
 
@@ -36,8 +34,8 @@ public class RegistrationCommand implements Command {
                             .buildUser()
             );
         } catch (LoginAlreadyExistsException e) {
-            return REGISTRATION_PAGE;
+            return Pages.REGISTRATION;
         }
-        return LOGIN_PAGE;
+        return Pages.LOGIN;
     }
 }

@@ -10,13 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements OrderStatusDao {
-    private static final String TABLE_NAME = "order_status";
-    private static final String ID = "id";
-    private static final String NAME = "name";
+import static ua.training.util.constant.table.OrderStatusConstants.TABLE;
 
+public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements OrderStatusDao {
     private OrderStatusDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     @Override
@@ -49,8 +47,8 @@ public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements Orde
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
         return new OrderStatusProxy.OrderStatusBuilder()
-                        .setId(id)
-                        .setName(name)
-                        .buildOrderStatusProxy();
+                .setId(id)
+                .setName(name)
+                .buildOrderStatusProxy();
     }
 }

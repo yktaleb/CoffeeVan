@@ -1,21 +1,13 @@
 package ua.training.controller.command;
 
-import ua.training.controller.FrontOrder;
-import ua.training.entity.BeverageOrder;
-import ua.training.entity.Order;
 import ua.training.exception.VanCapacityException;
 import ua.training.service.AdminService;
+import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SetOrderVanCommand implements Command {
-    private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
-    private static final String ADMIN_PAGE = "WEB-INF/view/adminPage.jsp";
-    private static final String FREE_VANS = "freeVans";
-    private static final String ALL_ORDERS = "allOrders";
     private static final String VAN_ID = "vanId";
     private static final String ORDER_ID = "orderId";
     private static final String EXCEPTION = "exception";
@@ -35,9 +27,7 @@ public class SetOrderVanCommand implements Command {
         } catch (VanCapacityException e) {
             request.getSession().setAttribute(EXCEPTION, e.getMessage() + "(in"+ e.getVan() + ")");
         }
-        return ADMIN_PAGE;
+        return Pages.ADMIN;
     }
-
-
 
 }

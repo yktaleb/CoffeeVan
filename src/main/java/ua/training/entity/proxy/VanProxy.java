@@ -7,6 +7,7 @@ import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Order;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
+import ua.training.util.constant.table.VanConstants;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,7 +18,6 @@ import java.util.List;
 
 import static ua.training.util.constant.table.OrderConstants.*;
 import static ua.training.util.constant.table.VanConstants.VAN_STATUS;
-import static ua.training.util.constant.table.VanConstants.VAN_TABLE;
 
 public class VanProxy extends Van {
     @Override
@@ -25,9 +25,9 @@ public class VanProxy extends Van {
         String query = new QueryBuilder()
                 .select(VAN_STATUS)
                 .from()
-                .table(VAN_TABLE)
+                .table(VanConstants.TABLE)
                 .where()
-                .condition(VAN_TABLE, ID)
+                .condition(VanConstants.TABLE, ID)
                 .built();
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {

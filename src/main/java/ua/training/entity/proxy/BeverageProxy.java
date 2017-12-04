@@ -22,9 +22,9 @@ public class BeverageProxy extends Beverage {
         String query = new QueryBuilder()
                 .select(BEVERAGE_TYPE)
                 .from()
-                .table(BEVERAGE_TABLE)
+                .table(TABLE)
                 .where()
-                .condition(BEVERAGE_TABLE, ID)
+                .condition(TABLE, ID)
                 .built();
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
@@ -43,9 +43,9 @@ public class BeverageProxy extends Beverage {
         String query = new QueryBuilder()
                 .select(BEVERAGE_STATE)
                 .from()
-                .table(BEVERAGE_TABLE)
+                .table(TABLE)
                 .where()
-                .condition(BEVERAGE_TABLE, ID)
+                .condition(TABLE, ID)
                 .built();
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
@@ -64,9 +64,9 @@ public class BeverageProxy extends Beverage {
         String query = new QueryBuilder()
                 .select(BEVERAGE_QUALITY)
                 .from()
-                .table(BEVERAGE_TABLE)
+                .table(TABLE)
                 .where()
-                .condition(BEVERAGE_TABLE, ID)
+                .condition(TABLE, ID)
                 .built();
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {

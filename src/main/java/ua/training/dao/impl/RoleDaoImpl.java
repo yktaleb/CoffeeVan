@@ -11,15 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static ua.training.util.constant.table.RoleConstants.TABLE;
+
 public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
-    private static final String TABLE_NAME = "role";
-    private static final String USER_ROLE_TABLE = "user_role";
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final String USER = "user";
 
     private RoleDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     private static final class RoleDaoImplHolder {

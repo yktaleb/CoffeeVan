@@ -2,7 +2,6 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageOrderDao;
-import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.*;
 import ua.training.entity.proxy.BeverageOrderProxy;
@@ -13,15 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements BeverageOrderDao {
-    private static final String TABLE_NAME = "beverage_order";
-    private static final String ID = "id";
-    private static final String ORDER = "order";
-    private static final String BEVERAGE = "beverage";
-    private static final String AMOUNT = "amount";
+import static ua.training.util.constant.table.BeverageOrderConstants.*;
 
+public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements BeverageOrderDao {
     private BeverageOrderDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     private static final class BeverageOrderDaoImplHolder {
@@ -39,9 +34,9 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(TABLE_NAME)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, ORDER)
+                .condition(TABLE, ORDER)
                 .built();
         return getBeverageOrderListByQuery(query, orderId);
     }
@@ -51,9 +46,9 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(TABLE_NAME)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, BEVERAGE)
+                .condition(TABLE, BEVERAGE)
                 .built();
         return getBeverageOrderListByQuery(query, beverageId);
     }

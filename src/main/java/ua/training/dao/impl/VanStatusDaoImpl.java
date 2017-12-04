@@ -10,13 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static ua.training.util.constant.table.VanStatusConstants.TABLE;
+
 public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatusDao {
-    private static final String TABLE_NAME = "van_status";
-    private static final String ID = "id";
-    private static final String NAME = "name";
 
     private VanStatusDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     @Override

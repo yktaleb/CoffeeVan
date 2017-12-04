@@ -2,13 +2,13 @@ package ua.training.controller.command;
 
 import ua.training.entity.Beverage;
 import ua.training.service.BeverageService;
+import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class DefaultCommand implements Command {
-    private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
     private static final String ALL_BEVERAGE = "allBeverage";
     public static final String QUALITY = "quality";
     public static final String PRICE = "price";
@@ -31,6 +31,6 @@ public class DefaultCommand implements Command {
             allBeverage = beverageService.findAllBeverage();
         }
         request.getSession().setAttribute(ALL_BEVERAGE, allBeverage);
-        return INDEX_PAGE;
+        return Pages.INDEX;
     }
 }

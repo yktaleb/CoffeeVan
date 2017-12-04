@@ -2,10 +2,8 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.VanDao;
-import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Van;
-import ua.training.entity.VanStatus;
 import ua.training.entity.proxy.VanProxy;
 
 import java.sql.Connection;
@@ -14,17 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static ua.training.util.constant.table.VanConstants.*;
+
 public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
-    private static final String TABLE_NAME = "van";
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final String CARRYING_CAPACITY = "carrying_capacity";
-    private static final String MAX_VOLUME = "max_volume";
-    private static final String VAN_STATUS = "van_status";
-    private static final int NUMBER_OF_FIELDS_WITHOUT_ID = 4;
 
     private VanDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     private static class VanDaoImplHolder {
@@ -59,9 +52,9 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(TABLE_NAME)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, VAN_STATUS)
+                .condition(TABLE, VAN_STATUS)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, statusId);

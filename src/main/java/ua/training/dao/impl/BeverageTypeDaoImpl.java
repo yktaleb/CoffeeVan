@@ -10,13 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static ua.training.util.constant.table.BeverageTypeConstants.TABLE;
+
 public class BeverageTypeDaoImpl extends AbstractDao<BeverageType> implements BeverageTypeDao {
-    private static final String TABLE_NAME = "beverage_type";
-    private static final String ID = "id";
-    private static final String NAME = "name";
 
     private BeverageTypeDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     @Override

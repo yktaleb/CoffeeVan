@@ -22,9 +22,9 @@ public class OrderProxy extends Order {
         String query = new QueryBuilder()
                 .select(USER)
                 .from()
-                .table(ORDER_TABLE)
+                .table(TABLE)
                 .where()
-                .condition(ORDER_TABLE, ID)
+                .condition(TABLE, ID)
                 .built();
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
@@ -43,9 +43,9 @@ public class OrderProxy extends Order {
         String query = new QueryBuilder()
                 .select(VAN)
                 .from()
-                .table(ORDER_TABLE)
+                .table(TABLE)
                 .where()
-                .condition(ORDER_TABLE, ID)
+                .condition(TABLE, ID)
                 .built();
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
@@ -64,9 +64,9 @@ public class OrderProxy extends Order {
         String query = new QueryBuilder()
                 .select(ORDER_STATUS)
                 .from()
-                .table(ORDER_TABLE)
+                .table(TABLE)
                 .where()
-                .condition(ORDER_TABLE, ID)
+                .condition(TABLE, ID)
                 .built();
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {

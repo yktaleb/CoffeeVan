@@ -4,6 +4,7 @@ import ua.training.entity.Beverage;
 import ua.training.entity.User;
 import ua.training.service.BeverageService;
 import ua.training.service.UserService;
+import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
-    private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
-    private static final String INDEX_PAGE = "WEB-INF/view/index.jsp";
     private static final String X_AUTH_TOKEN = "X-Auth-Token";
 
     private UserService userService;
@@ -26,12 +25,10 @@ public class LoginCommand implements Command {
         String email = (String) request.getParameter("email");
         String password = (String) request.getParameter("password");
         User user = userService.findByEmail(email);
-        if (user == null) {
-            return LOGIN_PAGE;
-        } else if (!user.getPassword().equals(password)) {
-            return LOGIN_PAGE;
+        if (user == null || !user.getPassword().equals(password)) {
+            return Pages.LOGIN;
         }
         request.getSession().setAttribute(X_AUTH_TOKEN, user.getId());
-        return INDEX_PAGE;
+        return Pages.INDEX;
     }
 }

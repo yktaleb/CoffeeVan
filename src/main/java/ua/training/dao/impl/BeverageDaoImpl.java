@@ -2,11 +2,8 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageDao;
-import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Beverage;
-import ua.training.entity.BeverageQuality;
-import ua.training.entity.BeverageState;
 import ua.training.entity.proxy.BeverageProxy;
 
 import java.sql.Connection;
@@ -16,19 +13,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ua.training.util.constant.table.BeverageConstants.*;
+
 public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDao {
-    private static final String TABLE_NAME = "beverage";
-    private static final String ID = "id";
-    private static final String BEVERAGE_TYPE = "beverage_type";
-    private static final String BEVERAGE_STATE = "beverage_state";
-    private static final String BEVERAGE_QUALITY = "beverage_quality";
-    private static final String NAME = "name";
-    private static final String PRICE = "price";
-    private static final String WEIGHT = "weight";
-    private static final String VOLUME = "volume";
 
     private BeverageDaoImpl(Connection connection) {
-        super(TABLE_NAME, connection);
+        super(TABLE, connection);
     }
 
     @Override
@@ -37,7 +27,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(tableName)
+                .table(TABLE)
                 .orderBy(PRICE)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query);
@@ -59,7 +49,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(tableName)
+                .table(TABLE)
                 .orderBy(BEVERAGE_QUALITY)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query);
@@ -81,9 +71,9 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(tableName)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, BEVERAGE_QUALITY)
+                .condition(TABLE, BEVERAGE_QUALITY)
                 .built();
         return getBeverageListByQuery(query, qualityId);
     }
@@ -94,9 +84,9 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(tableName)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, BEVERAGE_STATE)
+                .condition(TABLE, BEVERAGE_STATE)
                 .built();
         return getBeverageListByQuery(query, stateId);
     }
@@ -107,9 +97,9 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
-                .table(tableName)
+                .table(TABLE)
                 .where()
-                .condition(TABLE_NAME, BEVERAGE_TYPE)
+                .condition(TABLE, BEVERAGE_TYPE)
                 .built();
         return getBeverageListByQuery(query, typeId);
     }

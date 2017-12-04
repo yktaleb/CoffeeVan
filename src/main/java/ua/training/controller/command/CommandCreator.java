@@ -1,37 +1,22 @@
 package ua.training.controller.command;
 
-import ua.training.dao.*;
-import ua.training.dao.factory.DaoFactory;
-import ua.training.dao.factory.DataSourceFactory;
-import ua.training.dao.factory.MySqlDaoFactory;
-import ua.training.entity.*;
+import ua.training.entity.Role;
 import ua.training.service.ServiceFactory;
+import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static ua.training.util.constant.general.Commands.*;
 
 public class CommandCreator {
-    public static final String INDEX_COMMAND = "index";
-    public static final String LOGIN_PAGE_COMMAND = "loginPage";
-    public static final String REGISTRATION_PAGE_COMMAND = "registrationPage";
-    public static final String LOGIN_COMMAND = "login";
-    public static final String REGISTRATION_COMMAND = "registration";
-    public static final String COMMAND = "command";
-    public static final String ADD_TO_BASKET_COMMAND = "addToBasket";
-    public static final String SHOW_BASKET_COMMAND = "showBasket";
-    public static final String CREATE_ORDER_COMMAND = "createOrder";
-    public static final String ADMIN_PAGE_COMMAND = "adminPage";
-    public static final String ADMIN = "admin";
-    public static final String SET_ORDER_VAN_COMMAND = "setOrderVan";
-    public static final String MAKE_VAN_FREE_COMMAND = "makeVanFree";
-    public static final String ADMIN_ROLE = "ADMIN_ROLE";
-    public static final String LOGOUT_COMMAND = "logout";
-    private static final String ERROR = "WEB-INF/view/error.jsp";
+
     private static final String X_AUTH_TOKEN = "X-Auth-Token";
+    private static final String ADMIN = "admin";
+    private static final String ADMIN_ROLE = "ADMIN_ROLE";
 
     private Map<String, Command> commandMap = new HashMap<>();
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -60,24 +45,6 @@ public class CommandCreator {
     }
 
     public String action(HttpServletRequest request, HttpServletResponse response) throws RuntimeException {
-
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        Connection connection = null;
-        try {
-            connection = dataSource.getConnection();
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            BeverageOrderDao beverageOrderDao = daoFactory.createBeverageOrderDao();
-            BeverageOrder one = beverageOrderDao.findOne(5L);
-            Beverage beverage = one.getBeverage();
-            Order order = one.getOrder();
-            Integer amount = one.getAmount();
-            one.getId();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-
         Long authToken = (Long) request.getSession().getAttribute(X_AUTH_TOKEN);
         String commandName = request.getParameter(COMMAND);
         if (commandName != null
@@ -91,7 +58,7 @@ public class CommandCreator {
                 }
             }
             if (!isAdmin) {
-                return ERROR;
+                return Pages.ERROR;
             }
             commandName = commandName.split("/")[1];
         }

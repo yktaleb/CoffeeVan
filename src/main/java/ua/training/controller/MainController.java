@@ -6,6 +6,7 @@ import ua.training.dao.datasource.ConnectionPool;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.*;
+import ua.training.util.constant.general.Pages;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,10 +25,6 @@ import java.util.Optional;
 
 @WebServlet("/")
 public class MainController extends HttpServlet {
-
-    private static final String LOGIN = "WEB-INF/view/login.jsp";
-    private static final String ERROR = "WEB-INF/view/error.jsp";
-
     private static CommandCreator commandCreator = CommandCreator.getInstance();
 
     @Override
@@ -50,7 +47,7 @@ public class MainController extends HttpServlet {
             page = commandCreator.action(request, response);
             request.getSession().setAttribute("page", page);
         } catch (RuntimeException e) {
-            page = ERROR;
+            page = Pages.ERROR;
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);

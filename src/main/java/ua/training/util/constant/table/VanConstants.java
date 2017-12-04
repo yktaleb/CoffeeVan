@@ -1,10 +1,12 @@
 package ua.training.util.constant.table;
 
 public interface VanConstants {
-    public static final String VAN_TABLE = "van";
-    public static final String ID = "id";
-    public static final String VAN_STATUS = "van_status";
-    public static final String NAME = "name";
-    public static final String CARRYING_CAPACITY = "carrying_capacity";
-    public static final String MAX_VOLUME = "max_volume";
+    String TABLE = "van";
+    String ID = "id";
+    String VAN_STATUS = "van_status";
+    String NAME = "name";
+    String CARRYING_CAPACITY = "carrying_capacity";
+    String MAX_VOLUME = "max_volume";
+    int NUMBER_OF_FIELDS_WITHOUT_ID = 4;
+
 }
