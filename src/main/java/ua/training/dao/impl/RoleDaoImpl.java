@@ -24,32 +24,6 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
         super(TABLE_NAME, connection);
     }
 
-    @Override
-    public Optional<Role> findByName(String value) {
-        return findOneByName(value);
-    }
-
-    @Override
-    public Set<Role> findByUser(Long userId) {
-        Set<Role> result = new HashSet<>();
-        String query = "SELECT * FROM `user_role` ur \n" +
-                "inner join `role` r ON ur.role = r.id\n" +
-                "where ur.user = ?";
-        try(PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, userId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    if (getEntityFromResultSet(resultSet).isPresent()) {
-                        result.add(getEntityFromResultSet(resultSet).get());
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     private static final class RoleDaoImplHolder {
         private static RoleDaoImpl instance(Connection connection) {
             return new RoleDaoImpl(connection);
@@ -58,6 +32,32 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
 
     public static RoleDaoImpl getInstance(Connection connection) {
         return RoleDaoImplHolder.instance(connection);
+    }
+
+    @Override
+    public Role findByName(String value) {
+        return findOneByName(value);
+    }
+
+    @Override
+    public List<Role> findByUser(Long userId) {
+        List<Role> result = new ArrayList<>();
+        String query = "SELECT * FROM `user_role` ur \n" +
+                "inner join `role` r ON ur.role = r.id\n" +
+                "where ur.user = ?";
+        try(PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    if (getEntityFromResultSet(resultSet) != null) {
+                        result.add(getEntityFromResultSet(resultSet));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -71,14 +71,12 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
     }
 
     @Override
-    protected Optional<Role> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected Role getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return Optional.of(
-                new Role.RoleBuilder()
+        return new Role.RoleBuilder()
                         .setId(id)
                         .setName(name)
-                        .build()
-        );
+                        .build();
     }
 }

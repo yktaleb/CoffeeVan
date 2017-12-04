@@ -1,9 +1,9 @@
 package ua.training.service;
 
+import ua.training.service.impl.AdminServiceImpl;
 import ua.training.service.impl.BeverageServiceImpl;
 import ua.training.service.impl.OrderServiceImpl;
 import ua.training.service.impl.UserServiceImpl;
-import ua.training.service.impl.AdminServiceImpl;
 
 public class ServiceFactory {
     private ServiceFactory() {

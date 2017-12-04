@@ -4,7 +4,6 @@ import ua.training.dao.AbstractDao;
 import ua.training.dao.UserDao;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.User;
-import ua.training.exception.UniqueException;
 
 import java.sql.*;
 import java.util.Optional;
@@ -27,9 +26,9 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public User findByEmail(String email) {
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(TABLE_NAME)
                 .where()
@@ -45,7 +44,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         } catch (SQLException e) {
 
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override
@@ -93,22 +92,20 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    protected Optional<User> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected User getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         Long id = Long.valueOf(resultSet.getString(ID));
         String email = resultSet.getString(EMAIL);
         String password = resultSet.getString(PASSWORD);
         String firstName = resultSet.getString(FIRST_NAME);
         String lastName = resultSet.getString(LAST_NAME);
         String phoneNumber = resultSet.getString(PHONE_NUMBER);
-        return Optional.of(
-                new User.UserBuilder()
+        return new User.UserBuilder()
                         .setId(id)
                         .setEmail(email)
                         .setPassword(password)
                         .setFirstName(firstName)
                         .setLastName(lastName)
                         .setPhoneNumber(phoneNumber)
-                        .build()
-        );
+                        .build();
     }
 }

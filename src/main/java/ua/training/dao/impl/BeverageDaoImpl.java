@@ -2,13 +2,12 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageDao;
-import ua.training.dao.BeverageQualityDao;
 import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Beverage;
 import ua.training.entity.BeverageQuality;
 import ua.training.entity.BeverageState;
-import ua.training.entity.BeverageType;
+import ua.training.entity.proxy.BeverageProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDao {
     private static final String TABLE_NAME = "beverage";
@@ -37,7 +35,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
     public List<Beverage> getSortedByPrice() {
         List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(tableName)
                 .orderBy(PRICE)
@@ -45,8 +43,8 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                if (getEntityFromResultSet(resultSet).isPresent()) {
-                    result.add(getEntityFromResultSet(resultSet).get());
+                if (getEntityFromResultSet(resultSet) != null) {
+                    result.add(getEntityFromResultSet(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -59,7 +57,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
     public List<Beverage> getSortedByQuality() {
         List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(tableName)
                 .orderBy(BEVERAGE_QUALITY)
@@ -67,8 +65,8 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                if (getEntityFromResultSet(resultSet).isPresent()) {
-                    result.add(getEntityFromResultSet(resultSet).get());
+                if (getEntityFromResultSet(resultSet) != null) {
+                    result.add(getEntityFromResultSet(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -104,31 +102,20 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
     }
 
     @Override
-    protected Optional<Beverage> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected Beverage getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
-        long beverageTypeId = resultSet.getLong(BEVERAGE_TYPE);
-        long beverageStateId = resultSet.getLong(BEVERAGE_STATE);
-        long beverageQualityId = resultSet.getLong(BEVERAGE_QUALITY);
         String name = resultSet.getString(NAME);
         Double price = resultSet.getDouble(PRICE);
         Double weight = resultSet.getDouble(WEIGHT);
         Double volume = resultSet.getDouble(VOLUME);
 
-        BeverageType beverageType = MySqlDaoFactory.getInstance(connection).createBeverageTypeDao().findOne(beverageTypeId).get();
-        BeverageState beverageState = MySqlDaoFactory.getInstance(connection).createBeverageStateDao().findOne(beverageStateId).get();
-        BeverageQuality beverageQuality = MySqlDaoFactory.getInstance(connection).createBeverageQualityDao().findOne(beverageQualityId).get();
-        return Optional.of(
-                new Beverage.BeverageBuilder()
+        return new BeverageProxy.BeverageBuilder()
                         .setId(id)
-                        .setType(beverageType)
-                        .setState(beverageState)
-                        .setQuality(beverageQuality)
                         .setName(name)
                         .setPrice(price)
                         .setWeight(weight)
                         .setVolume(volume)
-                        .build()
-        );
+                        .buildBeverageProxy();
     }
 }
 

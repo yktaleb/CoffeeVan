@@ -23,7 +23,7 @@ public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements Orde
     }
 
     @Override
-    public Optional<OrderStatus> findByName(String value) {
+    public OrderStatus findByName(String value) {
         return findOneByName(value);
     }
 
@@ -48,14 +48,12 @@ public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements Orde
     }
 
     @Override
-    protected Optional<OrderStatus> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected OrderStatus getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return Optional.of(
-                new OrderStatus.OrderStatusBuilder()
+        return new OrderStatus.OrderStatusBuilder()
                         .setId(id)
                         .setName(name)
-                        .build()
-        );
+                        .build();
     }
 }

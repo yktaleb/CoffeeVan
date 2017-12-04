@@ -24,7 +24,7 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
     }
 
     @Override
-    public Optional<BeverageQuality> findByName(String value) {
+    public BeverageQuality findByName(String value) {
         return findOneByName(value);
     }
 
@@ -49,14 +49,12 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
     }
 
     @Override
-    protected Optional<BeverageQuality> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected BeverageQuality getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return Optional.of(
-                new BeverageQuality.BeverageQualityBuilder()
+        return new BeverageQuality.BeverageQualityBuilder()
                         .setId(id)
                         .setName(name)
-                        .build()
-        );
+                        .build();
     }
 }

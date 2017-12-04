@@ -25,13 +25,13 @@ public class LoginCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String email = (String) request.getParameter("email");
         String password = (String) request.getParameter("password");
-        Optional<User> user = userService.findByEmail(email);
-        if (!user.isPresent()) {
+        User user = userService.findByEmail(email);
+        if (user == null) {
             return LOGIN_PAGE;
-        } else if (!user.get().getPassword().equals(password)) {
+        } else if (!user.getPassword().equals(password)) {
             return LOGIN_PAGE;
         }
-        request.getSession().setAttribute(X_AUTH_TOKEN, user.get().getId());
+        request.getSession().setAttribute(X_AUTH_TOKEN, user.getId());
         return INDEX_PAGE;
     }
 }

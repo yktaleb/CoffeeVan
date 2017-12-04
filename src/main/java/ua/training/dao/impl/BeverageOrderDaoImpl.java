@@ -2,7 +2,6 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageOrderDao;
-import ua.training.dao.BeverageQualityDao;
 import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.*;
@@ -36,23 +35,39 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
 
     @Override
     public List<BeverageOrder> findByOrder(Long orderId) {
-        List<BeverageOrder> result = new ArrayList<>();
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(TABLE_NAME)
                 .where()
                 .condition(TABLE_NAME, ORDER)
                 .built();
+        return getBeverageOrderListByQuery(query, orderId);
+    }
+
+    @Override
+    public List<BeverageOrder> findByBeverage(Long beverageId) {
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE_NAME)
+                .where()
+                .condition(TABLE_NAME, BEVERAGE)
+                .built();
+        return getBeverageOrderListByQuery(query, beverageId);
+    }
+
+    private List<BeverageOrder> getBeverageOrderListByQuery(String query, Long enteredId) {
+        List<BeverageOrder> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, orderId);
+            statement.setLong(1, enteredId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    result.add(getEntityFromResultSet(resultSet).get());
+                    result.add(getEntityFromResultSet(resultSet));
                 }
             }
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return result;
     }
@@ -70,21 +85,19 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
     }
 
     @Override
-    protected Optional<BeverageOrder> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected BeverageOrder getEntityFromResultSet(ResultSet resultSet) throws SQLException {
 
         long id = resultSet.getLong(ID);
         long orderId = resultSet.getLong(ORDER);
         long beverageId = resultSet.getLong(BEVERAGE);
         int amount = resultSet.getInt(AMOUNT);
-        Order order = MySqlDaoFactory.getInstance(connection).createOrderDao().findOne(orderId).get();
-        Beverage beverage = MySqlDaoFactory.getInstance(connection).createBeverageDao().findOne(beverageId).get();
-        return Optional.of(
-                new BeverageOrder.BeverageOrderBuilder()
+        Order order = MySqlDaoFactory.getInstance(connection).createOrderDao().findOne(orderId);
+        Beverage beverage = MySqlDaoFactory.getInstance(connection).createBeverageDao().findOne(beverageId);
+        return new BeverageOrder.BeverageOrderBuilder()
                         .setId(id)
                         .setOrder(order)
                         .setBeverage(beverage)
                         .setAmount(amount)
-                        .build()
-        );
+                        .build();
     }
 }

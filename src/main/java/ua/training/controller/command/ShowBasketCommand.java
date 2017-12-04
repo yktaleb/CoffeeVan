@@ -30,7 +30,7 @@ public class ShowBasketCommand implements Command {
         List<FieldBasketFront> basketFields = new ArrayList<>();
         double totalPrice = 0.0;
         for (Long id : basket.keySet()) {
-            Beverage beverage = beverageService.findById(id).get();
+            Beverage beverage = beverageService.findById(id);
             Integer amount = basket.get(id);
             FieldBasketFront field = new FieldBasketFront();
             field.setBeverage(beverage);

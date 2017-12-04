@@ -2,8 +2,6 @@ package ua.training.dao;
 
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Entity;
-import ua.training.exception.LoginAlreadyExistsException;
-import ua.training.exception.UniqueException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -67,9 +65,9 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
     }
 
     @Override
-    public Optional<T> findOne(Long id) {
+    public T findOne(Long id) {
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(tableName)
                 .where()
@@ -85,22 +83,22 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
         } catch (SQLException e) {
 
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override
     public List<T> findAll() {
         List<T> result = new ArrayList<>();
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(tableName)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                if (getEntityFromResultSet(resultSet).isPresent()) {
-                    result.add(getEntityFromResultSet(resultSet).get());
+                if (getEntityFromResultSet(resultSet) != null) {
+                    result.add(getEntityFromResultSet(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -126,9 +124,9 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
         }
     }
 
-    public Optional<T> findOneByName(String value) {
+    public T findOneByName(String value) {
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(tableName)
                 .where()
@@ -144,13 +142,13 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Optional.empty();
+        return null;
     }
 
     protected abstract String[] getParameterNames();
 
     protected abstract void setEntityParameters(T entity, PreparedStatement statement) throws SQLException;
 
-    protected abstract Optional<T> getEntityFromResultSet(ResultSet resultSet) throws SQLException;
+    protected abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 
 }

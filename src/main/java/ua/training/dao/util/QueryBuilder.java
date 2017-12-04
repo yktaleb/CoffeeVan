@@ -103,11 +103,34 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder select() {
+    public QueryBuilder selectAll() {
         query
                 .append("SELECT")
                 .append(" ")
                 .append("*")
+                .append(" ");
+        return this;
+    }
+
+    public QueryBuilder select(String[] columns) {
+        query
+                .append("SELECT")
+                .append(" ");
+        for (int i = 0; i < columns.length; i++) {
+            query.append(columns[i]);
+            if (i != columns.length - 1) {
+                query.append(",");
+            }
+        }
+        query.append(" ");
+        return this;
+    }
+
+    public QueryBuilder select(String column) {
+        query
+                .append("SELECT")
+                .append(" ")
+                .append(column)
                 .append(" ");
         return this;
     }

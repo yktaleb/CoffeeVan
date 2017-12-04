@@ -23,7 +23,7 @@ public class BeverageTypeDaoImpl extends AbstractDao<BeverageType> implements Be
     }
 
     @Override
-    public Optional<BeverageType> findByName(String value) {
+    public BeverageType findByName(String value) {
         return findOneByName(value);
     }
 
@@ -48,14 +48,12 @@ public class BeverageTypeDaoImpl extends AbstractDao<BeverageType> implements Be
     }
 
     @Override
-    protected Optional<BeverageType> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected BeverageType getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return Optional.of(
-                new BeverageType.BeverageTypeBuilder()
+        return new BeverageType.BeverageTypeBuilder()
                         .setId(id)
                         .setName(name)
-                        .build()
-        );
+                        .build();
     }
 }

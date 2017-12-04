@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.BeverageProxy;
+
 import java.util.List;
 
 public class Beverage implements Entity<Long> {
@@ -141,8 +143,22 @@ public class Beverage implements Entity<Long> {
             return this;
         }
 
-        public Beverage build() {
+        public Beverage buildBeverage() {
             Beverage beverage = new Beverage();
+            beverage.setId(id);
+            beverage.setName(name);
+            beverage.setPrice(price);
+            beverage.setWeight(weight);
+            beverage.setVolume(volume);
+            beverage.setType(type);
+            beverage.setState(state);
+            beverage.setQuality(quality);
+            beverage.setBeverageOrders(beverageOrders);
+            return beverage;
+        }
+
+        public BeverageProxy buildBeverageProxy() {
+            BeverageProxy beverage = new BeverageProxy();
             beverage.setId(id);
             beverage.setName(name);
             beverage.setPrice(price);

@@ -50,7 +50,7 @@ public class UserServiceTest {
         doInitialization();
         stubDaoFactory();
 
-        user = userService.findByEmail("a").get();
+        user = userService.findByEmail("a");
         assertNotNull(user);
         assertEquals(user.getFirstName(), "a");
         assertNotEquals(user.getPassword(), "a");

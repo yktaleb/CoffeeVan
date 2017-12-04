@@ -63,18 +63,18 @@ public class OrderServiceImpl implements OrderService {
             BeverageOrderDao beverageOrderDao = daoFactory.createBeverageOrderDao();
             BeverageDao beverageDao = daoFactory.createBeverageDao();
             UserDao userDao = daoFactory.createUserDao();
-            Optional<User> user = userDao.findOne(userId);
-            Optional<OrderStatus> status = orderStatusDao.findByName(IN_PROCESSING_STATUS);
+            User user = userDao.findOne(userId);
+            OrderStatus status = orderStatusDao.findByName(IN_PROCESSING_STATUS);
             Order savedOrder = save(
                     new Order.OrderBuilder()
-                            .setUser(user.get())
+                            .setUser(user)
                             .setAddress(address)
                             .setVan(null)
-                            .setStatus(status.get())
+                            .setStatus(status)
                             .build()
             );
             for (Long beverageId : basket.keySet()) {
-                Beverage beverage = beverageDao.findOne(beverageId).get();
+                Beverage beverage = beverageDao.findOne(beverageId);
                 beverageOrderDao.save(
                         new BeverageOrder.BeverageOrderBuilder()
                                 .setOrder(savedOrder)

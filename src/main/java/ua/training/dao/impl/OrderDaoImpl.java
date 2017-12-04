@@ -69,18 +69,18 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     }
 
     @Override
-    protected Optional<Order> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected Order getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         long orderStatusId = resultSet.getLong(ORDER_STATUS);
         long userId = resultSet.getLong(USER);
         long vanId = resultSet.getLong(VAN);
         String address = resultSet.getString(ADDRESS);
 
-        OrderStatus orderStatus = MySqlDaoFactory.getInstance(connection).createOrderStatusDao().findOne(orderStatusId).get();
-        User user = MySqlDaoFactory.getInstance(connection).createUserDao().findOne(userId).get();
+        OrderStatus orderStatus = MySqlDaoFactory.getInstance(connection).createOrderStatusDao().findOne(orderStatusId);
+        User user = MySqlDaoFactory.getInstance(connection).createUserDao().findOne(userId);
         Van van = null;
         if (vanId != 0) {
-            van = MySqlDaoFactory.getInstance(connection).createVanDao().findOne(vanId).get();
+            van = MySqlDaoFactory.getInstance(connection).createVanDao().findOne(vanId);
         }
         OrderProxy orderProxy = ProxyFactory.getInstance().createOrderProxy();
         orderProxy.setId(id);
@@ -88,8 +88,6 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         orderProxy.setUser(user);
         orderProxy.setVan(van);
         orderProxy.setAddress(address);
-        return Optional.of(
-                orderProxy
-        );
+        return orderProxy;
     }
 }

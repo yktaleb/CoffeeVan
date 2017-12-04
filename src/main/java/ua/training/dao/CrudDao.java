@@ -9,7 +9,7 @@ public interface CrudDao<T, ID> {
 
     T update(T entity);
 
-    Optional<T> findOne(ID id);
+    T findOne(ID id);
 
     List<T> findAll();
 

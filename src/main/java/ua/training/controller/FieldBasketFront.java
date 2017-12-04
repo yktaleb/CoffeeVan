@@ -7,7 +7,6 @@ public class FieldBasketFront {
     private int amount;
     private double price;
 
-
     public Beverage getBeverage() {
         return beverage;
     }

@@ -4,7 +4,6 @@ import ua.training.dao.AbstractDao;
 import ua.training.dao.VanDao;
 import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
-import ua.training.entity.User;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
 
@@ -54,29 +53,27 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
     }
 
     @Override
-    protected Optional<Van> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected Van getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         Long id = Long.valueOf(resultSet.getString(ID));
         String name = resultSet.getString(NAME);
         Double carryingCapacity = resultSet.getDouble(CARRYING_CAPACITY);
         Double maxVolume = resultSet.getDouble(MAX_VOLUME);
         Long vanStatusId = resultSet.getLong(VAN_STATUS);
-        VanStatus vanStatus = MySqlDaoFactory.getInstance(connection).createVanStatusDao().findOne(vanStatusId).get();
-        return Optional.of(
-                new Van.VanBuilder()
+        VanStatus vanStatus = MySqlDaoFactory.getInstance(connection).createVanStatusDao().findOne(vanStatusId);
+        return new Van.VanBuilder()
                     .setId(id)
                     .setName(name)
                     .setCarryingCapacity(carryingCapacity)
                     .setMaxVolume(maxVolume)
                     .setVanStatus(vanStatus)
-                    .build()
-        );
+                    .build();
     }
 
     @Override
-    public Set<Van> findAllByStatus(Long statusId) {
-        Set<Van> result = new HashSet<>();
+    public List<Van> findAllByStatus(Long statusId) {
+        List<Van> result = new ArrayList<>();
         String query = new QueryBuilder()
-                .select()
+                .selectAll()
                 .from()
                 .table(TABLE_NAME)
                 .where()
@@ -86,8 +83,8 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
             statement.setLong(1, statusId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    if (getEntityFromResultSet(resultSet).isPresent()) {
-                        result.add(getEntityFromResultSet(resultSet).get());
+                    if (getEntityFromResultSet(resultSet) != null) {
+                        result.add(getEntityFromResultSet(resultSet));
                     }
                 }
             }

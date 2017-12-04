@@ -22,7 +22,7 @@ public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatu
     }
 
     @Override
-    public Optional<VanStatus> findByName(String value) {
+    public VanStatus findByName(String value) {
         return findOneByName(value);
     }
 
@@ -47,14 +47,12 @@ public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatu
     }
 
     @Override
-    protected Optional<VanStatus> getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected VanStatus getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return Optional.of(
-                new VanStatus.VanStatusBuilder()
+        return new VanStatus.VanStatusBuilder()
                         .setId(id)
                         .setName(name)
-                        .build()
-        );
+                        .build();
     }
 }

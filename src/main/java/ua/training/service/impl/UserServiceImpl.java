@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,8 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        Optional<User> user = Optional.empty();
+    public User findByEmail(String email) {
+        User user = null;
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
             RoleDao roleDao = daoFactory.createRoleDao();
-            Role role = roleDao.findByName(USER_ROLE).get();
+            Role role = roleDao.findByName(USER_ROLE);
             savedUser = userDao.save(user);
             userDao.setUserRole(savedUser.getId(), role.getId());
             connection.commit();
@@ -79,18 +80,13 @@ public class UserServiceImpl implements UserService {
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
             RoleDao roleDao = daoFactory.createRoleDao();
-            Set<Role> roles = roleDao.findByUser(id);
-            user = userDao.findOne(id).get();
+            List<Role> roles = roleDao.findByUser(id);
+            user = userDao.findOne(id);
             user.setRoles(roles);
         } catch (SQLException e) {
 
         }
         return user;
-    }
-
-    @Override
-    public Optional<User> findById(Long authToken) {
-        return null;
     }
 
 }

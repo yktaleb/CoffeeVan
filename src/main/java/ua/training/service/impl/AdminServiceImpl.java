@@ -44,23 +44,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Set<Van> getFreeVans() {
+    public List<Van> getFreeVans() {
         return getVansByStatus(FREE_STATUS);
     }
 
     @Override
-    public Set<Van> getBusyVans() {
+    public List<Van> getBusyVans() {
         return getVansByStatus(BUSY_STATUS);
     }
 
-    private Set<Van> getVansByStatus(String status) {
+    private List<Van> getVansByStatus(String status) {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             VanDao vanDao = daoFactory.createVanDao();
             VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
-            VanStatus vanStatus = vanStatusDao.findByName(status).get();
+            VanStatus vanStatus = vanStatusDao.findByName(status);
 //            Optional<VanStatus> freeStatus = daoFactory.createVanStatusDao().findByName(FREE_STATUS);
             return vanDao.findAllByStatus(vanStatus.getId());
         } catch (SQLException e) {
@@ -79,10 +79,10 @@ public class AdminServiceImpl implements AdminService {
             OrderStatusDao orderStatusDao = daoFactory.createOrderStatusDao();
             VanDao vanDao = daoFactory.createVanDao();
             VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
-            OrderStatus onTheRoadStatus = orderStatusDao.findByName(ON_THE_ROAD_STATUS).get();
-            VanStatus busyStatus = vanStatusDao.findByName(BUSY_STATUS).get();
-            Order order = orderDao.findOne(orderId).get();
-            Van van = vanDao.findOne(vanId).get();
+            OrderStatus onTheRoadStatus = orderStatusDao.findByName(ON_THE_ROAD_STATUS);
+            VanStatus busyStatus = vanStatusDao.findByName(BUSY_STATUS);
+            Order order = orderDao.findOne(orderId);
+            Van van = vanDao.findOne(vanId);
             double totalVolume = 0;
             double totalWeight = 0;
             double totalPrice = 0;
@@ -115,8 +115,8 @@ public class AdminServiceImpl implements AdminService {
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             VanDao vanDao = daoFactory.createVanDao();
             VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
-            VanStatus vanStatus = vanStatusDao.findByName(FREE_STATUS).get();
-            Van van = vanDao.findOne(vanId).get();
+            VanStatus vanStatus = vanStatusDao.findByName(FREE_STATUS);
+            Van van = vanDao.findOne(vanId);
             van.setVanStatus(vanStatus);
             vanDao.update(van);
             connection.commit();

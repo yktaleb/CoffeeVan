@@ -1,10 +1,18 @@
 package ua.training.controller.command;
 
-import ua.training.entity.Role;
+import ua.training.dao.BeverageDao;
+import ua.training.dao.VanDao;
+import ua.training.dao.factory.DaoFactory;
+import ua.training.dao.factory.DataSourceFactory;
+import ua.training.dao.factory.MySqlDaoFactory;
+import ua.training.entity.*;
 import ua.training.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CommandCreator {
@@ -53,11 +61,29 @@ public class CommandCreator {
     }
 
     public String action(HttpServletRequest request, HttpServletResponse response) throws RuntimeException {
+
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            BeverageDao beverageDao = daoFactory.createBeverageDao();
+            Beverage one = beverageDao.findOne(1L);
+            BeverageType type = one.getType();
+            BeverageQuality quality = one.getQuality();
+            List<BeverageOrder> beverageOrders = one.getBeverageOrders();
+            BeverageState state = one.getState();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
         Long authToken = (Long) request.getSession().getAttribute(X_AUTH_TOKEN);
         String commandName = request.getParameter(COMMAND);
         if (commandName != null
                 && ADMIN.equals(commandName.split("/")[0])) {
-            Set<Role> roles = serviceFactory.createUserService().getCurrentUser(request).getRoles();
+            List<Role> roles = serviceFactory.createUserService().getCurrentUser(request).getRoles();
             boolean isAdmin = false;
             for (Role role : roles) {
                 if (ADMIN_ROLE.equals(role.getName())) {

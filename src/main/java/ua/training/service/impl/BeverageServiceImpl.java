@@ -45,8 +45,8 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     @Override
-    public Optional<Beverage> findById(Long id) {
-        Optional<Beverage> beverage = Optional.empty();
+    public Beverage findById(Long id) {
+        Beverage beverage = null;
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
