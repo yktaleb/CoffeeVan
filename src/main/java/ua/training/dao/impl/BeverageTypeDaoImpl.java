@@ -2,16 +2,13 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageTypeDao;
-import ua.training.dao.OrderStatusDao;
-import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.BeverageType;
-import ua.training.entity.OrderStatus;
+import ua.training.entity.proxy.BeverageTypeProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class BeverageTypeDaoImpl extends AbstractDao<BeverageType> implements BeverageTypeDao {
     private static final String TABLE_NAME = "beverage_type";
@@ -51,9 +48,9 @@ public class BeverageTypeDaoImpl extends AbstractDao<BeverageType> implements Be
     protected BeverageType getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return new BeverageType.BeverageTypeBuilder()
+        return new BeverageTypeProxy.BeverageTypeBuilder()
                         .setId(id)
                         .setName(name)
-                        .build();
+                        .buildBeverageTypeProxy();
     }
 }

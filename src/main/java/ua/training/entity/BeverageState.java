@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.BeverageStateProxy;
+
 import java.util.List;
 import java.util.Set;
 
@@ -52,8 +54,16 @@ public class BeverageState implements Entity<Long> {
             return this;
         }
 
-        public BeverageState build() {
+        public BeverageState buildBeverageState() {
             BeverageState beverageState = new BeverageState();
+            beverageState.setId(id);
+            beverageState.setName(name);
+            beverageState.setBeverages(beverages);
+            return beverageState;
+        }
+
+        public BeverageState buildBeverageStateProxy() {
+            BeverageStateProxy beverageState = new BeverageStateProxy();
             beverageState.setId(id);
             beverageState.setName(name);
             beverageState.setBeverages(beverages);

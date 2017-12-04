@@ -10,4 +10,8 @@ public interface BeverageDao extends CrudDao<Beverage, Long> {
     List<Beverage> getSortedByQuality();
 
     List<Beverage> findByQuality(Long qualityId);
+
+    List<Beverage> findByState(Long stateId);
+
+    List<Beverage> findByType(Long typeId);
 }

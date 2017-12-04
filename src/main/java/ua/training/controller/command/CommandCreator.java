@@ -1,8 +1,6 @@
 package ua.training.controller.command;
 
-import ua.training.dao.BeverageDao;
-import ua.training.dao.BeverageQualityDao;
-import ua.training.dao.VanDao;
+import ua.training.dao.*;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.dao.factory.MySqlDaoFactory;
@@ -68,8 +66,8 @@ public class CommandCreator {
         try {
             connection = dataSource.getConnection();
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            BeverageQualityDao beverageQualityDao = daoFactory.createBeverageQualityDao();
-            BeverageQuality one = beverageQualityDao.findOne(2L);
+            BeverageTypeDao beverageQualityDao = daoFactory.createBeverageTypeDao();
+            BeverageType one = beverageQualityDao.findOne(1L);
             List<Beverage> beverages = one.getBeverages();
             String name = one.getName();
         } catch (SQLException e) {

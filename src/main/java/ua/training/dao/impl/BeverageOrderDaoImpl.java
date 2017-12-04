@@ -57,10 +57,10 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
         return getBeverageOrderListByQuery(query, beverageId);
     }
 
-    private List<BeverageOrder> getBeverageOrderListByQuery(String query, Long enteredId) {
+    private List<BeverageOrder> getBeverageOrderListByQuery(String query, Long introducedId) {
         List<BeverageOrder> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, enteredId);
+            statement.setLong(1, introducedId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     result.add(getEntityFromResultSet(resultSet));

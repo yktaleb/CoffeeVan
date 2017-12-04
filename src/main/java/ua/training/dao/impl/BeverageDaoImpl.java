@@ -85,8 +85,39 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .where()
                 .condition(TABLE_NAME, BEVERAGE_QUALITY)
                 .built();
+        return getBeverageListByQuery(query, qualityId);
+    }
+
+    @Override
+    public List<Beverage> findByState(Long stateId) {
+        List<Beverage> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(tableName)
+                .where()
+                .condition(TABLE_NAME, BEVERAGE_STATE)
+                .built();
+        return getBeverageListByQuery(query, stateId);
+    }
+
+    @Override
+    public List<Beverage> findByType(Long typeId) {
+        List<Beverage> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(tableName)
+                .where()
+                .condition(TABLE_NAME, BEVERAGE_TYPE)
+                .built();
+        return getBeverageListByQuery(query, typeId);
+    }
+
+    private List<Beverage> getBeverageListByQuery(String query, Long introducedId) {
+        List<Beverage> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, qualityId);
+            statement.setLong(1, introducedId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     result.add(getEntityFromResultSet(resultSet));
