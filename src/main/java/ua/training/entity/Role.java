@@ -1,11 +1,12 @@
 package ua.training.entity;
 
+import java.util.List;
 import java.util.Set;
 
 public class Role implements Entity<Long> {
     private Long id;
     private String name;
-    private Set<User> users;
+    private List<User> users;
 
     public Long getId() {
         return id;
@@ -23,11 +24,11 @@ public class Role implements Entity<Long> {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
@@ -35,7 +36,7 @@ public class Role implements Entity<Long> {
     public static final class RoleBuilder {
         private Long id;
         private String name;
-        private Set<User> users;
+        private List<User> users;
 
         public RoleBuilder setId(Long id) {
             this.id = id;
@@ -47,7 +48,7 @@ public class Role implements Entity<Long> {
             return this;
         }
 
-        public RoleBuilder setUsers(Set<User> users) {
+        public RoleBuilder setUsers(List<User> users) {
             this.users = users;
             return this;
         }

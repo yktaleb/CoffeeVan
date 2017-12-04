@@ -1,11 +1,11 @@
 package ua.training.entity;
 
-import java.util.Set;
+import java.util.List;
 
 public class VanStatus implements Entity<Long> {
     private Long id;
     private String name;
-    private Set<Van> vans;
+    private List<Van> vans;
 
     public Long getId() {
         return id;
@@ -23,18 +23,18 @@ public class VanStatus implements Entity<Long> {
         this.name = name;
     }
 
-    public Set<Van> getVans() {
+    public List<Van> getVans() {
         return vans;
     }
 
-    public void setVans(Set<Van> vans) {
+    public void setVans(List<Van> vans) {
         this.vans = vans;
     }
     
     public static final class VanStatusBuilder {
         private Long id;
         private String name;
-        private Set<Van> vans;
+        private List<Van> vans;
 
         public VanStatusBuilder setId(Long id) {
             this.id = id;
@@ -46,7 +46,7 @@ public class VanStatus implements Entity<Long> {
             return this;
         }
 
-        public VanStatusBuilder setVans(Set<Van> vans) {
+        public VanStatusBuilder setVans(List<Van> vans) {
             this.vans = vans;
             return this;
         }

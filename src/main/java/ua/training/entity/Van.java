@@ -1,5 +1,6 @@
 package ua.training.entity;
 
+import java.util.List;
 import java.util.Set;
 
 public class Van implements Entity<Long> {
@@ -8,57 +9,7 @@ public class Van implements Entity<Long> {
     private Double carryingCapacity;
     private Double maxVolume;
     private VanStatus vanStatus;
-    private Set<Order> orders;
-
-    public static final class VanBuilder {
-        private Long id;
-        private String name;
-        private Double carryingCapacity;
-        private Double maxVolume;
-        private VanStatus vanStatus;
-        private Set<Order> orders;
-
-        public VanBuilder setId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public VanBuilder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public VanBuilder setCarryingCapacity(Double carryingCapacity) {
-            this.carryingCapacity = carryingCapacity;
-            return this;
-        }
-
-        public VanBuilder setMaxVolume(Double maxVolume) {
-            this.maxVolume = maxVolume;
-            return this;
-        }
-
-        public VanBuilder setVanStatus(VanStatus vanStatus) {
-            this.vanStatus = vanStatus;
-            return this;
-        }
-
-        public VanBuilder setOrders(Set<Order> orders) {
-            this.orders = orders;
-            return this;
-        }
-
-        public Van build() {
-            Van van = new Van();
-            van.orders = this.orders;
-            van.carryingCapacity = this.carryingCapacity;
-            van.name = this.name;
-            van.maxVolume = this.maxVolume;
-            van.id = this.id;
-            van.vanStatus = this.vanStatus;
-            return van;
-        }
-    }
+    private List<Order> orders;
 
     public Long getId() {
         return id;
@@ -100,11 +51,11 @@ public class Van implements Entity<Long> {
         this.vanStatus = vanStatus;
     }
 
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(Set<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
@@ -118,5 +69,55 @@ public class Van implements Entity<Long> {
                 ", vanStatus=" + vanStatus +
                 ", orders=" + orders +
                 '}';
+    }
+
+    public static final class VanBuilder {
+        private Long id;
+        private String name;
+        private Double carryingCapacity;
+        private Double maxVolume;
+        private VanStatus vanStatus;
+        private List<Order> orders;
+
+        public VanBuilder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public VanBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public VanBuilder setCarryingCapacity(Double carryingCapacity) {
+            this.carryingCapacity = carryingCapacity;
+            return this;
+        }
+
+        public VanBuilder setMaxVolume(Double maxVolume) {
+            this.maxVolume = maxVolume;
+            return this;
+        }
+
+        public VanBuilder setVanStatus(VanStatus vanStatus) {
+            this.vanStatus = vanStatus;
+            return this;
+        }
+
+        public VanBuilder setOrders(List<Order> orders) {
+            this.orders = orders;
+            return this;
+        }
+
+        public Van build() {
+            Van van = new Van();
+            van.orders = this.orders;
+            van.carryingCapacity = this.carryingCapacity;
+            van.name = this.name;
+            van.maxVolume = this.maxVolume;
+            van.id = this.id;
+            van.vanStatus = this.vanStatus;
+            return van;
+        }
     }
 }

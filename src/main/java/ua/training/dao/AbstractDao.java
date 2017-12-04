@@ -12,6 +12,9 @@ import java.util.Optional;
 
 public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, Long> {
 
+    public static final String ID = "id";
+    public static final String NAME = "name";
+
     protected String tableName;
     protected Connection connection;
 
@@ -50,7 +53,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .set()
                 .updateValues(getParameterNames())
                 .where()
-                .condition(tableName, "id")
+                .condition(tableName, ID)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             setEntityParameters(entity, statement);
@@ -70,7 +73,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .from()
                 .table(tableName)
                 .where()
-                .condition(tableName, "id")
+                .condition(tableName, ID)
                 .built();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
@@ -113,7 +116,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .from()
                 .table(tableName)
                 .where()
-                .condition(tableName, "id")
+                .condition(tableName, ID)
                 .built();
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
@@ -129,7 +132,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .from()
                 .table(tableName)
                 .where()
-                .condition(tableName, "name")
+                .condition(tableName, NAME)
                 .built();
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, value);

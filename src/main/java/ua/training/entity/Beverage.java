@@ -1,6 +1,6 @@
 package ua.training.entity;
 
-import java.util.Set;
+import java.util.List;
 
 public class Beverage implements Entity<Long> {
     private Long id;
@@ -11,8 +11,7 @@ public class Beverage implements Entity<Long> {
     private BeverageType type;
     private BeverageState state;
     private BeverageQuality quality;
-    private Set<BeverageOrder> beverageOrders;
-
+    private List<BeverageOrder> beverageOrders;
 
     public Long getId() {
         return id;
@@ -78,11 +77,11 @@ public class Beverage implements Entity<Long> {
         this.quality = quality;
     }
 
-    public Set<BeverageOrder> getBeverageOrders() {
+    public List<BeverageOrder> getBeverageOrders() {
         return beverageOrders;
     }
 
-    public void setBeverageOrders(Set<BeverageOrder> beverageOrders) {
+    public void setBeverageOrders(List<BeverageOrder> beverageOrders) {
         this.beverageOrders = beverageOrders;
     }
 
@@ -95,7 +94,7 @@ public class Beverage implements Entity<Long> {
         private BeverageType type;
         private BeverageState state;
         private BeverageQuality quality;
-        private Set<BeverageOrder> beverageOrders;
+        private List<BeverageOrder> beverageOrders;
 
         public BeverageBuilder setId(Long id) {
             this.id = id;
@@ -137,7 +136,7 @@ public class Beverage implements Entity<Long> {
             return this;
         }
 
-        public BeverageBuilder setBeverageOrders(Set<BeverageOrder> beverageOrders) {
+        public BeverageBuilder setBeverageOrders(List<BeverageOrder> beverageOrders) {
             this.beverageOrders = beverageOrders;
             return this;
         }

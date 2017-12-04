@@ -1,11 +1,12 @@
 package ua.training.entity;
 
+import java.util.List;
 import java.util.Set;
 
 public class OrderStatus implements Entity<Long> {
     private Long id;
     private String name;
-    private Set<Order> orders;
+    private List<Order> orders;
 
     public Long getId() {
         return id;
@@ -23,19 +24,18 @@ public class OrderStatus implements Entity<Long> {
         this.name = name;
     }
 
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(Set<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-
 
     public static final class OrderStatusBuilder {
         private Long id;
         private String name;
-        private Set<Order> orders;
+        private List<Order> orders;
 
         public OrderStatusBuilder setId(Long id) {
             this.id = id;
@@ -47,7 +47,7 @@ public class OrderStatus implements Entity<Long> {
             return this;
         }
 
-        public OrderStatusBuilder setOrders(Set<Order> orders) {
+        public OrderStatusBuilder setOrders(List<Order> orders) {
             this.orders = orders;
             return this;
         }
