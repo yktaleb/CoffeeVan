@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.BeverageQualityProxy;
+
 import java.util.List;
 
 public class BeverageQuality implements Entity<Long> {
@@ -51,12 +53,21 @@ public class BeverageQuality implements Entity<Long> {
             return this;
         }
 
-        public BeverageQuality build() {
+        public BeverageQuality buildBeverageQuality() {
             BeverageQuality beverageQuality = new BeverageQuality();
             beverageQuality.setId(id);
             beverageQuality.setName(name);
             beverageQuality.setBeverages(beverages);
             return beverageQuality;
         }
+
+        public BeverageQuality buildBeverageQualityProxy() {
+            BeverageQualityProxy beverageQuality = new BeverageQualityProxy();
+            beverageQuality.setId(id);
+            beverageQuality.setName(name);
+            beverageQuality.setBeverages(beverages);
+            return beverageQuality;
+        }
+
     }
 }

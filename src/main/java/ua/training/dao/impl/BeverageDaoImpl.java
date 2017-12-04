@@ -75,6 +75,29 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         return result;
     }
 
+    @Override
+    public List<Beverage> findByQuality(Long qualityId) {
+        List<Beverage> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(tableName)
+                .where()
+                .condition(TABLE_NAME, BEVERAGE_QUALITY)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, qualityId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(getEntityFromResultSet(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
+    }
+
     private static final class BeverageDaoImplHolder {
         private static BeverageDaoImpl instance(Connection connection) {
             return new BeverageDaoImpl(connection);
@@ -110,12 +133,12 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         Double volume = resultSet.getDouble(VOLUME);
 
         return new BeverageProxy.BeverageBuilder()
-                        .setId(id)
-                        .setName(name)
-                        .setPrice(price)
-                        .setWeight(weight)
-                        .setVolume(volume)
-                        .buildBeverageProxy();
+                .setId(id)
+                .setName(name)
+                .setPrice(price)
+                .setWeight(weight)
+                .setVolume(volume)
+                .buildBeverageProxy();
     }
 }
 

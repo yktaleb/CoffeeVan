@@ -2,17 +2,13 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageQualityDao;
-import ua.training.dao.BeverageTypeDao;
-import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.BeverageQuality;
-import ua.training.entity.BeverageState;
-import ua.training.entity.BeverageType;
+import ua.training.entity.proxy.BeverageQualityProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> implements BeverageQualityDao {
     private static final String TABLE_NAME = "beverage_quality";
@@ -52,9 +48,9 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
     protected BeverageQuality getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return new BeverageQuality.BeverageQualityBuilder()
+        return new BeverageQualityProxy.BeverageQualityBuilder()
                         .setId(id)
                         .setName(name)
-                        .build();
+                        .buildBeverageQualityProxy();
     }
 }
