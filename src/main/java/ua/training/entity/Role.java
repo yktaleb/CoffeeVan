@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.RoleProxy;
+
 import java.util.List;
 import java.util.Set;
 
@@ -53,8 +55,16 @@ public class Role implements Entity<Long> {
             return this;
         }
 
-        public Role build() {
+        public Role buildRole() {
             Role role = new Role();
+            role.setId(id);
+            role.setName(name);
+            role.setUsers(users);
+            return role;
+        }
+
+        public Role buildRoleProxy() {
+            RoleProxy role = new RoleProxy();
             role.setId(id);
             role.setName(name);
             role.setUsers(users);

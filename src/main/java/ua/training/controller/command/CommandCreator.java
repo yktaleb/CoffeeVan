@@ -66,9 +66,10 @@ public class CommandCreator {
         try {
             connection = dataSource.getConnection();
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            OrderStatusDao orderStatusDao = daoFactory.createOrderStatusDao();
-            OrderStatus one = orderStatusDao.findOne(2L);
-            List<Order> orders = one.getOrders();
+            RoleDao roleDao = daoFactory.createRoleDao();
+            Role one = roleDao.findOne(2L);
+            List<User> users = one.getUsers();
+            List<Order> orders = users.get(0).getOrders();
             String name = one.getName();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -6,7 +6,6 @@ import ua.training.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 public class RegistrationCommand implements Command {
     private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
@@ -34,7 +33,7 @@ public class RegistrationCommand implements Command {
                             .setFirstName(firstName)
                             .setLastName(lastName)
                             .setPhoneNumber(phoneNumber)
-                            .build()
+                            .buildUser()
             );
         } catch (LoginAlreadyExistsException e) {
             return REGISTRATION_PAGE;

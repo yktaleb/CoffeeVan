@@ -4,9 +4,11 @@ import ua.training.dao.AbstractDao;
 import ua.training.dao.UserDao;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.User;
+import ua.training.entity.proxy.UserProxy;
 
 import java.sql.*;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     private static final String TABLE_NAME = "user";
@@ -59,9 +61,30 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
             statement.setLong(1, userId);
             statement.setLong(2, roleId);
             statement.executeUpdate();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<User> findByRole(Long roleId) {
+        List<User> result = new ArrayList<>();
+        String query = "SELECT u.* FROM `user_role` ur \n" +
+                "inner join `user` u ON ur.user = u.id\n" +
+                "where ur.role = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, roleId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    if (getEntityFromResultSet(resultSet) != null) {
+                        result.add(getEntityFromResultSet(resultSet));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private static class UserDaoImplHolder {
@@ -99,13 +122,13 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         String firstName = resultSet.getString(FIRST_NAME);
         String lastName = resultSet.getString(LAST_NAME);
         String phoneNumber = resultSet.getString(PHONE_NUMBER);
-        return new User.UserBuilder()
-                        .setId(id)
-                        .setEmail(email)
-                        .setPassword(password)
-                        .setFirstName(firstName)
-                        .setLastName(lastName)
-                        .setPhoneNumber(phoneNumber)
-                        .build();
+        return new UserProxy.UserBuilder()
+                .setId(id)
+                .setEmail(email)
+                .setPassword(password)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setPhoneNumber(phoneNumber)
+                .buildUserProxy();
     }
 }

@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.UserProxy;
+
 import java.util.List;
 import java.util.Set;
 
@@ -129,8 +131,21 @@ public class User implements Entity<Long> {
             return this;
         }
 
-        public User build() {
+        public User buildUser() {
             User user = new User();
+            user.setId(id);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setPhoneNumber(phoneNumber);
+            user.setRoles(roles);
+            user.setOrders(orders);
+            return user;
+        }
+
+        public User buildUserProxy() {
+            UserProxy user = new UserProxy();
             user.setId(id);
             user.setEmail(email);
             user.setPassword(password);

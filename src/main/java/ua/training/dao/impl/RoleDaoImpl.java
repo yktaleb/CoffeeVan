@@ -1,11 +1,9 @@
 package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
-import ua.training.dao.CrudDao;
 import ua.training.dao.RoleDao;
-import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Role;
-import ua.training.entity.User;
+import ua.training.entity.proxy.RoleProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,7 +40,7 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
     @Override
     public List<Role> findByUser(Long userId) {
         List<Role> result = new ArrayList<>();
-        String query = "SELECT * FROM `user_role` ur \n" +
+        String query = "SELECT r.*` FROM `user_role` ur \n" +
                 "inner join `role` r ON ur.role = r.id\n" +
                 "where ur.user = ?";
         try(PreparedStatement statement = connection.prepareStatement(query)) {
@@ -74,9 +72,9 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
     protected Role getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
-        return new Role.RoleBuilder()
+        return new RoleProxy.RoleBuilder()
                         .setId(id)
                         .setName(name)
-                        .build();
+                        .buildRoleProxy();
     }
 }
