@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.OrderProxy;
+
 import java.util.List;
 import java.util.Set;
 
@@ -109,8 +111,19 @@ public class Order implements Entity<Long> {
             return this;
         }
 
-        public Order build() {
+        public Order buildOrder() {
             Order order = new Order();
+            order.setId(id);
+            order.setAddress(address);
+            order.setUser(user);
+            order.setVan(van);
+            order.setStatus(status);
+            order.setBeverageOrders(beverageOrders);
+            return order;
+        }
+
+        public Order buildOrderProxy() {
+            OrderProxy order = new OrderProxy();
             order.setId(id);
             order.setAddress(address);
             order.setUser(user);

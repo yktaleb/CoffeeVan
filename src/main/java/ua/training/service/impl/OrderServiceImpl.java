@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService {
     private static final String X_AUTH_TOKEN = "X-Auth-Token";
@@ -71,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
                             .setAddress(address)
                             .setVan(null)
                             .setStatus(status)
-                            .build()
+                            .buildOrder()
             );
             for (Long beverageId : basket.keySet()) {
                 Beverage beverage = beverageDao.findOne(beverageId);

@@ -66,10 +66,13 @@ public class CommandCreator {
         try {
             connection = dataSource.getConnection();
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            BeverageTypeDao beverageQualityDao = daoFactory.createBeverageTypeDao();
-            BeverageType one = beverageQualityDao.findOne(1L);
-            List<Beverage> beverages = one.getBeverages();
-            String name = one.getName();
+            OrderDao beverageQualityDao = daoFactory.createOrderDao();
+            Order one = beverageQualityDao.findOne(1L);
+            List<BeverageOrder> beverageOrders = one.getBeverageOrders();
+            User user = one.getUser();
+            Van van = one.getVan();
+            OrderStatus status = one.getStatus();
+            String address = one.getAddress();
         } catch (SQLException e) {
             e.printStackTrace();
         }
