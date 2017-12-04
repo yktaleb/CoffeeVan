@@ -15,8 +15,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public class AdminServiceImpl implements AdminService {
 
@@ -62,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
             VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
             VanStatus vanStatus = vanStatusDao.findByName(status);
 //            Optional<VanStatus> freeStatus = daoFactory.createVanStatusDao().findByName(FREE_STATUS);
-            return vanDao.findAllByStatus(vanStatus.getId());
+            return vanDao.findByStatus(vanStatus.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

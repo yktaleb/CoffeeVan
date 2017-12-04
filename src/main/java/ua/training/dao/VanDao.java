@@ -5,5 +5,5 @@ import ua.training.entity.Van;
 import java.util.List;
 
 public interface VanDao extends CrudDao<Van, Long> {
-    List<Van> findAllByStatus(Long statusId);
+    List<Van> findByStatus(Long statusId);
 }

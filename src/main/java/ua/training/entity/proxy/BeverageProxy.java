@@ -81,18 +81,18 @@ public class BeverageProxy extends Beverage {
     }
 
     private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {
-        Long beverageStateId = null;
+        Long id = null;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, getId());
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    beverageStateId = resultSet.getLong(1);
+                    id = resultSet.getLong(1);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return beverageStateId;
+        return id;
     }
 
     @Override

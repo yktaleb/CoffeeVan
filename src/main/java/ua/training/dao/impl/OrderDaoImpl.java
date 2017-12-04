@@ -102,6 +102,30 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     }
 
     @Override
+    public List<Order> findByVan(Long vanId) {
+        List<Order> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE_NAME)
+                .where()
+                .condition(TABLE_NAME, VAN)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, vanId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (getEntityFromResultSet(resultSet) != null) {
+                    result.add(getEntityFromResultSet(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
+    }
+
+    @Override
     protected String[] getParameterNames() {
         return new String[]{ORDER_STATUS, USER, VAN, ADDRESS};
     }

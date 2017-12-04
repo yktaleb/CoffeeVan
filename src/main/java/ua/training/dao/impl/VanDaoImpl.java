@@ -6,6 +6,7 @@ import ua.training.dao.factory.MySqlDaoFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
+import ua.training.entity.proxy.VanProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,24 +54,7 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
     }
 
     @Override
-    protected Van getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        Long id = Long.valueOf(resultSet.getString(ID));
-        String name = resultSet.getString(NAME);
-        Double carryingCapacity = resultSet.getDouble(CARRYING_CAPACITY);
-        Double maxVolume = resultSet.getDouble(MAX_VOLUME);
-        Long vanStatusId = resultSet.getLong(VAN_STATUS);
-        VanStatus vanStatus = MySqlDaoFactory.getInstance(connection).createVanStatusDao().findOne(vanStatusId);
-        return new Van.VanBuilder()
-                    .setId(id)
-                    .setName(name)
-                    .setCarryingCapacity(carryingCapacity)
-                    .setMaxVolume(maxVolume)
-                    .setVanStatus(vanStatus)
-                    .build();
-    }
-
-    @Override
-    public List<Van> findAllByStatus(Long statusId) {
+    public List<Van> findByStatus(Long statusId) {
         List<Van> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -93,4 +77,20 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
         }
         return result;
     }
+
+    @Override
+    protected Van getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        Long id = Long.valueOf(resultSet.getString(ID));
+        String name = resultSet.getString(NAME);
+        Double carryingCapacity = resultSet.getDouble(CARRYING_CAPACITY);
+        Double maxVolume = resultSet.getDouble(MAX_VOLUME);
+        Long vanStatusId = resultSet.getLong(VAN_STATUS);
+        return new VanProxy.VanBuilder()
+                    .setId(id)
+                    .setName(name)
+                    .setCarryingCapacity(carryingCapacity)
+                    .setMaxVolume(maxVolume)
+                    .buildVanProxy();
+    }
+
 }

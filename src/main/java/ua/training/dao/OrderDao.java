@@ -11,4 +11,6 @@ public interface OrderDao extends CrudDao<Order, Long> {
     List<Order> findByStatus(Long statusId);
 
     List<Order> findByUser(Long userId);
+
+    List<Order> findByVan(Long vanId);
 }

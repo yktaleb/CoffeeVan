@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import ua.training.entity.proxy.VanProxy;
+
 import java.util.List;
 import java.util.Set;
 
@@ -109,14 +111,25 @@ public class Van implements Entity<Long> {
             return this;
         }
 
-        public Van build() {
+        public Van buildVan() {
             Van van = new Van();
-            van.orders = this.orders;
-            van.carryingCapacity = this.carryingCapacity;
-            van.name = this.name;
-            van.maxVolume = this.maxVolume;
-            van.id = this.id;
-            van.vanStatus = this.vanStatus;
+            van.setId(id);
+            van.setName(name);
+            van.setCarryingCapacity(carryingCapacity);
+            van.setMaxVolume(maxVolume);
+            van.setVanStatus(vanStatus);
+            van.setOrders(orders);
+            return van;
+        }
+
+        public Van buildVanProxy() {
+            VanProxy van = new VanProxy();
+            van.setId(id);
+            van.setName(name);
+            van.setCarryingCapacity(carryingCapacity);
+            van.setMaxVolume(maxVolume);
+            van.setVanStatus(vanStatus);
+            van.setOrders(orders);
             return van;
         }
     }
