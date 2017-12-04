@@ -2,10 +2,11 @@ package ua.training.dao;
 
 import ua.training.entity.Role;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface RoleDao extends CrudDao<Role, Long> {
-    Optional<Role> findByName(String value);
-    Set<Role> findByUser(Long userId);
+    Role findByName(String value);
+
+    List<Role> findByUser(Long userId);
 }

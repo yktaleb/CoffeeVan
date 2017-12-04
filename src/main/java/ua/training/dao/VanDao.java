@@ -2,8 +2,8 @@ package ua.training.dao;
 
 import ua.training.entity.Van;
 
-import java.util.Set;
+import java.util.List;
 
 public interface VanDao extends CrudDao<Van, Long> {
-    Set<Van> findAllByStatus(Long statusId);
+    List<Van> findAllByStatus(Long statusId);
 }
