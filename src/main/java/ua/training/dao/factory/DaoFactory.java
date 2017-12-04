@@ -1,7 +1,6 @@
 package ua.training.dao.factory;
 
 import ua.training.dao.*;
-import ua.training.entity.OrderStatus;
 
 import java.sql.Connection;
 
