@@ -1,4 +1,4 @@
-package ua.training.controller;
+package ua.training.controller.util;
 
 import ua.training.entity.BeverageOrder;
 import ua.training.entity.Order;

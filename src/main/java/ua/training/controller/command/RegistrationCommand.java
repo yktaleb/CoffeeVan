@@ -18,13 +18,13 @@ public class RegistrationCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String email = (String) request.getParameter("email");
-        String password = (String) request.getParameter("password");
-        String firstName = (String) request.getParameter("firstName");
-        String lastName = (String) request.getParameter("lastName");
-        String phoneNumber = (String) request.getParameter("phoneNumber");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String phoneNumber = request.getParameter("phoneNumber");
         try {
-            User user = userService.register(
+            userService.register(
                     new User.UserBuilder()
                             .setEmail(email)
                             .setPassword(password)

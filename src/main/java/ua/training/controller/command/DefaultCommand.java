@@ -24,7 +24,7 @@ public class DefaultCommand implements Command {
         String sortType = request.getParameter("sort");
         List<Beverage> allBeverage = null;
         if (QUALITY.equals(sortType)) {
-
+            allBeverage = beverageService.getSortedByQuality();
         } else if (PRICE.equals(sortType)) {
             allBeverage = beverageService.getSortedByPrice();
         } else {

@@ -1,6 +1,6 @@
 package ua.training.controller.command;
 
-import ua.training.controller.FieldBasketFront;
+import ua.training.controller.util.FieldBasketFront;
 import ua.training.entity.Beverage;
 import ua.training.service.BeverageService;
 import ua.training.util.constant.general.Pages;
