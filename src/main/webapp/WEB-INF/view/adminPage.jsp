@@ -12,6 +12,7 @@
 <div><input name="exception" value="${exception}" type="hidden"/></div>
 <h1 style="color: red">${exception}</h1>
 Free vans:
+</br>
 <c:forEach items="${freeVans}" var="van">
     <tr>
         <td>Id:${van.id}; Name:${van.name}(Carrying Capacity : ${van.carryingCapacity}, Max volume : ${van.maxVolume} )</td>
@@ -24,6 +25,7 @@ __________________________________________________________
 </br>
 </br>
 Busy vans:
+</br>
 <c:forEach items="${busyVans}" var="van">
     <tr>
         <td>Id:${van.id}; Name:${van.name}(Carrying Capacity : ${van.carryingCapacity}, Max volume : ${van.maxVolume} )</td>

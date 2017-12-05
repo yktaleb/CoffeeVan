@@ -70,15 +70,19 @@ public class AdminServiceImpl implements AdminService {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            VanDao vanDao = daoFactory.createVanDao();
+            Van van = vanDao.findOne(vanId);
+            if (BUSY_STATUS.equals(van.getVanStatus().getName())) {
+                return;
+            }
+
             OrderDao orderDao = daoFactory.createOrderDao();
             OrderStatusDao orderStatusDao = daoFactory.createOrderStatusDao();
-            VanDao vanDao = daoFactory.createVanDao();
             VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
 
             OrderStatus onTheRoadStatus = orderStatusDao.findByName(ON_THE_ROAD_STATUS);
             VanStatus busyStatus = vanStatusDao.findByName(BUSY_STATUS);
             Order order = orderDao.findOne(orderId);
-            Van van = vanDao.findOne(vanId);
 
             double totalVolume = 0;
             double totalWeight = 0;
