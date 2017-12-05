@@ -16,27 +16,33 @@ import java.util.List;
 public class UserProxy extends User {
     @Override
     public List<Role> getRoles() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            RoleDao roleDao = daoFactory.createRoleDao();
-            return roleDao.findByUser(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getRoles() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+                RoleDao roleDao = daoFactory.createRoleDao();
+                return roleDao.findByUser(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getRoles();
     }
 
     @Override
     public List<Order> getOrders() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            OrderDao orderDao = daoFactory.createOrderDao();
-            return orderDao.findByUser(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getOrders() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+                OrderDao orderDao = daoFactory.createOrderDao();
+                return orderDao.findByUser(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getOrders();
     }
 }

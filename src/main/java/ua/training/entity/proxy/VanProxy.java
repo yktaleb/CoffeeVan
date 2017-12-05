@@ -22,23 +22,26 @@ import static ua.training.util.constant.table.VanConstants.VAN_STATUS;
 public class VanProxy extends Van {
     @Override
     public VanStatus getVanStatus() {
-        String query = new QueryBuilder()
-                .select(VAN_STATUS)
-                .from()
-                .table(VanConstants.TABLE)
-                .where()
-                .condition(VanConstants.TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createVanStatusDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getVanStatus() == null) {
+            String query = new QueryBuilder()
+                    .select(VAN_STATUS)
+                    .from()
+                    .table(VanConstants.TABLE)
+                    .where()
+                    .condition(VanConstants.TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createVanStatusDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getVanStatus();
     }
 
     private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {
@@ -58,14 +61,17 @@ public class VanProxy extends Van {
 
     @Override
     public List<Order> getOrders() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            OrderDao orderDao = daoFactory.createOrderDao();
-            return orderDao.findByVan(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getOrders() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+                OrderDao orderDao = daoFactory.createOrderDao();
+                return orderDao.findByVan(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getOrders();
     }
 }

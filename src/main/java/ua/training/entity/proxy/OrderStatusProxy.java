@@ -14,15 +14,18 @@ import java.util.List;
 public class OrderStatusProxy extends OrderStatus {
     @Override
     public List<Order> getOrders() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            OrderDao orderDao = daoFactory.createOrderDao();
-            return orderDao.findByStatus(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getOrders() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                connection.setAutoCommit(false);
+                DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+                OrderDao orderDao = daoFactory.createOrderDao();
+                return orderDao.findByStatus(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getOrders();
     }
 }

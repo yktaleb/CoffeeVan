@@ -10,6 +10,7 @@ import ua.training.entity.*;
 import ua.training.exception.VanCapacityException;
 import ua.training.service.AdminService;
 import ua.training.service.OrderService;
+import ua.training.service.VanService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -26,45 +27,41 @@ public class AdminServiceImpl implements AdminService {
     private static final String NOT_ENOUGH_VOLUME = "Isn`t enough volume";
 
     private final OrderService orderService;
+    private final VanService vanService;
 
-    private AdminServiceImpl(OrderService orderService) {
+    private AdminServiceImpl(OrderService orderService, VanService vanService) {
         this.orderService = orderService;
+        this.vanService = vanService;
     }
 
     private static final class VanServiceImplHolder {
-        private static final AdminServiceImpl instance(OrderService orderService) {
-            return new AdminServiceImpl(orderService);
+        private static final AdminServiceImpl instance(OrderService orderService, VanService vanService) {
+            return new AdminServiceImpl(orderService, vanService);
         }
     }
 
-    public static AdminServiceImpl getInstance(OrderService orderService) {
-        return VanServiceImplHolder.instance(orderService);
+    public static AdminServiceImpl getInstance(OrderService orderService, VanService vanService) {
+        return VanServiceImplHolder.instance(orderService, vanService);
     }
 
     @Override
     public List<Van> getFreeVans() {
-        return getVansByStatus(FREE_STATUS);
+        return vanService.getFreeVans();
     }
 
     @Override
     public List<Van> getBusyVans() {
-        return getVansByStatus(BUSY_STATUS);
+        return vanService.getBusyVans();
     }
 
-    private List<Van> getVansByStatus(String status) {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            VanDao vanDao = daoFactory.createVanDao();
-            VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
-            VanStatus vanStatus = vanStatusDao.findByName(status);
-//            Optional<VanStatus> freeStatus = daoFactory.createVanStatusDao().findByName(FREE_STATUS);
-            return vanDao.findByStatus(vanStatus.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+    @Override
+    public void makeVanFree(Long vanId) {
+        vanService.makeVanFree(vanId);
+    }
+
+    @Override
+    public List<Order> getAllOrders() {
+        return orderService.getAll();
     }
 
     @Override
@@ -77,10 +74,12 @@ public class AdminServiceImpl implements AdminService {
             OrderStatusDao orderStatusDao = daoFactory.createOrderStatusDao();
             VanDao vanDao = daoFactory.createVanDao();
             VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
+
             OrderStatus onTheRoadStatus = orderStatusDao.findByName(ON_THE_ROAD_STATUS);
             VanStatus busyStatus = vanStatusDao.findByName(BUSY_STATUS);
             Order order = orderDao.findOne(orderId);
             Van van = vanDao.findOne(vanId);
+
             double totalVolume = 0;
             double totalWeight = 0;
             double totalPrice = 0;
@@ -103,28 +102,5 @@ public class AdminServiceImpl implements AdminService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void makeVanFree(Long vanId) {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            VanDao vanDao = daoFactory.createVanDao();
-            VanStatusDao vanStatusDao = daoFactory.createVanStatusDao();
-            VanStatus vanStatus = vanStatusDao.findByName(FREE_STATUS);
-            Van van = vanDao.findOne(vanId);
-            van.setVanStatus(vanStatus);
-            vanDao.update(van);
-            connection.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public List<Order> getAllOrders() {
-        return orderService.getAll();
     }
 }

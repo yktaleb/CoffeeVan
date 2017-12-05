@@ -16,15 +16,18 @@ import java.util.List;
 public class BeverageQualityProxy extends BeverageQuality {
     @Override
     public List<Beverage> getBeverages() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            BeverageDao beverageDao = daoFactory.createBeverageDao();
-            return beverageDao.findByQuality(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getBeverages() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                connection.setAutoCommit(false);
+                DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+                BeverageDao beverageDao = daoFactory.createBeverageDao();
+                return beverageDao.findByQuality(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getBeverages();
     }
 }

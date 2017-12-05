@@ -76,15 +76,11 @@ public class UserServiceImpl implements UserService {
         User user = null;
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
-            RoleDao roleDao = daoFactory.createRoleDao();
-            List<Role> roles = roleDao.findByUser(id);
             user = userDao.findOne(id);
-            user.setRoles(roles);
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return user;
     }

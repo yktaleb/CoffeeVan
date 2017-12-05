@@ -37,8 +37,8 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
     @Override
     public List<Role> findByUser(Long userId) {
         List<Role> result = new ArrayList<>();
-        String query = "SELECT r.*` FROM `user_role` ur \n" +
-                "inner join `role` r ON ur.role = r.id\n" +
+        String query = "SELECT r.* FROM `user_role` ur " +
+                "inner join `role` r ON ur.role = r.id " +
                 "where ur.user = ?";
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, userId);

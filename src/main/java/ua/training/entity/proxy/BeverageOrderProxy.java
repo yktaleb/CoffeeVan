@@ -18,44 +18,50 @@ import static ua.training.util.constant.table.BeverageOrderConstants.*;
 public class BeverageOrderProxy extends BeverageOrder {
     @Override
     public Beverage getBeverage() {
-        String query = new QueryBuilder()
-                .select(BEVERAGE)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createBeverageDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getBeverage() == null) {
+            String query = new QueryBuilder()
+                    .select(BEVERAGE)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createBeverageDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getBeverage();
     }
 
     @Override
     public Order getOrder() {
-        String query = new QueryBuilder()
-                .select(ORDER)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createOrderDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getOrder() == null) {
+            String query = new QueryBuilder()
+                    .select(ORDER)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createOrderDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getOrder();
     }
 
     private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {

@@ -19,65 +19,74 @@ public class BeverageProxy extends Beverage {
 
     @Override
     public BeverageType getType() {
-        String query = new QueryBuilder()
-                .select(BEVERAGE_TYPE)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createBeverageTypeDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getType() == null) {
+            String query = new QueryBuilder()
+                    .select(BEVERAGE_TYPE)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createBeverageTypeDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getType();
     }
 
     @Override
     public BeverageState getState() {
-        String query = new QueryBuilder()
-                .select(BEVERAGE_STATE)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createBeverageStateDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getState() == null) {
+            String query = new QueryBuilder()
+                    .select(BEVERAGE_STATE)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createBeverageStateDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getState();
     }
 
     @Override
     public BeverageQuality getQuality() {
-        String query = new QueryBuilder()
-                .select(BEVERAGE_QUALITY)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createBeverageQualityDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getQuality() == null) {
+            String query = new QueryBuilder()
+                    .select(BEVERAGE_QUALITY)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createBeverageQualityDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getQuality();
     }
 
     private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {
@@ -97,15 +106,18 @@ public class BeverageProxy extends Beverage {
 
     @Override
     public List<BeverageOrder> getBeverageOrders() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            BeverageOrderDao beverageOrderDao = daoFactory.createBeverageOrderDao();
-            return beverageOrderDao.findByBeverage(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getBeverageOrders() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                connection.setAutoCommit(false);
+                DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+                BeverageOrderDao beverageOrderDao = daoFactory.createBeverageOrderDao();
+                return beverageOrderDao.findByBeverage(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getBeverageOrders();
     }
 }

@@ -19,65 +19,74 @@ public class OrderProxy extends Order {
 
     @Override
     public User getUser() {
-        String query = new QueryBuilder()
-                .select(USER)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createUserDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getUser() == null) {
+            String query = new QueryBuilder()
+                    .select(USER)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createUserDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getUser();
     }
 
     @Override
     public Van getVan() {
-        String query = new QueryBuilder()
-                .select(VAN)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createVanDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getVan() == null) {
+            String query = new QueryBuilder()
+                    .select(VAN)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createVanDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getVan();
     }
 
     @Override
     public OrderStatus getStatus() {
-        String query = new QueryBuilder()
-                .select(ORDER_STATUS)
-                .from()
-                .table(TABLE)
-                .where()
-                .condition(TABLE, ID)
-                .built();
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            return DaoFactory
-                    .getDaoFactory(connection)
-                    .createOrderStatusDao()
-                    .findOne(getIdDesiredColumnByBeverageId(query, connection));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getStatus() == null) {
+            String query = new QueryBuilder()
+                    .select(ORDER_STATUS)
+                    .from()
+                    .table(TABLE)
+                    .where()
+                    .condition(TABLE, ID)
+                    .built();
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                return DaoFactory
+                        .getDaoFactory(connection)
+                        .createOrderStatusDao()
+                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getStatus();
     }
 
     private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {
@@ -97,16 +106,19 @@ public class OrderProxy extends Order {
 
     @Override
     public List<BeverageOrder> getBeverageOrders() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            OrderDao orderDao = daoFactory.createOrderDao();
-            return orderDao.getBeverageOrdersByOrderId(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getBeverageOrders() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                connection.setAutoCommit(false);
+                DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+                OrderDao orderDao = daoFactory.createOrderDao();
+                return orderDao.getBeverageOrdersByOrderId(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getBeverageOrders();
     }
 
 }

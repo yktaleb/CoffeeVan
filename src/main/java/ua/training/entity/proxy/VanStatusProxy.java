@@ -14,13 +14,16 @@ import java.util.List;
 public class VanStatusProxy extends VanStatus {
     @Override
     public List<Van> getVans() {
-        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
-            VanDao vanDao = DaoFactory.getDaoFactory(connection).createVanDao();
-            return vanDao.findByStatus(getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (super.getVans() == null) {
+            DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+            try (Connection connection = dataSource.getConnection()) {
+                VanDao vanDao = DaoFactory.getDaoFactory(connection).createVanDao();
+                return vanDao.findByStatus(getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        return null;
+        return super.getVans();
     }
 }
