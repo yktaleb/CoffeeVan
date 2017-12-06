@@ -1,17 +1,15 @@
 package ua.training.controller.command;
 
-import ua.training.entity.Beverage;
+import ua.training.entity.Role;
 import ua.training.entity.User;
-import ua.training.service.BeverageService;
 import ua.training.service.UserService;
 import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Optional;
 
-import static ua.training.util.constant.general.Parameters.X_AUTH_TOKEN;
+import static ua.training.util.constant.general.Global.ADMIN_ROLE;
+import static ua.training.util.constant.general.Parameters.*;
 
 public class LoginCommand implements Command {
 
@@ -23,13 +21,18 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String email = (String) request.getParameter("email");
-        String password = (String) request.getParameter("password");
+        String email = request.getParameter(EMAIL);
+        String password = request.getParameter(PASSWORD);
         User user = userService.findByEmail(email);
         if (user == null || !user.getPassword().equals(password)) {
             return Pages.LOGIN;
         }
         request.getSession().setAttribute(X_AUTH_TOKEN, user.getId());
+        for (Role role : user.getRoles()) {
+            if (role.getName().equals(ADMIN_ROLE)) {
+                request.getSession().setAttribute(ADMIN, true);
+            }
+        }
         return Pages.INDEX;
     }
 }

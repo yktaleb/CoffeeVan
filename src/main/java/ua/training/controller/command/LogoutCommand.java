@@ -14,7 +14,7 @@ public class LogoutCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().removeAttribute(X_AUTH_TOKEN);
+        request.getSession().invalidate();
         return Pages.LOGIN;
     }
 }

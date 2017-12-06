@@ -8,6 +8,8 @@ public interface Parameters {
     String LANGUAGE = "lang";
     String X_AUTH_TOKEN = "token";
     String ADMIN = "admin";
+    String EMAIL = "email";
+    String PASSWORD = "password";
 
 //    String FIRST_NAME = "firstName";
 //    String LAST_NAME = "lastName";

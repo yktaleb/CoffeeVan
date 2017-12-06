@@ -7,7 +7,9 @@
 <%@include file="/WEB-INF/view/i18n.jsp" %>
 <c:if test="${not empty token}">
     <li><a href="/?command=showBasket">Basket</a></li>
-    <li><a href="/?command=admin/adminPage">Admin page</a></li>
+    <c:if test="${not empty admin}">
+        <li><a href="/?command=admin/adminPage">Admin page</a></li>
+    </c:if>
 </c:if>
 <form action="/" method="POST">
     <div><input name="command" value="setLang" type="hidden"/></div>
