@@ -10,6 +10,9 @@ public interface Parameters {
     String ADMIN = "admin";
     String EMAIL = "email";
     String PASSWORD = "password";
+    String BASKET = "basket";
+    String TOTAL_PRICE = "totalPrice";
+    String BASKET_FIELDS = "basketFields";
 
 //    String FIRST_NAME = "firstName";
 //    String LAST_NAME = "lastName";

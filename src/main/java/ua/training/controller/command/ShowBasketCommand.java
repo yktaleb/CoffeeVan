@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static ua.training.util.constant.general.Parameters.*;
+
 public class ShowBasketCommand implements Command {
-    private static final String BASKET = "basket";
 
     private final BeverageService beverageService;
 
@@ -40,8 +41,8 @@ public class ShowBasketCommand implements Command {
 
             totalPrice += fieldPrice;
         }
-        request.getSession().setAttribute("totalPrice", totalPrice);
-        request.getSession().setAttribute("basketFields", basketFields);
+        request.getSession().setAttribute(TOTAL_PRICE, totalPrice);
+        request.getSession().setAttribute(BASKET_FIELDS, basketFields);
         return Pages.BASKET;
     }
 

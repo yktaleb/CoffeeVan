@@ -1,13 +1,12 @@
 package ua.training.controller.command;
 
-import ua.training.entity.Beverage;
-import ua.training.service.BeverageService;
 import ua.training.service.OrderService;
 import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+
+import static ua.training.util.constant.general.Parameters.*;
 
 public class CreateOrderCommand implements Command {
 
@@ -20,6 +19,9 @@ public class CreateOrderCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         orderService.createOrder(request);
+        request.getSession().removeAttribute(BASKET);
+        request.getSession().removeAttribute(TOTAL_PRICE);
+        request.getSession().removeAttribute(BASKET_FIELDS);
         return Pages.INDEX;
     }
 }
