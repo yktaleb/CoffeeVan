@@ -7,5 +7,4 @@ public interface Pages {
     String LOGIN = "WEB-INF/view/login.jsp";
     String REGISTRATION = "WEB-INF/view/registration.jsp";
     String BASKET = "WEB-INF/view/basket.jsp";
-
 }

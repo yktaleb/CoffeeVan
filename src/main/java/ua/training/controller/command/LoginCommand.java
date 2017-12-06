@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
+import static ua.training.util.constant.general.Parameters.X_AUTH_TOKEN;
+
 public class LoginCommand implements Command {
-    private static final String X_AUTH_TOKEN = "X-Auth-Token";
 
     private UserService userService;
 

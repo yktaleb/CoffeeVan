@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 import static ua.training.util.constant.general.Commands.*;
+import static ua.training.util.constant.general.Parameters.*;
 
 public class CommandCreator {
 
-    private static final String X_AUTH_TOKEN = "X-Auth-Token";
-    private static final String ADMIN = "admin";
     private static final String ADMIN_ROLE = "ADMIN_ROLE";
 
     private Map<String, Command> commandMap = new HashMap<>();
@@ -34,6 +33,7 @@ public class CommandCreator {
         commandMap.put(SET_ORDER_VAN_COMMAND, new SetOrderVanCommand(serviceFactory.createAdminService()));
         commandMap.put(MAKE_VAN_FREE_COMMAND, new MakeVanFreeCommand(serviceFactory.createAdminService()));
         commandMap.put(LOGOUT_COMMAND, new LogoutCommand());
+        commandMap.put(LANGUAGE_COMMAND, new LanguageCommand());
     }
 
     private static class CommandFactoryHolder {
@@ -66,7 +66,8 @@ public class CommandCreator {
         if (authToken == null
                 && !LOGIN_COMMAND.equals(commandName)
                 && !REGISTRATION_PAGE_COMMAND.equals(commandName)
-                && !REGISTRATION_COMMAND.equals(commandName)) {
+                && !REGISTRATION_COMMAND.equals(commandName)
+                && !LANGUAGE_COMMAND.equals(commandName)) {
             command = commandMap.get(LOGIN_PAGE_COMMAND);
         } else if (authToken != null && commandName == null) {
             command = commandMap.get(INDEX_COMMAND);

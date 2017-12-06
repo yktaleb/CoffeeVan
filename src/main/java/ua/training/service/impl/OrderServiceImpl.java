@@ -15,8 +15,9 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 
+import static ua.training.util.constant.general.Parameters.X_AUTH_TOKEN;
+
 public class OrderServiceImpl implements OrderService {
-    private static final String X_AUTH_TOKEN = "X-Auth-Token";
     private static final String BASKET = "basket";
     private static final String ADDRESS = "address";
     private static final String IN_PROCESSING_STATUS = "IN_PROCESSING";

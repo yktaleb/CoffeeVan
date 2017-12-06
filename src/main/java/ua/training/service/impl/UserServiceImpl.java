@@ -18,9 +18,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static ua.training.util.constant.general.Parameters.X_AUTH_TOKEN;
+
 public class UserServiceImpl implements UserService {
 
-    private final static String X_AUTH_TOKEN = "X-Auth-Token";
     private final static String USER_ROLE = "USER_ROLE";
 
     private UserServiceImpl() {

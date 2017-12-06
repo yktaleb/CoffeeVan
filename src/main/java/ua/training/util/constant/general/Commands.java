@@ -14,4 +14,5 @@ public interface Commands {
     String SET_ORDER_VAN_COMMAND = "setOrderVan";
     String MAKE_VAN_FREE_COMMAND = "makeVanFree";
     String LOGOUT_COMMAND = "logout";
+    String LANGUAGE_COMMAND = "setLang";
 }
