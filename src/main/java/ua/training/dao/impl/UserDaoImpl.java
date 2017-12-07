@@ -13,9 +13,6 @@ import java.util.List;
 import static ua.training.util.constant.table.UserConstants.*;
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
-    String USER_ROLE_TABLE = "user_role";
-    String USER_COLUMN = "user";
-    String ROLE_COLUMN = "role";
 
     private UserDaoImpl(Connection connection) {
         super(TABLE, connection);
@@ -38,7 +35,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                 }
             }
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return null;
     }

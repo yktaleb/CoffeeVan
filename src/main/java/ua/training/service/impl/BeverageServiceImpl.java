@@ -35,7 +35,7 @@ public class BeverageServiceImpl implements BeverageService {
             BeverageDao beverageDao = daoFactory.createBeverageDao();
             beverages = beverageDao.findAll();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return beverages;
     }
@@ -50,7 +50,7 @@ public class BeverageServiceImpl implements BeverageService {
             BeverageDao beverageDao = daoFactory.createBeverageDao();
             beverage = beverageDao.findOne(id);
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return beverage;
     }

@@ -9,4 +9,7 @@ public interface UserConstants {
     String LAST_NAME = "last_name";
     String PHONE_NUMBER = "phone_number";
     int NUMBER_OF_FIELDS_WITHOUT_ID = 5;
+    String USER_ROLE_TABLE = "user_role";
+    String USER_COLUMN = "user";
+    String ROLE_COLUMN = "role";
 }

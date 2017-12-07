@@ -11,6 +11,7 @@ import ua.training.exception.VanCapacityException;
 import ua.training.service.AdminService;
 import ua.training.service.OrderService;
 import ua.training.service.VanService;
+import ua.training.util.ConnectionUtil;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -62,7 +63,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void setOrderVan(Long orderId, Long vanId) throws VanCapacityException {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             VanDao vanDao = daoFactory.createVanDao();
@@ -98,7 +101,10 @@ public class AdminServiceImpl implements AdminService {
             vanDao.update(van);
             connection.commit();
         } catch (SQLException e) {
+            ConnectionUtil.rollback(connection);
             e.printStackTrace();
+        } finally {
+            ConnectionUtil.close(connection);
         }
     }
 }

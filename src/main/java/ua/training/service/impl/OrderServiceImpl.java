@@ -6,6 +6,7 @@ import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.*;
 import ua.training.exception.LoginAlreadyExistsException;
 import ua.training.service.OrderService;
+import ua.training.util.ConnectionUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -33,10 +34,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void createOrder(HttpServletRequest request) {
         Long userId = (Long) request.getSession().getAttribute(X_AUTH_TOKEN);
-        String address = (String) request.getParameter(ADDRESS);
+        String address = request.getParameter(ADDRESS);
         Map<Long, Integer> basket = (Map<Long, Integer>) request.getSession().getAttribute(BASKET);
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             OrderDao orderDao = daoFactory.createOrderDao();
@@ -66,7 +69,10 @@ public class OrderServiceImpl implements OrderService {
             }
             connection.commit();
         } catch (SQLException e) {
-
+            ConnectionUtil.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            ConnectionUtil.close(connection);
         }
     }
 
@@ -74,16 +80,22 @@ public class OrderServiceImpl implements OrderService {
     public Order save(Order order) {
         Order savedOrder = null;
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             OrderDao orderDao = daoFactory.createOrderDao();
             savedOrder = orderDao.save(order);
             connection.commit();
         } catch (SQLIntegrityConstraintViolationException e) {
+            ConnectionUtil.rollback(connection);
             throw new LoginAlreadyExistsException(e.getMessage());
         } catch (SQLException e) {
+            ConnectionUtil.rollback(connection);
             e.printStackTrace();
+        } finally {
+            ConnectionUtil.close(connection);
         }
         return savedOrder;
     }

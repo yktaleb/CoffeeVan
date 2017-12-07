@@ -7,6 +7,7 @@ import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
 import ua.training.service.VanService;
+import ua.training.util.ConnectionUtil;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -43,7 +44,9 @@ public class VanServiceImpl implements VanService {
     @Override
     public void makeVanFree(Long vanId) {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             VanDao vanDao = daoFactory.createVanDao();
@@ -54,7 +57,10 @@ public class VanServiceImpl implements VanService {
             vanDao.update(van);
             connection.commit();
         } catch (SQLException e) {
+            ConnectionUtil.rollback(connection);
             e.printStackTrace();
+        } finally {
+            ConnectionUtil.close(connection);
         }
     }
 

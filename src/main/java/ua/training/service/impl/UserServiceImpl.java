@@ -8,15 +8,13 @@ import ua.training.entity.Role;
 import ua.training.entity.User;
 import ua.training.exception.LoginAlreadyExistsException;
 import ua.training.service.UserService;
+import ua.training.util.ConnectionUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import static ua.training.util.constant.general.Global.USER_ROLE;
 import static ua.training.util.constant.general.Parameters.X_AUTH_TOKEN;
@@ -53,7 +51,9 @@ public class UserServiceImpl implements UserService {
     public User register(User user) throws LoginAlreadyExistsException {
         User savedUser = null;
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             UserDao userDao = daoFactory.createUserDao();
@@ -62,10 +62,14 @@ public class UserServiceImpl implements UserService {
             savedUser = userDao.save(user);
             userDao.setUserRole(savedUser.getId(), role.getId());
             connection.commit();
-        }  catch (SQLIntegrityConstraintViolationException e) {
+        } catch (SQLIntegrityConstraintViolationException e) {
+            ConnectionUtil.rollback(connection);
             throw new LoginAlreadyExistsException(e.getMessage());
         } catch (SQLException e) {
+            ConnectionUtil.rollback(connection);
             e.printStackTrace();
+        } finally {
+            ConnectionUtil.close(connection);
         }
         return savedUser;
     }
