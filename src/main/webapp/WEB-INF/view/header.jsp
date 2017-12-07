@@ -6,6 +6,21 @@
     <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8"/>
     <title>CoffeeVan</title>
     <link href="<c:url value='/resources/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css">
+    <style>
+        li > a {
+            font-size : 18px;
+        }
+        hr{
+            height: 1px;
+            border: 0;
+            background-color: black;
+        }
+
+        .wrapper {
+            display: flex;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
 <%@include file="/WEB-INF/view/i18n.jsp" %>
@@ -18,20 +33,20 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <c:if test="${not empty token}">
-                        <li class="active"><a href="/"><fmt:message key="mainPage" bundle="${bundle}"/></a></li>
+                        <li><a href="/"><fmt:message key="mainPage" bundle="${bundle}"/></a></li>
                         <c:if test="${not empty admin}">
                             <li><a href="/?command=admin/adminPage"><fmt:message key="adminPage" bundle="${bundle}"/></a></li>
                         </c:if>
                     </c:if>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <form action="/" method="POST">
+                    <li class="wrapper">
+                        <form action="/" method="POST" style="margin-top: 7px; margin-bottom: 0">
                             <div><input name="command" value="setLang" type="hidden"/></div>
                             <div><input name="page" value="${page}" type="hidden"/></div>
                             <input type="radio" id="lang" name="lang" value="en" checked="checked"/>EN
                             <input type="radio" id="lang" name="lang" value="ua"/>UA
-                            <button class="change-button" type="submit">
+                            <button class="btn" type="submit">
                                 <fmt:message key="changeLang" bundle="${bundle}"/>
                             </button>
                         </form>

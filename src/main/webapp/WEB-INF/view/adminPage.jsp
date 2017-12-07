@@ -22,9 +22,7 @@
                     </br>
                 </tr>
             </c:forEach>
-            __________________________________________________________
-            </br>
-            </br>
+            <hr/>
             <fmt:message key="busyVans" bundle="${bundle}"/>:
             </br>
             <c:forEach items="${busyVans}" var="van">
@@ -46,15 +44,12 @@
                             </div>
                         </div>
                     </form>
-                    </br>
                 </tr>
             </c:forEach>
-            __________________________________________________________
+            <hr/>
             </br>
 
             <c:forEach items="${allOrders}" var="frontOrder">
-                </br>
-                </br>
                 <fmt:message key="address" bundle="${bundle}"/>:${frontOrder.order.address}
                 </br>
                 <fmt:message key="user"
@@ -87,7 +82,7 @@
                         </div>
                     </form>
                 </c:if>
-                __________________________________________________________
+                <hr/>
 
             </c:forEach>
         </div>
