@@ -6,7 +6,6 @@ import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
-import ua.training.service.OrderService;
 import ua.training.service.VanService;
 
 import javax.sql.DataSource;
@@ -14,10 +13,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class VanServiceImpl implements VanService {
+import static ua.training.util.constant.service.VanServiceConstants.BUSY_STATUS;
+import static ua.training.util.constant.service.VanServiceConstants.FREE_STATUS;
 
-    private static final String FREE_STATUS = "FREE";
-    private static final String BUSY_STATUS = "BUSY";
+public class VanServiceImpl implements VanService {
 
     private VanServiceImpl() {
     }

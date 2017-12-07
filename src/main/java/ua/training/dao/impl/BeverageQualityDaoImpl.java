@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static ua.training.util.constant.table.BeverageQualityConstants.ID;
+import static ua.training.util.constant.table.BeverageQualityConstants.NAME;
 import static ua.training.util.constant.table.BeverageQualityConstants.TABLE;
 
 public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> implements BeverageQualityDao {

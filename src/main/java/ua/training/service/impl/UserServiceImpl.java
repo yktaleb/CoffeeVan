@@ -18,11 +18,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static ua.training.util.constant.general.Global.USER_ROLE;
 import static ua.training.util.constant.general.Parameters.X_AUTH_TOKEN;
 
 public class UserServiceImpl implements UserService {
-
-    private final static String USER_ROLE = "USER_ROLE";
 
     private UserServiceImpl() {
     }
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
             UserDao userDao = daoFactory.createUserDao();
             user = userDao.findByEmail(email);
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return user;
     }

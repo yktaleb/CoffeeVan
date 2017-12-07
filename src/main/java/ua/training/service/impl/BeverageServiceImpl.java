@@ -14,10 +14,6 @@ import java.util.Optional;
 
 public class BeverageServiceImpl implements BeverageService {
 
-    public static final String PREMIUM_QUALITY = "PREMIUM";
-    public static final String MIDDLE_QUALITY = "MIDDLE";
-    public static final String ECONOMY_QUALITY = "ECONOMY";
-
     private BeverageServiceImpl() {
     }
 

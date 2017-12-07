@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static ua.training.util.constant.table.RoleConstants.ID;
+import static ua.training.util.constant.table.RoleConstants.NAME;
 import static ua.training.util.constant.table.RoleConstants.TABLE;
 
 public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {

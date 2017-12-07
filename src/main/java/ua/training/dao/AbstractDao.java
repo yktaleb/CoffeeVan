@@ -6,12 +6,11 @@ import ua.training.entity.Entity;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+import static ua.training.util.constant.general.Global.ID;
+import static ua.training.util.constant.general.Global.NAME;
 
 public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, Long> {
-
-    public static final String ID = "id";
-    public static final String NAME = "name";
 
     protected String tableName;
     protected Connection connection;
@@ -37,7 +36,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 entity.setId((long) generatedKeys.getInt(1));
             }
             return entity;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -57,7 +56,6 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
             setEntityParameters(entity, statement);
             statement.setLong(getParameterNames().length + 1, entity.getId());
             statement.executeUpdate();
-            connection.commit();
             return entity;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -117,7 +115,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .where()
                 .condition(tableName, ID)
                 .built();
-        try(PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -133,7 +131,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .where()
                 .condition(tableName, NAME)
                 .built();
-        try(PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, value);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {

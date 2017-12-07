@@ -17,14 +17,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdminServiceImpl implements AdminService {
+import static ua.training.util.constant.service.AdminServiceConstants.*;
 
-    private static final String FREE_STATUS = "FREE";
-    private static final String BUSY_STATUS = "BUSY";
-    private static final String IN_PROCESSING_STATUS = "IN_PROCESSING";
-    private static final String ON_THE_ROAD_STATUS = "ON_THE_ROAD";
-    private static final String NOT_ENOUGH_CARRYING_CAPACITY = "Isn`t enough carryingCapacity";
-    private static final String NOT_ENOUGH_VOLUME = "Isn`t enough volume";
+public class AdminServiceImpl implements AdminService {
 
     private final OrderService orderService;
     private final VanService vanService;
@@ -86,7 +81,6 @@ public class AdminServiceImpl implements AdminService {
 
             double totalVolume = 0;
             double totalWeight = 0;
-            double totalPrice = 0;
             for (BeverageOrder beverageOrder : order.getBeverageOrders()) {
                 Integer amount = beverageOrder.getAmount();
                 totalVolume += amount * beverageOrder.getBeverage().getVolume();
@@ -94,7 +88,7 @@ public class AdminServiceImpl implements AdminService {
             }
             if (van.getMaxVolume() <= totalVolume) {
                 throw new VanCapacityException(van, NOT_ENOUGH_VOLUME);
-            } else if (van.getCarryingCapacity() <= totalWeight ) {
+            } else if (van.getCarryingCapacity() <= totalWeight) {
                 throw new VanCapacityException(van, NOT_ENOUGH_CARRYING_CAPACITY);
             }
             order.setVan(van);

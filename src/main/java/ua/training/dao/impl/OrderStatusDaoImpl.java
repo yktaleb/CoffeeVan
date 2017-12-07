@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static ua.training.util.constant.table.OrderStatusConstants.ID;
+import static ua.training.util.constant.table.OrderStatusConstants.NAME;
 import static ua.training.util.constant.table.OrderStatusConstants.TABLE;
 
 public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements OrderStatusDao {

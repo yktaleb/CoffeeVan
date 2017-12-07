@@ -16,30 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 import static ua.training.util.constant.general.Parameters.X_AUTH_TOKEN;
+import static ua.training.util.constant.service.OrderServiceConstants.*;
 
 public class OrderServiceImpl implements OrderService {
-    private static final String BASKET = "basket";
-    private static final String ADDRESS = "address";
-    private static final String IN_PROCESSING_STATUS = "IN_PROCESSING";
-    private static final String ON_THE_ROAD_STATUS = "ON_THE_ROAD";
-
-//    private UserService userService;
-//
-//    private OrderServiceImpl(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    private static class OrderServiceImplHolder {
-//        private static OrderServiceImpl instance(UserService userService) {
-//            return new OrderServiceImpl(userService);
-//        }
-//    }
-//
-//    public static OrderServiceImpl getInstance(UserService userService) {
-//        return OrderServiceImplHolder.instance(userService);
-//    }
-
-    private OrderServiceImpl(){}
+    private OrderServiceImpl() {
+    }
 
     private static class OrderServiceImplHolder {
         private static OrderServiceImpl instance = new OrderServiceImpl();
@@ -80,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
                                 .setOrder(savedOrder)
                                 .setAmount(basket.get(beverageId))
                                 .setBeverage(beverage)
-                        .buildBeverageOrder()
+                                .buildBeverageOrder()
                 );
             }
             connection.commit();
@@ -99,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
             OrderDao orderDao = daoFactory.createOrderDao();
             savedOrder = orderDao.save(order);
             connection.commit();
-        }  catch (SQLIntegrityConstraintViolationException e) {
+        } catch (SQLIntegrityConstraintViolationException e) {
             throw new LoginAlreadyExistsException(e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAll() {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             OrderDao orderDao = daoFactory.createOrderDao();
