@@ -1,5 +1,6 @@
 package ua.training.controller.command;
 
+import ua.training.util.ExceptionMessage;
 import ua.training.util.constant.general.Parameters;
 import ua.training.util.Messages;
 
@@ -18,9 +19,11 @@ public class LanguageCommand implements Command {
         if (lang.equals(Parameters.EN)) {
             request.getSession().setAttribute(Parameters.LANGUAGE, Parameters.EN_US);
             Messages.setLocale(Messages.ENGLISH);
+            ExceptionMessage.setLocale(ExceptionMessage.ENGLISH);
         } else {
             request.getSession().setAttribute(Parameters.LANGUAGE, Parameters.UK_UA);
             Messages.setLocale(Messages.UKRAINIAN);
+            ExceptionMessage.setLocale(ExceptionMessage.UKRAINIAN);
         }
     }
 }

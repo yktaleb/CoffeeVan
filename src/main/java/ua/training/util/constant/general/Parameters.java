@@ -13,6 +13,7 @@ public interface Parameters {
     String BASKET = "basket";
     String TOTAL_PRICE = "totalPrice";
     String BASKET_FIELDS = "basketFields";
+    String EXCEPTION = "exception";
 
 //    String FIRST_NAME = "firstName";
 //    String LAST_NAME = "lastName";

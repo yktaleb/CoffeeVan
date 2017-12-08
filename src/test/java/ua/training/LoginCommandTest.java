@@ -4,6 +4,7 @@ import org.junit.Test;
 import ua.training.controller.command.LoginCommand;
 import ua.training.entity.Role;
 import ua.training.entity.User;
+import ua.training.exception.LoginNotFoundException;
 import ua.training.service.UserService;
 import ua.training.util.constant.general.Pages;
 
@@ -37,7 +38,7 @@ public class LoginCommandTest {
     }
 
     @Test
-    public void testExecuteCommand() throws SQLException {
+    public void testExecuteCommand() throws SQLException, LoginNotFoundException {
         doInitialization();
         String email = "user@gmail.com";
         String password = "12345678";

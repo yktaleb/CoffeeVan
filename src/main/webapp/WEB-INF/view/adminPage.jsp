@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h1 style="color: red">${exception}</h1>
+            <h4 style="color: red">${exception}</h4>
             <fmt:message key="freeVans" bundle="${bundle}"/>:
             </br>
             <c:forEach items="${freeVans}" var="van">

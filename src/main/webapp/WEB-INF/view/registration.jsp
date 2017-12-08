@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
+                <h4 style="color: red">${exception}</h4>
                 <form action="/" method="POST">
                     <div><input name="command" value="registration" type="hidden"/></div>
                     <div class="form-group">

@@ -7,6 +7,7 @@ import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.entity.*;
 import ua.training.util.constant.general.Pages;
+import ua.training.util.constant.general.Parameters;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,6 +45,7 @@ public class MainController extends HttpServlet {
         String page;
 
         try {
+            request.getSession().removeAttribute(Parameters.EXCEPTION);
             page = commandCreator.action(request, response);
             request.getSession().setAttribute("page", page);
         } catch (RuntimeException e) {
