@@ -5,6 +5,7 @@
 <div><input name="freeVans" value="${busyVans}" type="hidden"/></div>
 <div><input name="allOrders" value="${allOrders}" type="hidden"/></div>
 <div><input name="exception" value="${exception}" type="hidden"/></div>
+<div><input name="numberOfPages" value="${numberOfPages}" type="hidden"/></div>
 
 <div class="container">
     <div class="row">
@@ -86,13 +87,11 @@
 
             </c:forEach>
 
-            <div>
-                <ul class="pagination">
-                    <c:forEach items="${numberOfPages}" var="page">
-                        <li><a href="/?command=adminPage&page=${page}">${page + 1}</a></li>
-                    </c:forEach>
-                </ul>
-            </div>
+            <ul class="pagination">
+                <c:forEach begin="0" end="${numberOfPages-1}" var="i">
+                    <li><a href="/?command=adminPage&page=${i}">${i+1}</a></li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 </div>

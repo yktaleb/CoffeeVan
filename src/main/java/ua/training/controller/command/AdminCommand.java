@@ -16,6 +16,9 @@ public class AdminCommand implements Command {
     private static final String BUSY_VANS = "busyVans";
     private static final String ALL_ORDERS = "allOrders";
     private static final String EXCEPTION = "exception";
+    private static final String PAGE = "page";
+    private static final String NUMBER_OF_PAGES = "numberOfPages";
+    private static final int NUMBER_OF_ORDERS_IN_PAGE = 4;
 
     private final AdminService adminService;
 
@@ -28,8 +31,26 @@ public class AdminCommand implements Command {
         request.getSession().removeAttribute(EXCEPTION);
         request.getSession().setAttribute(FREE_VANS, adminService.getFreeVans());
         request.getSession().setAttribute(BUSY_VANS, adminService.getBusyVans());
+        int numberOfOrders = adminService.getNumberOfOrders();
+        int numberOfPages = numberOfOrders / NUMBER_OF_ORDERS_IN_PAGE;
+        if ((numberOfOrders % NUMBER_OF_ORDERS_IN_PAGE) != 0 ) {
+            numberOfPages++;
+        }
+        request.getSession().setAttribute(NUMBER_OF_PAGES, numberOfPages);
+
+        int currentPage;
+        int from;
+        String pageParameter = request.getParameter(PAGE);
+        if (pageParameter != null) {
+            currentPage = Integer.valueOf(pageParameter);
+            from = currentPage * NUMBER_OF_ORDERS_IN_PAGE;
+        } else {
+            currentPage = 0;
+            from = 0;
+        }
+
         List<FrontOrder> frontOrders = new ArrayList<>();
-        List<Order> allOrders = adminService.getAllOrders();
+        List<Order> allOrders = adminService.getAllOrders(NUMBER_OF_ORDERS_IN_PAGE, from);
         for (Order order : allOrders) {
             double totalVolume = 0;
             double totalWeight = 0;
