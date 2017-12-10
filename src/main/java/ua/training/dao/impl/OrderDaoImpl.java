@@ -120,7 +120,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     }
 
     @Override
-    public Optional<Long> numberOfRows() {
+    public int getNumberOfRows() {
         String query = new QueryBuilder()
                 .select()
                 .count()
@@ -131,12 +131,12 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
-                return Optional.of(resultSet.getLong(COUNT));
+                return resultSet.getInt(COUNT);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Optional.empty();
+        return 0;
     }
 
     @Override

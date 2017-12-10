@@ -15,5 +15,5 @@ public interface OrderDao extends CrudDao<Order, Long> {
 
     List<Order> findByVan(Long vanId);
 
-    Optional<Long> numberOfRows();
+    int getNumberOfRows();
 }

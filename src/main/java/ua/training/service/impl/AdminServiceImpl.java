@@ -57,8 +57,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Optional<Long> getNumberOfOrders() {
-        return null;
+    public int getNumberOfOrders() {
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            OrderDao orderDao = DaoFactory.getDaoFactory(connection).createOrderDao();
+            return orderDao.getNumberOfRows();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionUtil.close(connection);
+        }
+        return 0;
     }
 
     @Override

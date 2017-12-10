@@ -19,5 +19,5 @@ public interface AdminService {
 
     void makeVanFree(Long vanId);
 
-    Optional<Long> getNumberOfOrders();
+    int getNumberOfOrders();
 }
