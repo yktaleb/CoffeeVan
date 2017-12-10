@@ -7,4 +7,5 @@ public interface OrderConstants {
     String ORDER_STATUS = "order_status";
     String VAN = "van";
     String ADDRESS = "address";
+    String COUNT = "count";
 }
