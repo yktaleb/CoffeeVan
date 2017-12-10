@@ -85,6 +85,14 @@
                 <hr/>
 
             </c:forEach>
+
+            <div>
+                <ul class="pagination">
+                    <c:forEach items="${numberOfPages}" var="page">
+                        <li><a href="/?command=adminPage&page=${page}">${page + 1}</a></li>
+                    </c:forEach>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
