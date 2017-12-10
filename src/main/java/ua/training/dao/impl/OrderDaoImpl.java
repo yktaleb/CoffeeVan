@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static ua.training.util.constant.table.OrderConstants.*;
 
@@ -55,7 +56,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 .table(TABLE)
                 .where()
                 .condition(TABLE, ORDER_STATUS)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, statusId);
             ResultSet resultSet = statement.executeQuery();
@@ -79,7 +80,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 .table(TABLE)
                 .where()
                 .condition(TABLE, USER)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
@@ -103,7 +104,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 .table(TABLE)
                 .where()
                 .condition(TABLE, VAN)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, vanId);
             ResultSet resultSet = statement.executeQuery();
@@ -116,6 +117,10 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
         }
         return result;
+    }
+
+    @Override
+    public Optional<Long> numberOfRows() {
     }
 
     @Override

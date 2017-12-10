@@ -29,7 +29,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .from()
                 .table(TABLE)
                 .orderBy(PRICE)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -51,7 +51,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .from()
                 .table(TABLE)
                 .orderBy(BEVERAGE_QUALITY)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -74,7 +74,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .table(TABLE)
                 .where()
                 .condition(TABLE, BEVERAGE_QUALITY)
-                .built();
+                .build();
         return getBeverageListByQuery(query, qualityId);
     }
 
@@ -87,7 +87,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .table(TABLE)
                 .where()
                 .condition(TABLE, BEVERAGE_STATE)
-                .built();
+                .build();
         return getBeverageListByQuery(query, stateId);
     }
 
@@ -100,7 +100,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .table(TABLE)
                 .where()
                 .condition(TABLE, BEVERAGE_TYPE)
-                .built();
+                .build();
         return getBeverageListByQuery(query, typeId);
     }
 

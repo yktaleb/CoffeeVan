@@ -55,7 +55,7 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
                 .table(TABLE)
                 .where()
                 .condition(TABLE, VAN_STATUS)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, statusId);
             try (ResultSet resultSet = statement.executeQuery()) {

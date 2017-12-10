@@ -25,7 +25,7 @@ public class BeverageOrderProxy extends BeverageOrder {
                     .table(TABLE)
                     .where()
                     .condition(TABLE, ID)
-                    .built();
+                    .build();
             DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
             try (Connection connection = dataSource.getConnection()) {
                 return DaoFactory
@@ -49,7 +49,7 @@ public class BeverageOrderProxy extends BeverageOrder {
                     .table(TABLE)
                     .where()
                     .condition(TABLE, ID)
-                    .built();
+                    .build();
             DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
             try (Connection connection = dataSource.getConnection()) {
                 return DaoFactory

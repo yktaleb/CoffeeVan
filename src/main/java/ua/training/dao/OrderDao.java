@@ -4,6 +4,7 @@ import ua.training.entity.BeverageOrder;
 import ua.training.entity.Order;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderDao extends CrudDao<Order, Long> {
     List<BeverageOrder> getBeverageOrdersByOrderId(Long id);
@@ -13,4 +14,6 @@ public interface OrderDao extends CrudDao<Order, Long> {
     List<Order> findByUser(Long userId);
 
     List<Order> findByVan(Long vanId);
+
+    Optional<Long> numberOfRows();
 }

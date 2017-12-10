@@ -27,7 +27,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .into()
                 .table(tableName)
                 .insertValues(getParameterNames())
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             setEntityParameters(entity, statement);
             statement.executeUpdate();
@@ -51,7 +51,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .updateValues(getParameterNames())
                 .where()
                 .condition(tableName, ID)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             setEntityParameters(entity, statement);
             statement.setLong(getParameterNames().length + 1, entity.getId());
@@ -71,7 +71,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .table(tableName)
                 .where()
                 .condition(tableName, ID)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -92,7 +92,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .selectAll()
                 .from()
                 .table(tableName)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -114,7 +114,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .from()
                 .table(tableName)
                 .limit(limit, offset)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -136,7 +136,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .table(tableName)
                 .where()
                 .condition(tableName, ID)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             statement.executeUpdate();
@@ -152,7 +152,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 .table(tableName)
                 .where()
                 .condition(tableName, NAME)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, value);
             try (ResultSet resultSet = statement.executeQuery()) {

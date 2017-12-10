@@ -26,7 +26,7 @@ public class OrderProxy extends Order {
                     .table(TABLE)
                     .where()
                     .condition(TABLE, ID)
-                    .built();
+                    .build();
             DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
             try (Connection connection = dataSource.getConnection()) {
                 return DaoFactory
@@ -50,7 +50,7 @@ public class OrderProxy extends Order {
                     .table(TABLE)
                     .where()
                     .condition(TABLE, ID)
-                    .built();
+                    .build();
             DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
             try (Connection connection = dataSource.getConnection()) {
                 return DaoFactory
@@ -74,7 +74,7 @@ public class OrderProxy extends Order {
                     .table(TABLE)
                     .where()
                     .condition(TABLE, ID)
-                    .built();
+                    .build();
             DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
             try (Connection connection = dataSource.getConnection()) {
                 return DaoFactory

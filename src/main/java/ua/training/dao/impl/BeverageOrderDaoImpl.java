@@ -37,7 +37,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
                 .table(TABLE)
                 .where()
                 .condition(TABLE, ORDER)
-                .built();
+                .build();
         return getBeverageOrderListByQuery(query, orderId);
     }
 
@@ -49,7 +49,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
                 .table(TABLE)
                 .where()
                 .condition(TABLE, BEVERAGE)
-                .built();
+                .build();
         return getBeverageOrderListByQuery(query, beverageId);
     }
 

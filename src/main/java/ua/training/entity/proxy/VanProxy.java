@@ -29,7 +29,7 @@ public class VanProxy extends Van {
                     .table(VanConstants.TABLE)
                     .where()
                     .condition(VanConstants.TABLE, ID)
-                    .built();
+                    .build();
             DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
             try (Connection connection = dataSource.getConnection()) {
                 return DaoFactory

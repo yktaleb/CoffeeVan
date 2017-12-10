@@ -26,7 +26,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                 .table(TABLE)
                 .where()
                 .condition(TABLE, EMAIL)
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -47,7 +47,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                 .into()
                 .table(USER_ROLE_TABLE)
                 .insertValues(new String[]{USER_COLUMN, ROLE_COLUMN})
-                .built();
+                .build();
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, userId);
             statement.setLong(2, roleId);

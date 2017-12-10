@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static ua.training.util.constant.service.AdminServiceConstants.*;
 
@@ -53,6 +54,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void makeVanFree(Long vanId) {
         vanService.makeVanFree(vanId);
+    }
+
+    @Override
+    public Optional<Long> getNumberOfOrders() {
+        return null;
     }
 
     @Override
