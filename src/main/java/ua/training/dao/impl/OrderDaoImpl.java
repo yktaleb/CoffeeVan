@@ -34,21 +34,18 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     }
 
     @Override
-    public List<BeverageOrder> getBeverageOrdersByOrderId(Long id) {
+    public List<BeverageOrder> getBeverageOrdersByOrderId(Long id) throws SQLException {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
             BeverageOrderDao beverageOrderDao = daoFactory.createBeverageOrderDao();
             return beverageOrderDao.findByOrder(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public List<Order> findByStatus(Long statusId) {
+    public List<Order> findByStatus(Long statusId) throws SQLException {
         List<Order> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -65,14 +62,12 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
     }
 
     @Override
-    public List<Order> findByUser(Long userId) {
+    public List<Order> findByUser(Long userId) throws SQLException {
         List<Order> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -89,14 +84,12 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
     }
 
     @Override
-    public List<Order> findByVan(Long vanId) {
+    public List<Order> findByVan(Long vanId) throws SQLException {
         List<Order> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -113,14 +106,12 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
     }
 
     @Override
-    public int getNumberOfRows() {
+    public int getNumberOfRows() throws SQLException {
         String query = new QueryBuilder()
                 .select()
                 .count()
@@ -133,8 +124,6 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
             if (resultSet.next()) {
                 return resultSet.getInt(COUNT);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }

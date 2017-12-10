@@ -30,7 +30,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
     }
 
     @Override
-    public List<BeverageOrder> findByOrder(Long orderId) {
+    public List<BeverageOrder> findByOrder(Long orderId) throws SQLException {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -42,7 +42,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
     }
 
     @Override
-    public List<BeverageOrder> findByBeverage(Long beverageId) {
+    public List<BeverageOrder> findByBeverage(Long beverageId) throws SQLException {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -53,7 +53,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
         return getBeverageOrderListByQuery(query, beverageId);
     }
 
-    private List<BeverageOrder> getBeverageOrderListByQuery(String query, Long introducedId) {
+    private List<BeverageOrder> getBeverageOrderListByQuery(String query, Long introducedId) throws SQLException {
         List<BeverageOrder> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, introducedId);
@@ -62,8 +62,6 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return result;
     }

@@ -70,9 +70,6 @@ public class UserServiceImpl implements UserService {
             RoleDao roleDao = daoFactory.createRoleDao();
             Role role = roleDao.findByName(USER_ROLE);
             savedUser = userDao.save(user);
-            if (savedUser == null) {
-                throw new SQLIntegrityConstraintViolationException();
-            }
             userDao.setUserRole(savedUser.getId(), role.getId());
             connection.commit();
         } catch (SQLIntegrityConstraintViolationException e) {

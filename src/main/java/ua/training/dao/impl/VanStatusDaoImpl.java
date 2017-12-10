@@ -21,7 +21,7 @@ public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatu
     }
 
     @Override
-    public VanStatus findByName(String value) {
+    public VanStatus findByName(String value) throws SQLException {
         return findOneByName(value);
     }
 

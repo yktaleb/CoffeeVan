@@ -22,7 +22,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
     }
 
     @Override
-    public List<Beverage> getSortedByPrice() {
+    public List<Beverage> getSortedByPrice() throws SQLException {
         List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -37,14 +37,12 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
     }
 
     @Override
-    public List<Beverage> getSortedByQuality() {
+    public List<Beverage> getSortedByQuality() throws SQLException {
         List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -59,14 +57,12 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
     }
 
     @Override
-    public List<Beverage> findByQuality(Long qualityId) {
+    public List<Beverage> findByQuality(Long qualityId) throws SQLException {
         List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -79,7 +75,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
     }
 
     @Override
-    public List<Beverage> findByState(Long stateId) {
+    public List<Beverage> findByState(Long stateId) throws SQLException {
         List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -92,7 +88,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
     }
 
     @Override
-    public List<Beverage> findByType(Long typeId) {
+    public List<Beverage> findByType(Long typeId) throws SQLException {
         List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -104,7 +100,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         return getBeverageListByQuery(query, typeId);
     }
 
-    private List<Beverage> getBeverageListByQuery(String query, Long introducedId) {
+    private List<Beverage> getBeverageListByQuery(String query, Long introducedId) throws SQLException {
         List<Beverage> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, introducedId);
@@ -113,8 +109,6 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
     }

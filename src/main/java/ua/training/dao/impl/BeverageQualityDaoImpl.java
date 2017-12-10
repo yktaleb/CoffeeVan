@@ -22,7 +22,7 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
     }
 
     @Override
-    public BeverageQuality findByName(String value) {
+    public BeverageQuality findByName(String value) throws SQLException {
         return findOneByName(value);
     }
 

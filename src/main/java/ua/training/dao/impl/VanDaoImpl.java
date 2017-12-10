@@ -31,23 +31,7 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
     }
 
     @Override
-    protected String[] getParameterNames() {
-        return new String[]{VAN_STATUS, NAME, CARRYING_CAPACITY, MAX_VOLUME};
-    }
-
-    @Override
-    protected void setEntityParameters(Van van, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, van.getVanStatus().getId());
-        statement.setString(2, van.getName());
-        statement.setDouble(3, van.getCarryingCapacity());
-        statement.setDouble(4, van.getMaxVolume());
-        if (statement.getParameterMetaData().getParameterCount() == NUMBER_OF_FIELDS_WITHOUT_ID + 1) {
-
-        }
-    }
-
-    @Override
-    public List<Van> findByStatus(Long statusId) {
+    public List<Van> findByStatus(Long statusId) throws SQLException {
         List<Van> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -65,10 +49,24 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
                     }
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
+    }
+
+    @Override
+    protected String[] getParameterNames() {
+        return new String[]{VAN_STATUS, NAME, CARRYING_CAPACITY, MAX_VOLUME};
+    }
+
+    @Override
+    protected void setEntityParameters(Van van, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, van.getVanStatus().getId());
+        statement.setString(2, van.getName());
+        statement.setDouble(3, van.getCarryingCapacity());
+        statement.setDouble(4, van.getMaxVolume());
+        if (statement.getParameterMetaData().getParameterCount() == NUMBER_OF_FIELDS_WITHOUT_ID + 1) {
+
+        }
     }
 
     @Override
@@ -77,7 +75,6 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
         String name = resultSet.getString(NAME);
         Double carryingCapacity = resultSet.getDouble(CARRYING_CAPACITY);
         Double maxVolume = resultSet.getDouble(MAX_VOLUME);
-        Long vanStatusId = resultSet.getLong(VAN_STATUS);
         return new VanProxy.VanBuilder()
                     .setId(id)
                     .setName(name)

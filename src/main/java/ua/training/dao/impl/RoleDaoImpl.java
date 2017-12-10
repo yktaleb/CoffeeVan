@@ -32,12 +32,12 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
     }
 
     @Override
-    public Role findByName(String value) {
+    public Role findByName(String value) throws SQLException {
         return findOneByName(value);
     }
 
     @Override
-    public List<Role> findByUser(Long userId) {
+    public List<Role> findByUser(Long userId) throws SQLException {
         List<Role> result = new ArrayList<>();
         String query = "SELECT r.* FROM `user_role` ur " +
                 "inner join `role` r ON ur.role = r.id " +
@@ -51,8 +51,6 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
                     }
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return result;
     }

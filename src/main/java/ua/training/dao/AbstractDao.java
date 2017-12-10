@@ -21,7 +21,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
     }
 
     @Override
-    public T save(T entity) {
+    public T save(T entity) throws SQLException {
         String query = new QueryBuilder()
                 .insert()
                 .into()
@@ -36,14 +36,11 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 entity.setId((long) generatedKeys.getInt(1));
             }
             return entity;
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public T update(T entity) {
+    public T update(T entity) throws SQLException {
         String query = new QueryBuilder()
                 .update()
                 .table(tableName)
@@ -57,14 +54,11 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
             statement.setLong(getParameterNames().length + 1, entity.getId());
             statement.executeUpdate();
             return entity;
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public T findOne(Long id) {
+    public T findOne(Long id) throws SQLException {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -79,14 +73,12 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                     return getEntityFromResultSet(resultSet);
                 }
             }
-        } catch (SQLException e) {
-
         }
         return null;
     }
 
     @Override
-    public List<T> findAll() {
+    public List<T> findAll() throws SQLException {
         List<T> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -100,14 +92,12 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return result;
     }
 
     @Override
-    public List<T> findAll(long limit, long offset) {
+    public List<T> findAll(long limit, long offset) throws SQLException {
         List<T> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
@@ -122,14 +112,12 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-        } catch (SQLException e) {
-
         }
         return result;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws SQLException {
         String query = new QueryBuilder()
                 .delete()
                 .from()
@@ -140,12 +128,10 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-    public T findOneByName(String value) {
+    public T findOneByName(String value) throws SQLException {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -160,8 +146,6 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                     return getEntityFromResultSet(resultSet);
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }

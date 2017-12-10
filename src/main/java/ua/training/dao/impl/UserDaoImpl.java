@@ -19,7 +19,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public User findByEmail(String email) throws SQLException {
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -34,8 +34,6 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                     return getEntityFromResultSet(resultSet);
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }

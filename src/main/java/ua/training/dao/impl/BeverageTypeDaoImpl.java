@@ -21,7 +21,7 @@ public class BeverageTypeDaoImpl extends AbstractDao<BeverageType> implements Be
     }
 
     @Override
-    public BeverageType findByName(String value) {
+    public BeverageType findByName(String value) throws SQLException {
         return findOneByName(value);
     }
 

@@ -20,7 +20,7 @@ public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements Orde
     }
 
     @Override
-    public OrderStatus findByName(String value) {
+    public OrderStatus findByName(String value) throws SQLException {
         return findOneByName(value);
     }
 
