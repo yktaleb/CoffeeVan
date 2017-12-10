@@ -14,4 +14,6 @@ public interface CrudDao<T, ID> {
     List<T> findAll();
 
     void delete(ID id);
+
+    List<T> findAll(long limit, long offset);
 }

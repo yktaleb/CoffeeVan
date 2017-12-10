@@ -101,6 +101,28 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<T> findAll(long limit, long offset) {
+        List<T> result = new ArrayList<>();
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(tableName)
+                .limit(limit, offset)
+                .built();
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                if (getEntityFromResultSet(resultSet) != null) {
+                    result.add(getEntityFromResultSet(resultSet));
+                }
+            }
+        } catch (SQLException e) {
 
         }
         return result;

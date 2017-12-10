@@ -159,6 +159,18 @@ public class QueryBuilder {
         return this;
     }
 
+    public QueryBuilder limit(long limit, long offset) {
+        query
+                .append("limit")
+                .append(" ")
+                .append(limit)
+                .append(" ")
+                .append("offset")
+                .append(" ")
+                .append(offset);
+        return this;
+    }
+
     public String built() {
         return query.toString();
     }
