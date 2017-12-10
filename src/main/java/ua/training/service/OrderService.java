@@ -11,4 +11,6 @@ public interface OrderService {
     Order save(Order order);
 
     List<Order> getAll();
+
+    List<Order> getAll(long limit, long offset);
 }

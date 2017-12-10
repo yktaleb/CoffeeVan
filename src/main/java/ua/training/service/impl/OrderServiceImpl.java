@@ -113,4 +113,18 @@ public class OrderServiceImpl implements OrderService {
         }
         return null;
     }
+
+    @Override
+    public List<Order> getAll(long limit, long offset) {
+        DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
+            OrderDao orderDao = daoFactory.createOrderDao();
+            return orderDao.findAll(limit, offset);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

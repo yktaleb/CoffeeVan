@@ -78,6 +78,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public List<Order> getAllOrders(long limit, long offset) {
+        return orderService.getAll(limit, offset);
+    }
+
+    @Override
     public void setOrderVan(Long orderId, Long vanId) throws VanCapacityException {
         DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
         Connection connection = null;

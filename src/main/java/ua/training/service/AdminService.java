@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface AdminService {
     List<Order> getAllOrders();
 
+    List<Order> getAllOrders(long limit, long offset);
+
     List<Van> getFreeVans();
 
     List<Van> getBusyVans();
