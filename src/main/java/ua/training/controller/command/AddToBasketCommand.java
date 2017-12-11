@@ -19,12 +19,7 @@ public class AddToBasketCommand implements Command {
         int amount = Integer.parseInt(request.getParameter(AMOUNT));
         Map<Long, Integer> basket = (Map<Long, Integer>) request.getSession().getAttribute(BASKET);
         if (basket != null) {
-            Integer previousAmount = basket.get(id);
-            if (previousAmount != null) {
-                basket.put(id, previousAmount + amount);
-            } else {
-                basket.put(id, amount);
-            }
+            basket.merge(id, amount, (a, b) -> a + b);
             request.getSession().setAttribute(BASKET, basket);
         } else {
             Map<Long, Integer> map = new HashMap<>();

@@ -31,26 +31,22 @@ public class AdminCommand implements Command {
         request.getSession().removeAttribute(EXCEPTION);
         request.getSession().setAttribute(FREE_VANS, adminService.getFreeVans());
         request.getSession().setAttribute(BUSY_VANS, adminService.getBusyVans());
-        int numberOfOrders = adminService.getNumberOfOrders();
-        int numberOfPages = numberOfOrders / NUMBER_OF_ORDERS_IN_PAGE;
-        if ((numberOfOrders % NUMBER_OF_ORDERS_IN_PAGE) != 0 ) {
-            numberOfPages++;
-        }
-        request.getSession().setAttribute(NUMBER_OF_PAGES, numberOfPages);
+        request.getSession().setAttribute(NUMBER_OF_PAGES, getNumberOfPages());
 
-        int currentPage;
-        int from;
-        String pageParameter = request.getParameter(PAGE);
-        if (pageParameter != null) {
-            currentPage = Integer.valueOf(pageParameter);
-            from = currentPage * NUMBER_OF_ORDERS_IN_PAGE;
-        } else {
-            currentPage = 0;
-            from = 0;
-        }
+        request.getSession().setAttribute(
+                ALL_ORDERS,
+                convert(
+                        adminService.getAllOrders(
+                                NUMBER_OF_ORDERS_IN_PAGE,
+                                getStartOrdersSelection(request)
+                        )
+                )
+        );
+        return Pages.ADMIN;
+    }
 
+    private List<FrontOrder> convert(List<Order> allOrders) {
         List<FrontOrder> frontOrders = new ArrayList<>();
-        List<Order> allOrders = adminService.getAllOrders(NUMBER_OF_ORDERS_IN_PAGE, from);
         for (Order order : allOrders) {
             double totalVolume = 0;
             double totalWeight = 0;
@@ -71,8 +67,27 @@ public class AdminCommand implements Command {
                             .build()
             );
         }
-        request.getSession().setAttribute(ALL_ORDERS, frontOrders);
-        return Pages.ADMIN;
+        return frontOrders;
+    }
+
+    private int getStartOrdersSelection(HttpServletRequest request) {
+        int from;
+        String pageParameter = request.getParameter(PAGE);
+        if (pageParameter != null) {
+            from = Integer.valueOf(pageParameter) * NUMBER_OF_ORDERS_IN_PAGE;
+        } else {
+            from = 0;
+        }
+        return from;
+    }
+
+    private int getNumberOfPages() {
+        int numberOfOrders = adminService.getNumberOfOrders();
+        int numberOfPages = numberOfOrders / NUMBER_OF_ORDERS_IN_PAGE;
+        if ((numberOfOrders % NUMBER_OF_ORDERS_IN_PAGE) != 0) {
+            numberOfPages++;
+        }
+        return numberOfPages;
     }
 
 
