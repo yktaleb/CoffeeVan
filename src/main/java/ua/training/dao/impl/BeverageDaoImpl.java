@@ -146,7 +146,6 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
         Double price = resultSet.getDouble(PRICE);
         Double weight = resultSet.getDouble(WEIGHT);
         Double volume = resultSet.getDouble(VOLUME);
-
         return new BeverageProxy.BeverageBuilder()
                 .setId(id)
                 .setName(name)

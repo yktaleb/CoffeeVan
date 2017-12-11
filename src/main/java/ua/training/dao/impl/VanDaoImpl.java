@@ -64,9 +64,6 @@ public class VanDaoImpl extends AbstractDao<Van> implements VanDao {
         statement.setString(2, van.getName());
         statement.setDouble(3, van.getCarryingCapacity());
         statement.setDouble(4, van.getMaxVolume());
-        if (statement.getParameterMetaData().getParameterCount() == NUMBER_OF_FIELDS_WITHOUT_ID + 1) {
-
-        }
     }
 
     @Override

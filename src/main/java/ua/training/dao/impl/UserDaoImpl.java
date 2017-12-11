@@ -98,9 +98,6 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         statement.setString(3, user.getFirstName());
         statement.setString(4, user.getLastName());
         statement.setString(5, user.getPhoneNumber());
-        if (statement.getParameterMetaData().getParameterCount() == NUMBER_OF_FIELDS_WITHOUT_ID + 1) {
-            statement.setLong(6, user.getId());
-        }
     }
 
     @Override

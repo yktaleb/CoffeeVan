@@ -12,7 +12,7 @@ import static ua.training.util.constant.general.Global.NAME;
 
 public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, Long> {
 
-    protected String tableName;
+    private String tableName;
     protected Connection connection;
 
     public AbstractDao(String tableName, Connection connection) {
