@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static ua.training.util.constant.general.Global.ADMIN_ROLE;
+import static ua.training.util.constant.general.Global.USER_ROLE;
 import static ua.training.util.constant.general.Parameters.*;
 
 public class LoginCommand implements Command {
@@ -39,11 +40,19 @@ public class LoginCommand implements Command {
             return Pages.LOGIN;
         }
         request.getSession().setAttribute(X_AUTH_TOKEN, user.getId());
-        for (Role role : user.getRoles()) {
-            if (role.getName().equals(ADMIN_ROLE)) {
-                request.getSession().setAttribute(ADMIN, true);
-            }
-        }
+        setUserRolesIntoSession(request, user);
         return Pages.INDEX;
     }
+
+    private void setUserRolesIntoSession(HttpServletRequest request, User user) {
+        for (Role role : user.getRoles()) {
+            if (ADMIN_ROLE.equals(role.getName())) {
+                request.getSession().setAttribute(ADMIN, true);
+            } else if (USER_ROLE.equals(role.getName())) {
+                request.getSession().setAttribute(USER, true);
+            }
+        }
+    }
+
+
 }

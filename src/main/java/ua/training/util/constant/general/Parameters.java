@@ -8,6 +8,7 @@ public interface Parameters {
     String LANGUAGE = "lang";
     String X_AUTH_TOKEN = "token";
     String ADMIN = "admin";
+    String USER = "user";
     String EMAIL = "email";
     String PASSWORD = "password";
     String BASKET = "basket";

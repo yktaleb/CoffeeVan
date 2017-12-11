@@ -1,6 +1,6 @@
 package ua.training.controller.command;
 
-import ua.training.controller.util.*;
+import ua.training.controller.util.FrontOrder;
 import ua.training.entity.BeverageOrder;
 import ua.training.entity.Order;
 import ua.training.service.AdminService;

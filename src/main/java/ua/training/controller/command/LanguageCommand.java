@@ -1,8 +1,8 @@
 package ua.training.controller.command;
 
 import ua.training.util.ExceptionMessage;
-import ua.training.util.constant.general.Parameters;
 import ua.training.util.Messages;
+import ua.training.util.constant.general.Parameters;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

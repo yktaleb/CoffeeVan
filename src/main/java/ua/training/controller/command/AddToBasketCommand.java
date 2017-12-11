@@ -4,7 +4,6 @@ import ua.training.util.constant.general.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
