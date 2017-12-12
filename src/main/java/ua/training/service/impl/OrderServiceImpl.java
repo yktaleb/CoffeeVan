@@ -42,7 +42,6 @@ public class OrderServiceImpl implements OrderService {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             DaoFactory daoFactory = DaoFactory.getDaoFactory(connection);
-            OrderDao orderDao = daoFactory.createOrderDao();
             OrderStatusDao orderStatusDao = daoFactory.createOrderStatusDao();
             BeverageOrderDao beverageOrderDao = daoFactory.createBeverageOrderDao();
             BeverageDao beverageDao = daoFactory.createBeverageDao();

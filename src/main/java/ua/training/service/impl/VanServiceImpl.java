@@ -24,7 +24,6 @@ public class VanServiceImpl implements VanService {
 
     private static final class VanServiceImplHolder {
         private static final VanServiceImpl INSTANCE = new VanServiceImpl();
-
     }
 
     public static VanServiceImpl getInstance() {

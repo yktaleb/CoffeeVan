@@ -104,18 +104,8 @@ public class AdminServiceImpl implements AdminService {
             VanStatus busyStatus = vanStatusDao.findByName(BUSY_STATUS);
             Order order = orderDao.findOne(orderId);
 
-            double totalVolume = 0;
-            double totalWeight = 0;
-            for (BeverageOrder beverageOrder : order.getBeverageOrders()) {
-                Integer amount = beverageOrder.getAmount();
-                totalVolume += amount * beverageOrder.getBeverage().getVolume();
-                totalWeight += amount * beverageOrder.getBeverage().getWeight();
-            }
-            if (van.getMaxVolume() <= totalVolume) {
-                throw new VanCapacityException(van, NOT_ENOUGH_VOLUME);
-            } else if (van.getCarryingCapacity() <= totalWeight) {
-                throw new VanCapacityException(van, NOT_ENOUGH_CARRYING_CAPACITY);
-            }
+            checkVanValumeAndWeight(van, order);
+
             order.setVan(van);
             order.setStatus(onTheRoadStatus);
             orderDao.update(order);
@@ -127,6 +117,21 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         } finally {
             ConnectionUtil.close(connection);
+        }
+    }
+
+    private void checkVanValumeAndWeight(Van van, Order order) throws VanCapacityException {
+        double totalVolume = 0;
+        double totalWeight = 0;
+        for (BeverageOrder beverageOrder : order.getBeverageOrders()) {
+            Integer amount = beverageOrder.getAmount();
+            totalVolume += amount * beverageOrder.getBeverage().getVolume();
+            totalWeight += amount * beverageOrder.getBeverage().getWeight();
+        }
+        if (van.getMaxVolume() <= totalVolume) {
+            throw new VanCapacityException(van, NOT_ENOUGH_VOLUME);
+        } else if (van.getCarryingCapacity() <= totalWeight) {
+            throw new VanCapacityException(van, NOT_ENOUGH_CARRYING_CAPACITY);
         }
     }
 }
