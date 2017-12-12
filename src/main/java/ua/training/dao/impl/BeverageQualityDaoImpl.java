@@ -2,6 +2,7 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageQualityDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.BeverageQuality;
 import ua.training.entity.proxy.BeverageQualityProxy;
 
@@ -10,9 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static ua.training.util.constant.table.BeverageQualityConstants.ID;
-import static ua.training.util.constant.table.BeverageQualityConstants.NAME;
-import static ua.training.util.constant.table.BeverageQualityConstants.TABLE;
+import static ua.training.util.constant.table.BeverageQualityConstants.*;
 
 public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> implements BeverageQualityDao {
 
@@ -23,7 +22,14 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
 
     @Override
     public BeverageQuality findByName(String value) throws SQLException {
-        return findOneByName(value);
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE)
+                .where()
+                .condition(TABLE, NAME)
+                .build();
+        return getEntityByQuery(query, value);
     }
 
     private static class BeverageQualityDaoImplHolder {
@@ -51,8 +57,8 @@ public class BeverageQualityDaoImpl extends AbstractDao<BeverageQuality> impleme
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
         return new BeverageQualityProxy.BeverageQualityBuilder()
-                        .setId(id)
-                        .setName(name)
-                        .buildBeverageQualityProxy();
+                .setId(id)
+                .setName(name)
+                .buildBeverageQualityProxy();
     }
 }

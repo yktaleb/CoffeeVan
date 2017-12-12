@@ -10,5 +10,5 @@ public interface UserDao extends CrudDao<User, Long> {
 
     void setUserRole(Long userId, Long roleId);
 
-    List<User> findByRole(Long id);
+    List<User> findByRole(Long id) throws SQLException;
 }

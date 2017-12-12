@@ -2,6 +2,7 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.RoleDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Role;
 import ua.training.entity.proxy.RoleProxy;
 
@@ -9,11 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
 
-import static ua.training.util.constant.table.RoleConstants.ID;
-import static ua.training.util.constant.table.RoleConstants.NAME;
-import static ua.training.util.constant.table.RoleConstants.TABLE;
+import static ua.training.util.constant.table.RoleConstants.*;
 
 public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
 
@@ -33,26 +32,22 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
 
     @Override
     public Role findByName(String value) throws SQLException {
-        return findOneByName(value);
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE)
+                .where()
+                .condition(TABLE, NAME)
+                .build();
+        return getEntityByQuery(query, value);
     }
 
     @Override
     public List<Role> findByUser(Long userId) throws SQLException {
-        List<Role> result = new ArrayList<>();
         String query = "SELECT r.* FROM `user_role` ur " +
                 "inner join `role` r ON ur.role = r.id " +
                 "where ur.user = ?";
-        try(PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, userId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    if (getEntityFromResultSet(resultSet) != null) {
-                        result.add(getEntityFromResultSet(resultSet));
-                    }
-                }
-            }
-        }
-        return result;
+        return getEntityListByQuery(query, userId);
     }
 
     @Override
@@ -70,8 +65,8 @@ public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
         return new RoleProxy.RoleBuilder()
-                        .setId(id)
-                        .setName(name)
-                        .buildRoleProxy();
+                .setId(id)
+                .setName(name)
+                .buildRoleProxy();
     }
 }

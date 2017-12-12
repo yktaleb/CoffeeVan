@@ -63,7 +63,6 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
 
     @Override
     public List<Beverage> findByQuality(Long qualityId) throws SQLException {
-        List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -71,12 +70,11 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .where()
                 .condition(TABLE, BEVERAGE_QUALITY)
                 .build();
-        return getBeverageListByQuery(query, qualityId);
+        return getEntityListByQuery(query, qualityId);
     }
 
     @Override
     public List<Beverage> findByState(Long stateId) throws SQLException {
-        List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -84,12 +82,11 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .where()
                 .condition(TABLE, BEVERAGE_STATE)
                 .build();
-        return getBeverageListByQuery(query, stateId);
+        return getEntityListByQuery(query, stateId);
     }
 
     @Override
     public List<Beverage> findByType(Long typeId) throws SQLException {
-        List<Beverage> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -97,20 +94,7 @@ public class BeverageDaoImpl extends AbstractDao<Beverage> implements BeverageDa
                 .where()
                 .condition(TABLE, BEVERAGE_TYPE)
                 .build();
-        return getBeverageListByQuery(query, typeId);
-    }
-
-    private List<Beverage> getBeverageListByQuery(String query, Long introducedId) throws SQLException {
-        List<Beverage> result = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, introducedId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-        }
-        return result;
+        return getEntityListByQuery(query, typeId);
     }
 
     private static final class BeverageDaoImplHolder {

@@ -7,7 +7,6 @@ import ua.training.entity.User;
 import ua.training.entity.proxy.UserProxy;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static ua.training.util.constant.table.UserConstants.*;
@@ -27,15 +26,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                 .where()
                 .condition(TABLE, EMAIL)
                 .build();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, email);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return getEntityFromResultSet(resultSet);
-                }
-            }
-        }
-        return null;
+        return getEntityByQuery(query, email);
     }
 
     @Override
@@ -56,24 +47,11 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public List<User> findByRole(Long roleId) {
-        List<User> result = new ArrayList<>();
+    public List<User> findByRole(Long roleId) throws SQLException {
         String query = "SELECT u.* FROM `user_role` ur \n" +
                 "inner join `user` u ON ur.user = u.id\n" +
                 "where ur.role = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, roleId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    if (getEntityFromResultSet(resultSet) != null) {
-                        result.add(getEntityFromResultSet(resultSet));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return getEntityListByQuery(query, roleId);
     }
 
     private static class UserDaoImplHolder {

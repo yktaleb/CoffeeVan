@@ -23,5 +23,4 @@ public class MakeVanFreeCommand implements Command {
     }
 
 
-
 }

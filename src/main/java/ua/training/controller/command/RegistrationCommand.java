@@ -37,7 +37,7 @@ public class RegistrationCommand implements Command {
                             .setPhoneNumber(phoneNumber)
                             .buildUser()
             );
-        } catch (LoginAlreadyExistsException|IncorrectUserDataException e) {
+        } catch (LoginAlreadyExistsException | IncorrectUserDataException e) {
             request.getSession().setAttribute(EXCEPTION, ExceptionMessage.getMessage(e.getMessage()));
             return Pages.REGISTRATION;
         }

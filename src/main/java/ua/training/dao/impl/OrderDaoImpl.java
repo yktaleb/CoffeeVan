@@ -6,14 +6,13 @@ import ua.training.dao.OrderDao;
 import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.dao.util.QueryBuilder;
-import ua.training.entity.*;
+import ua.training.entity.BeverageOrder;
+import ua.training.entity.Order;
 import ua.training.entity.proxy.OrderProxy;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static ua.training.util.constant.table.OrderConstants.*;
 
@@ -46,7 +45,6 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     public List<Order> findByStatus(Long statusId) throws SQLException {
-        List<Order> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -54,21 +52,11 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 .where()
                 .condition(TABLE, ORDER_STATUS)
                 .build();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, statusId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                if (getEntityFromResultSet(resultSet) != null) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-        }
-        return result;
+        return getEntityListByQuery(query, statusId);
     }
 
     @Override
     public List<Order> findByUser(Long userId) throws SQLException {
-        List<Order> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -76,21 +64,11 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 .where()
                 .condition(TABLE, USER)
                 .build();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                if (getEntityFromResultSet(resultSet) != null) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-        }
-        return result;
+        return getEntityListByQuery(query, userId);
     }
 
     @Override
     public List<Order> findByVan(Long vanId) throws SQLException {
-        List<Order> result = new ArrayList<>();
         String query = new QueryBuilder()
                 .selectAll()
                 .from()
@@ -98,16 +76,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 .where()
                 .condition(TABLE, VAN)
                 .build();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, vanId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                if (getEntityFromResultSet(resultSet) != null) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-        }
-        return result;
+        return getEntityListByQuery(query, vanId);
     }
 
     @Override
@@ -119,7 +88,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 .from()
                 .table(TABLE)
                 .build();
-        try(PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
                 return resultSet.getInt(COUNT);

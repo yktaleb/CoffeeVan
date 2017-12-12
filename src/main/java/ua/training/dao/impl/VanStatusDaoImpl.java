@@ -2,6 +2,7 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.VanStatusDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.VanStatus;
 import ua.training.entity.proxy.VanStatusProxy;
 
@@ -10,9 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static ua.training.util.constant.table.VanStatusConstants.ID;
-import static ua.training.util.constant.table.VanStatusConstants.NAME;
-import static ua.training.util.constant.table.VanStatusConstants.TABLE;
+import static ua.training.util.constant.table.VanStatusConstants.*;
 
 public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatusDao {
 
@@ -22,7 +21,14 @@ public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatu
 
     @Override
     public VanStatus findByName(String value) throws SQLException {
-        return findOneByName(value);
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE)
+                .where()
+                .condition(TABLE, NAME)
+                .build();
+        return getEntityByQuery(query, value);
     }
 
     private static class VanStatusDaoImplHolder {
@@ -50,8 +56,8 @@ public class VanStatusDaoImpl extends AbstractDao<VanStatus> implements VanStatu
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
         return new VanStatusProxy.VanStatusBuilder()
-                        .setId(id)
-                        .setName(name)
-                        .buildVanStatusProxy();
+                .setId(id)
+                .setName(name)
+                .buildVanStatusProxy();
     }
 }

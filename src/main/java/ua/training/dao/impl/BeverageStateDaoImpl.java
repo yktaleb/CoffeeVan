@@ -2,6 +2,7 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageStateDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.BeverageState;
 import ua.training.entity.proxy.BeverageStateProxy;
 
@@ -10,9 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static ua.training.util.constant.table.BeverageStateConstants.ID;
-import static ua.training.util.constant.table.BeverageStateConstants.NAME;
-import static ua.training.util.constant.table.BeverageStateConstants.TABLE;
+import static ua.training.util.constant.table.BeverageStateConstants.*;
 
 public class BeverageStateDaoImpl extends AbstractDao<BeverageState> implements BeverageStateDao {
 
@@ -22,7 +21,14 @@ public class BeverageStateDaoImpl extends AbstractDao<BeverageState> implements 
 
     @Override
     public BeverageState findByName(String value) throws SQLException {
-        return findOneByName(value);
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE)
+                .where()
+                .condition(TABLE, NAME)
+                .build();
+        return getEntityByQuery(query, value);
     }
 
     private static class BeverageStateDaoImplHolder {
@@ -50,8 +56,8 @@ public class BeverageStateDaoImpl extends AbstractDao<BeverageState> implements 
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
         return new BeverageStateProxy.BeverageStateBuilder()
-                        .setId(id)
-                        .setName(name)
-                        .buildBeverageStateProxy();
+                .setId(id)
+                .setName(name)
+                .buildBeverageStateProxy();
     }
 }

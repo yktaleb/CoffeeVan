@@ -2,6 +2,7 @@ package ua.training.dao.impl;
 
 import ua.training.dao.AbstractDao;
 import ua.training.dao.OrderStatusDao;
+import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.OrderStatus;
 import ua.training.entity.proxy.OrderStatusProxy;
 
@@ -10,9 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static ua.training.util.constant.table.OrderStatusConstants.ID;
-import static ua.training.util.constant.table.OrderStatusConstants.NAME;
-import static ua.training.util.constant.table.OrderStatusConstants.TABLE;
+import static ua.training.util.constant.table.OrderStatusConstants.*;
 
 public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements OrderStatusDao {
     private OrderStatusDaoImpl(Connection connection) {
@@ -21,7 +20,14 @@ public class OrderStatusDaoImpl extends AbstractDao<OrderStatus> implements Orde
 
     @Override
     public OrderStatus findByName(String value) throws SQLException {
-        return findOneByName(value);
+        String query = new QueryBuilder()
+                .selectAll()
+                .from()
+                .table(TABLE)
+                .where()
+                .condition(TABLE, NAME)
+                .build();
+        return getEntityByQuery(query, value);
     }
 
     private static final class OrderStatusDaoImplHolder {

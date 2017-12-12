@@ -25,7 +25,9 @@ public class SetOrderVanCommand implements Command {
         try {
             adminService.setOrderVan(orderId, vanId);
         } catch (VanCapacityException e) {
-            request.getSession().setAttribute(EXCEPTION, e.getMessage() + "(in"+ e.getVan() + ")");
+            request.getSession().setAttribute(
+                    EXCEPTION, e.getMessage() + "(in" + e.getVan() + ")"
+            );
         }
         return Pages.ADMIN;
     }

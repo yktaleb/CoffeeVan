@@ -1,6 +1,7 @@
 package ua.training.dao;
 
 import ua.training.dao.util.QueryBuilder;
+import ua.training.entity.BeverageOrder;
 import ua.training.entity.Entity;
 
 import java.sql.*;
@@ -131,14 +132,7 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
         }
     }
 
-    public T findOneByName(String value) throws SQLException {
-        String query = new QueryBuilder()
-                .selectAll()
-                .from()
-                .table(tableName)
-                .where()
-                .condition(tableName, NAME)
-                .build();
+    public T getEntityByQuery(String query, String value) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, value);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -148,6 +142,19 @@ public abstract class AbstractDao<T extends Entity<Long>> implements CrudDao<T, 
             }
         }
         return null;
+    }
+
+    public List<T> getEntityListByQuery(String query, Long introducedId) throws SQLException {
+        List<T> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, introducedId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(getEntityFromResultSet(resultSet));
+                }
+            }
+        }
+        return result;
     }
 
     protected abstract String[] getParameterNames();

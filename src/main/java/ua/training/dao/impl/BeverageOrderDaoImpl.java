@@ -3,14 +3,14 @@ package ua.training.dao.impl;
 import ua.training.dao.AbstractDao;
 import ua.training.dao.BeverageOrderDao;
 import ua.training.dao.util.QueryBuilder;
-import ua.training.entity.*;
+import ua.training.entity.BeverageOrder;
 import ua.training.entity.proxy.BeverageOrderProxy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
 
 import static ua.training.util.constant.table.BeverageOrderConstants.*;
 
@@ -38,7 +38,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
                 .where()
                 .condition(TABLE, ORDER)
                 .build();
-        return getBeverageOrderListByQuery(query, orderId);
+        return getEntityListByQuery(query, orderId);
     }
 
     @Override
@@ -50,20 +50,7 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
                 .where()
                 .condition(TABLE, BEVERAGE)
                 .build();
-        return getBeverageOrderListByQuery(query, beverageId);
-    }
-
-    private List<BeverageOrder> getBeverageOrderListByQuery(String query, Long introducedId) throws SQLException {
-        List<BeverageOrder> result = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, introducedId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-        }
-        return result;
+        return getEntityListByQuery(query, beverageId);
     }
 
     @Override
@@ -83,8 +70,8 @@ public class BeverageOrderDaoImpl extends AbstractDao<BeverageOrder> implements 
         long id = resultSet.getLong(ID);
         int amount = resultSet.getInt(AMOUNT);
         return new BeverageOrderProxy.BeverageOrderBuilder()
-                        .setId(id)
-                        .setAmount(amount)
-                        .buildBeverageOrderProxy();
+                .setId(id)
+                .setAmount(amount)
+                .buildBeverageOrderProxy();
     }
 }
