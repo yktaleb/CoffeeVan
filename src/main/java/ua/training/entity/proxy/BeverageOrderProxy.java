@@ -6,6 +6,7 @@ import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Beverage;
 import ua.training.entity.BeverageOrder;
 import ua.training.entity.Order;
+import ua.training.util.ProxyUtil;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -31,7 +32,7 @@ public class BeverageOrderProxy extends BeverageOrder {
                 return DaoFactory
                         .getDaoFactory(connection)
                         .createBeverageDao()
-                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+                        .findOne(ProxyUtil.getIdDesiredColumnByQuery(connection, query, getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -55,28 +56,13 @@ public class BeverageOrderProxy extends BeverageOrder {
                 return DaoFactory
                         .getDaoFactory(connection)
                         .createOrderDao()
-                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+                        .findOne(ProxyUtil.getIdDesiredColumnByQuery(connection, query, getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return null;
         }
         return super.getOrder();
-    }
-
-    private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {
-        Long id = null;
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, getId());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    id = resultSet.getLong(1);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id;
     }
 
 }

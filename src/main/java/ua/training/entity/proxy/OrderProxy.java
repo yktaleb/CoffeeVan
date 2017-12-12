@@ -5,6 +5,7 @@ import ua.training.dao.factory.DaoFactory;
 import ua.training.dao.factory.DataSourceFactory;
 import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.*;
+import ua.training.util.ProxyUtil;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -32,7 +33,7 @@ public class OrderProxy extends Order {
                 return DaoFactory
                         .getDaoFactory(connection)
                         .createUserDao()
-                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+                        .findOne(ProxyUtil.getIdDesiredColumnByQuery(connection, query, getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -56,7 +57,7 @@ public class OrderProxy extends Order {
                 return DaoFactory
                         .getDaoFactory(connection)
                         .createVanDao()
-                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+                        .findOne(ProxyUtil.getIdDesiredColumnByQuery(connection, query, getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -80,28 +81,13 @@ public class OrderProxy extends Order {
                 return DaoFactory
                         .getDaoFactory(connection)
                         .createOrderStatusDao()
-                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+                        .findOne(ProxyUtil.getIdDesiredColumnByQuery(connection, query, getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return null;
         }
         return super.getStatus();
-    }
-
-    private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {
-        Long id = null;
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, getId());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    id = resultSet.getLong(1);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id;
     }
 
     @Override

@@ -7,6 +7,7 @@ import ua.training.dao.util.QueryBuilder;
 import ua.training.entity.Order;
 import ua.training.entity.Van;
 import ua.training.entity.VanStatus;
+import ua.training.util.ProxyUtil;
 import ua.training.util.constant.table.VanConstants;
 
 import javax.sql.DataSource;
@@ -35,28 +36,13 @@ public class VanProxy extends Van {
                 return DaoFactory
                         .getDaoFactory(connection)
                         .createVanStatusDao()
-                        .findOne(getIdDesiredColumnByBeverageId(query, connection));
+                        .findOne(ProxyUtil.getIdDesiredColumnByQuery(connection, query, getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return null;
         }
         return super.getVanStatus();
-    }
-
-    private Long getIdDesiredColumnByBeverageId(String query, Connection connection) {
-        Long id = null;
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, getId());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    id = resultSet.getLong(1);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id;
     }
 
     @Override
